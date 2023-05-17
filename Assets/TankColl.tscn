@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://dtbpgxax7cd06"]
+
+[ext_resource type="Script" path="res://Assets/TankColl.gd" id="1_dtqaq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0rgft"]
+size = Vector2(13.2, 16)
+
+[node name="TankColl" type="CharacterBody2D"]
+scale = Vector2(5, 5)
+collision_layer = 3
+script = ExtResource("1_dtqaq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_0rgft")
+
+[node name="Revive" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[connection signal="timeout" from="Revive" to="." method="_on_revive_timeout"]

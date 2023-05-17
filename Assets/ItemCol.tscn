@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://b0t3lweviubdh"]
+
+[ext_resource type="Script" path="res://Assets/ItemCol.gd" id="1_se028"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7ry7v"]
+radius = 8.0
+
+[node name="ItemCol" type="Area2D"]
+scale = Vector2(5, 5)
+script = ExtResource("1_se028")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_7ry7v")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://bxohwluo6ihx6"]
+
+[ext_resource type="Script" path="res://Assets/ArtillaryShot.gd" id="1_71li7"]
+
+[node name="ArtillaryShot" type="Node"]
+script = ExtResource("1_71li7")
+
+[node name="Striker" type="Timer" parent="."]
+autostart = true
+
+[connection signal="timeout" from="Striker" to="." method="_on_striker_timeout"]

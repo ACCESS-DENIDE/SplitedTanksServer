@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://c216itrw16jkr"]
+
+[ext_resource type="Script" path="res://Assets/BlockCollision.gd" id="1_mv7xj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k1ixn"]
+size = Vector2(16, 16)
+
+[node name="BlockCollision" type="StaticBody2D"]
+scale = Vector2(5, 5)
+script = ExtResource("1_mv7xj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_k1ixn")

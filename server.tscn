@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://ct6p66jr0vs0l"]
+
+[ext_resource type="Script" path="res://Scripts/Server.gd" id="1_x42tc"]
+[ext_resource type="Script" path="res://Scripts/InputManager.gd" id="2_jk2gt"]
+
+[node name="Server" type="Node"]
+script = ExtResource("1_x42tc")
+
+[node name="InputManager" type="Node" parent="."]
+script = ExtResource("2_jk2gt")
+
+[node name="CollisionContainer" type="Node" parent="."]
