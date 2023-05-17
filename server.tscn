@@ -1,7 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://ct6p66jr0vs0l"]
+[gd_scene load_steps=6 format=3 uid="uid://ct6p66jr0vs0l"]
 
 [ext_resource type="Script" path="res://Scripts/Server.gd" id="1_x42tc"]
 [ext_resource type="Script" path="res://Scripts/InputManager.gd" id="2_jk2gt"]
+[ext_resource type="Script" path="res://Scripts/CollisionContainer.gd" id="3_b0en8"]
+[ext_resource type="Script" path="res://Scripts/MapManager.gd" id="4_mlj2q"]
+[ext_resource type="Script" path="res://Scripts/PlayerManager.gd" id="5_bs4at"]
 
 [node name="Server" type="Node"]
 script = ExtResource("1_x42tc")
@@ -10,3 +13,10 @@ script = ExtResource("1_x42tc")
 script = ExtResource("2_jk2gt")
 
 [node name="CollisionContainer" type="Node" parent="."]
+script = ExtResource("3_b0en8")
+
+[node name="MapManager" type="Node" parent="."]
+script = ExtResource("4_mlj2q")
+
+[node name="PlayerManager" type="Node" parent="."]
+script = ExtResource("5_bs4at")
