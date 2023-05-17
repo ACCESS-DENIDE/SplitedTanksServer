@@ -54,16 +54,16 @@ func _change_type(type_inp:int):
 func damage():
 	match  type:
 		8:
-			Server._call_replace(name, 9,name)
+			Server.MapManager._call_replace(name, 9,name)
 			pass
 		9:
-			Server._call_replace(name, 10,name)
+			Server.MapManager._call_replace(name, 10,name)
 			pass
 		10:
-			Server._call_replace(name, 0,name)
+			Server.MapManager._call_replace(name, 0,"")
 			pass
 		12:
-			Server._call_replace(name, 0,"")
-			Server._spawn_item(18, position)
+			Server.MapManager._call_replace(name, 0,"")
+			Server.MapManager._spawn_item(18, position)
 			pass
 

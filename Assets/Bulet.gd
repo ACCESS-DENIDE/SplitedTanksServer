@@ -32,8 +32,7 @@ func _process(delta):
 			position.x-=10
 			pass
 	if(position.length()>kill_dist):
-		Server._call_replace(self.name, 0, self.name)
-		get_parent().remove_child(self)
+		Server.MapManager._call_replace(self.name, 0, self.name)
 		flg=false
 	Server._call_sync(name, position, rotation)
 	pass
@@ -44,7 +43,6 @@ func _on_body_entered(body):
 		if(!(body.name==Parent)):
 			if(body.is_damageble):
 				body.damage()
-			Server._call_replace(self.name, 0, self.name)
-			get_parent().remove_child(self)
+			Server.MapManager._call_replace(self.name, 0, self.name)
 			flg=false
 	pass # Replace with function body.

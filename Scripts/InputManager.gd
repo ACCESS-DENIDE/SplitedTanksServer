@@ -2,55 +2,56 @@ extends Node
 
 var SPEED
 
-
-var bulet_inst=preload("res://Assets/Bulet.tscn")
-
 @onready var Server=$".."
+@onready var CollisionContainer=$"../CollisionContainer"
+@onready var InputManager=$"."
+@onready var MapManager=$"../MapManager"
+@onready var PlayerManager=$"../PlayerManager"
 
 func _move_player(peer_id:int,dir:int):
-	SPEED=Server.players_links[peer_id]["Inst"].Speed
+	SPEED=PlayerManager.players_links[peer_id]["Inst"].Speed
 	var vec:Vector2
 	vec.x=0
 	vec.y=0
-	if(!(Server.players_links[peer_id]["Inst"].Speed==0)):
+	if(!(PlayerManager.players_links[peer_id]["Inst"].Speed==0)):
 		match dir:
 			0:
 				vec.y=-1
-				Server.players_links[peer_id]["Inst"].rotation_degrees=0
+				PlayerManager.players_links[peer_id]["Inst"].rotation_degrees=0
 				pass
 			1:
 				vec.y=1
-				Server.players_links[peer_id]["Inst"].rotation_degrees=180
+				PlayerManager.players_links[peer_id]["Inst"].rotation_degrees=180
 				pass
 			2:
 				vec.x=1
-				Server.players_links[peer_id]["Inst"].rotation_degrees=90
+				PlayerManager.players_links[peer_id]["Inst"].rotation_degrees=90
 				pass
 			3:
 				vec.x=-1
-				Server.players_links[peer_id]["Inst"].rotation_degrees=-90
+				PlayerManager.players_links[peer_id]["Inst"].rotation_degrees=-90
 				pass
 		if (vec):
-			Server.players_links[peer_id]["Inst"].velocity.x=vec.x*SPEED
-			Server.players_links[peer_id]["Inst"].velocity.y=vec.y*SPEED
+			PlayerManager.players_links[peer_id]["Inst"].velocity.x=vec.x*SPEED
+			PlayerManager.players_links[peer_id]["Inst"].velocity.y=vec.y*SPEED
 		else:
-			Server.players_links[peer_id]["Inst"].velocity.x=move_toward(Server.players_links[peer_id]["Inst"].velocity.x, 0, SPEED)
-			Server.players_links[peer_id]["Inst"].velocity.y=move_toward(Server.players_links[peer_id]["Inst"].velocity.y, 0, SPEED)
-		Server.players_links[peer_id]["Inst"].move_and_slide()
-		Server._call_sync(str(peer_id), Server.players_links[peer_id]["Inst"].position, Server.players_links[peer_id]["Inst"].rotation)
+			PlayerManager.players_links[peer_id]["Inst"].velocity.x=move_toward(PlayerManager.players_links[peer_id]["Inst"].velocity.x, 0, SPEED)
+			PlayerManager.players_links[peer_id]["Inst"].velocity.y=move_toward(PlayerManager.players_links[peer_id]["Inst"].velocity.y, 0, SPEED)
+		PlayerManager.players_links[peer_id]["Inst"].move_and_slide()
+		Server._call_sync(str(peer_id), PlayerManager.players_links[peer_id]["Inst"].position, PlayerManager.players_links[peer_id]["Inst"].rotation)
 
 func _shoot(id:int):
-	if(!(Server.players_links[id]["Inst"].dead)):
-		if (Server.players_links[id]["Phase"]==0):
-			match Server.players_links[id]["GT"]:
+	if(!(PlayerManager.players_links[id]["Inst"].dead)):
+		if (PlayerManager.players_links[id]["Phase"]==0):
+			match PlayerManager.players_links[id]["GT"]:
 				0:
-					var bul=bulet_inst.instantiate()
-					bul.position=Server.players_links[id]["Inst"].position
-					bul.dir=Server.players_links[id]["Inst"].rotation_degrees
-					bul.Parent=Server.players_links[id]["Inst"].name
-					bul.Server=Server
+					var bul=preload("res://Assets/Bulet.tscn").instantiate()
+					bul.position=PlayerManager.players_links[id]["Inst"].position
+					bul.dir=PlayerManager.players_links[id]["Inst"].rotation_degrees
+					bul.Parent=PlayerManager.players_links[id]["Inst"].name
+					bul.Server=PlayerManager
 					bul.name=str(id)+str(Time.get_unix_time_from_system())
-					Server.CollisionContainer.add_child(bul)
+					CollisionContainer.add_child(bul)
 					Server._ini_spawn(13, bul.name, bul.position)
 				1:
 					pass
@@ -58,8 +59,8 @@ func _shoot(id:int):
 					pass
 				3:
 					Server._rquest_target(id, _artillary_strike)
-					Server.players_links[id]["Inst"].Speed=0
-					Server.players_links[id]["Phase"]=1
+					PlayerManager.players_links[id]["Inst"].Speed=0
+					PlayerManager.players_links[id]["Phase"]=1
 					pass
 	pass
 
