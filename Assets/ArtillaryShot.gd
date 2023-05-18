@@ -6,7 +6,10 @@ const root_cord=-(10*16*5)
 var Server
 var x_cont
 var y_cont
-var Speed_art=200
+var SPEED
+
+func _ready():
+	SPEED=Server.Constants.artillery_speed
 
 func _calculate_strike():
 	x_cont=x
@@ -15,10 +18,10 @@ func _calculate_strike():
 	var dest=Server.PlayerManager.players_links[striker_id]["Inst"].position-Vector2(root_cord+x*16*5, root_cord+y*16*5)
 	dest.x=int(dest.x)
 	dest.y=int(dest.y)
-	$Striker.wait_time=Vector2(dest).length()/Speed_art
+	$Striker.wait_time=Vector2(dest).length()/SPEED
 	print(str(dest)+"N"+str($Striker.wait_time).replace(".", "A")+"N"+str(striker_id))
 	Server._ini_spawn(16,str(dest)+"N"+str($Striker.wait_time).replace(".", "A")+"N"+str(striker_id) , Server.PlayerManager.players_links[striker_id]["Inst"].position)
-	Server.PlayerManager.players_links[striker_id]["Inst"].Speed=600
+	Server.PlayerManager.players_links[striker_id]["Inst"].SPEED=Server.Constants.tank_speed
 
 func _on_striker_timeout():
 	Server._ini_spawn(17, ("Exp:"+name),Vector2(root_cord+x_cont*16*5, root_cord+y_cont*16*5))

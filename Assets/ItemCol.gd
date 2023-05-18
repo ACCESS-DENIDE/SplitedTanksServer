@@ -3,7 +3,7 @@ var Server
 var fl:bool=true
 var id:int
 var is_damageble=true
-
+var is_blocking_projectile=false
 
 func damage():
 	get_parent().remove_child(self)

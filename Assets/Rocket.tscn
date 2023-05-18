@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://c6y6u1k1pn8t1"]
+
+[ext_resource type="Script" path="res://Assets/Rocket.gd" id="1_u4unu"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_yrovu"]
+radius = 0.6
+height = 4.8
+
+[node name="Rocket" type="Area2D"]
+scale = Vector2(10, 10)
+collision_mask = 2
+script = ExtResource("1_u4unu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_yrovu")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

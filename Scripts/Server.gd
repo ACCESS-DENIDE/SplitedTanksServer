@@ -4,7 +4,7 @@ extends Node
 @onready var InputManager=$InputManager
 @onready var MapManager=$MapManager
 @onready var PlayerManager=$PlayerManager
-
+@onready var Constants=$Constants
 
 var target_wait={}
 
@@ -34,8 +34,8 @@ func _rquest_target(peer:int, callback:Callable):
 func _on_network_disconnected(peer_id:int):
 	PlayerManager._remoe_player(peer_id)
 
-func _ini_spawn(id:int, name:String, pos:Vector2):
-	rpc("_client_spawn", id, name, pos)
+func _ini_spawn(id:int, name:String, pos:Vector2, rot:float=0.0):
+	rpc("_client_spawn", id, name, pos, rot)
 
 func _id_ini_spawn(peer:int, id:int, name:String, pos:Vector2):
 	rpc_id(peer, "_client_spawn", id, name, pos)
@@ -49,6 +49,10 @@ func _ini_map_unload():
 func _ini_block_change(name:String, type:int, new_name:String):
 	rpc("_changeBlock", name, type, new_name)
 
+
+@rpc("any_peer")
+func _PU_pressed():
+	InputManager._PU_Use(multiplayer.get_remote_sender_id())
 @rpc("any_peer")
 func _Shoot_pressed():
 	InputManager._shoot(multiplayer.get_remote_sender_id())
@@ -75,7 +79,7 @@ func  _changeBlock(name:String, type:int, new_name:String):
 func _unload_map_cli():
 	pass
 @rpc("any_peer")
-func _client_spawn(id:int, name:String, pos:Vector2):
+func _client_spawn(id:int, name:String, pos:Vector2, rot:float=0.0):
 	pass
 @rpc("any_peer")
 func _client_despawn(name:String):

@@ -64,6 +64,6 @@ func damage():
 			pass
 		12:
 			Server.MapManager._call_replace(name, 0,"")
-			Server.MapManager._spawn_item(18, position)
+			Server.MapManager._spawn_item(24, position)
 			pass
 

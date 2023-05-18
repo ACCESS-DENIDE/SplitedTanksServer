@@ -7,13 +7,18 @@ var SPEED
 @onready var InputManager=$"."
 @onready var MapManager=$"../MapManager"
 @onready var PlayerManager=$"../PlayerManager"
+var delta_time={}
+
+
 
 func _move_player(peer_id:int,dir:int):
-	SPEED=PlayerManager.players_links[peer_id]["Inst"].Speed
+	
+	SPEED=PlayerManager.players_links[peer_id]["Inst"].SPEED
 	var vec:Vector2
 	vec.x=0
 	vec.y=0
-	if(!(PlayerManager.players_links[peer_id]["Inst"].Speed==0)):
+	PlayerManager.players_links[peer_id]["Inst"].dir=dir
+	if(!(PlayerManager.players_links[peer_id]["Inst"].SPEED==0)):
 		match dir:
 			0:
 				vec.y=-1
@@ -39,6 +44,7 @@ func _move_player(peer_id:int,dir:int):
 			PlayerManager.players_links[peer_id]["Inst"].velocity.y=move_toward(PlayerManager.players_links[peer_id]["Inst"].velocity.y, 0, SPEED)
 		PlayerManager.players_links[peer_id]["Inst"].move_and_slide()
 		Server._call_sync(str(peer_id), PlayerManager.players_links[peer_id]["Inst"].position, PlayerManager.players_links[peer_id]["Inst"].rotation)
+		delta_time[peer_id]=Time.get_ticks_msec()
 
 func _shoot(id:int):
 	if(!(PlayerManager.players_links[id]["Inst"].dead)):
@@ -49,21 +55,49 @@ func _shoot(id:int):
 					bul.position=PlayerManager.players_links[id]["Inst"].position
 					bul.dir=PlayerManager.players_links[id]["Inst"].rotation_degrees
 					bul.Parent=PlayerManager.players_links[id]["Inst"].name
-					bul.Server=PlayerManager
-					bul.name=str(id)+str(Time.get_unix_time_from_system())
+					bul.Server=Server
+					bul.name="bulet"+str(id)
 					CollisionContainer.add_child(bul)
 					Server._ini_spawn(13, bul.name, bul.position)
 				1:
+					var roc=preload("res://Assets/Rocket.tscn").instantiate()
+					roc.position=PlayerManager.players_links[id]["Inst"].position
+					roc.parent=PlayerManager.players_links[id]["Inst"]
+					roc.Server=Server
+					roc.name="rocket"+str(id)
+					add_child(roc)
+					Server._ini_spawn(14, roc.name, roc.position)
+					PlayerManager.players_links[id]["Inst"].SPEED=0
+					PlayerManager.players_links[id]["Phase"]=1
 					pass
 				2:
+					var lb=preload("res://Assets/PlasmaIgnitor.tscn").instantiate()
+					var ank=preload("res://Assets/PlasmaAnker.tscn").instantiate()
+					PlayerManager.players_links[id]["Inst"].add_child(ank)
+					ank.position.y-=10
+					lb.anker=ank
+					lb.parent=PlayerManager.players_links[id]["Inst"]
+					lb.Server=Server
+					lb.name="plasma"+str(id)
+					PlayerManager.players_links[id]["Inst"].SPEED=Server.Constants.tank_speed/2
+					add_child(lb)
+					Server._ini_spawn(27, "plasma"+str(id), PlayerManager.players_links[id]["Inst"].position)
+					PlayerManager.players_links[id]["Phase"]=2
 					pass
 				3:
 					Server._rquest_target(id, _artillary_strike)
-					PlayerManager.players_links[id]["Inst"].Speed=0
+					PlayerManager.players_links[id]["Inst"].SPEED=0
 					PlayerManager.players_links[id]["Phase"]=1
 					pass
-	pass
+		else:
+			for i in get_children():
+				if(i.name=="plasma"+str(id)):
+					i._launc()
+				if(i.name=="rocket"+str(id)):
+					i._ignition()
 
+func _PU_Use(peer_id):
+	PlayerManager.players_links[peer_id]["Inst"]._use_item()
 
 var root_cord=-(10*16*5)
 var x_cont:int
