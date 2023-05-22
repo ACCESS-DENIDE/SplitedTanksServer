@@ -13,6 +13,7 @@ func _remoe_player(peer_id:int):
 	if( players_links.keys().has(peer_id)):
 			active_players-=1
 			CollisionContainer.remove_child(players_links[peer_id]["Inst"])
+			players_links[peer_id]["Inst"].queue_free()
 			Server._ini_despawn(str(peer_id))
 			players_links.erase(peer_id)
 			MapManager._asign_base()
@@ -42,7 +43,7 @@ func _add_player(peer_id:int):
 		players_links[peer_id]["Inst"]=new_tank
 		match active_players:
 			0:
-				players_links[peer_id]["GT"]=1
+				players_links[peer_id]["GT"]=0
 				pass
 			1:
 				players_links[peer_id]["GT"]=1

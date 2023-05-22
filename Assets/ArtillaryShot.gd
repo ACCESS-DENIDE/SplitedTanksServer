@@ -30,4 +30,5 @@ func _on_striker_timeout():
 	if(Server.PlayerManager.players_links.has(striker_id)):
 		Server.PlayerManager.players_links[striker_id]["Phase"]=0
 	get_parent().remove_child(self)
+	queue_free()
 

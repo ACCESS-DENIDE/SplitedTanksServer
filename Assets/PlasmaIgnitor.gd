@@ -5,6 +5,9 @@ var Ignited:bool=false
 var Launched:bool=false
 var anker
 
+func _ready():
+	$IgnitionTimer.wait_time=Server.Constants.plasma_ignition_time
+
 func _blast():
 	var shift_x=floor((parent.position.x-40)/80.0)+11
 	var shift_y=floor((parent.position.y-40)/80.0)+11
@@ -64,7 +67,9 @@ func _blast():
 	Server.MapManager._call_replace(self.name, 0, self.name)
 	if(Server.PlayerManager.players_links.has(parent.my_master)):
 		Server.PlayerManager.players_links[parent.my_master]["Inst"].remove_child(anker)
+		anker.queue_free()
 	get_parent().remove_child(self)
+	queue_free()
 	
 	pass
 

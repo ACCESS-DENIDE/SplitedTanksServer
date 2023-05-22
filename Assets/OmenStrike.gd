@@ -16,4 +16,5 @@ func _on_striker_timeout():
 		for g in range( -2, 3):
 			Server.MapManager._hit_cords(x_local+i, y_local+g)
 	get_parent().remove_child(self)
+	queue_free()
 	pass # Replace with function body.

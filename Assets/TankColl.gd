@@ -13,6 +13,8 @@ var supercharge:bool=false
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	SPEED=Server.Constants.tank_speed
+	$Revive.wait_time=Server.Constants.respawn_time
+	$BaseReload.wait_time=Server.Constants.bulet_reload
 	pass # Replace with function body.
 
 func _add_item(id:int):
@@ -73,6 +75,7 @@ func _boost(time:float):
 	$Boost.start()
 
 func _on_revive_timeout():
+	_invincibilate(Server.Constants.spawn_invincible)
 	position=respPos
 	dead=false
 	Server._call_sync(str(my_master), position, rotation)
@@ -87,4 +90,11 @@ func _on_invincible_timeout():
 
 func _on_boost_timeout():
 	SPEED=SPEED/(Server.Constants.boost_power)
+	pass # Replace with function body.
+
+func _reload_based_gun():
+	$BaseReload.start()
+
+func _on_base_reload_timeout():
+	Server.PlayerManager.players_links[my_master]["Phase"]=0
 	pass # Replace with function body.

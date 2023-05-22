@@ -23,6 +23,10 @@ one_shot = true
 [node name="Boost" type="Timer" parent="."]
 one_shot = true
 
+[node name="BaseReload" type="Timer" parent="."]
+one_shot = true
+
 [connection signal="timeout" from="Revive" to="." method="_on_revive_timeout"]
 [connection signal="timeout" from="Invincible" to="." method="_on_invincible_timeout"]
 [connection signal="timeout" from="Boost" to="." method="_on_boost_timeout"]
+[connection signal="timeout" from="BaseReload" to="." method="_on_base_reload_timeout"]

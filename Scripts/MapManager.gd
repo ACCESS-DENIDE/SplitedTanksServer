@@ -60,10 +60,13 @@ func _unload_map():
 	for i in CollisionContainer.get_children():
 		if(i.name.contains("Block")):
 			CollisionContainer.remove_child(i)
+			i.queue_free()
 		if(i.name.contains("Item")):
 			CollisionContainer.remove_child(i)
+			i.queue_free()
 		if(i.name.contains("Crate")):
 			CollisionContainer.remove_child(i)
+			i.queue_free()
 	pass
 
 func _hit_cords(x:int, y:int):
@@ -80,6 +83,11 @@ func _hit_cords(x:int, y:int):
 				
 				if((abs(abs(i["Inst"].position.x)-(abs(root_cord+(x*16*5))))<8*5)&&(abs(abs(i["Inst"].position.y)-(abs(root_cord+(y*16*5))))<8*5)):
 					i["Inst"].damage()
+
+func _reliable_spawn(id:int, pos:Vector2, rot:float=0):
+	match id:
+		0:
+			pass
 
 
 func _spawn_Block(name:String, type:int, x:int, y:int):
@@ -101,4 +109,5 @@ func _call_replace(name:String, type:int, new_name:String):
 			else:
 				map.erase(str(i.position.x/(16*5)+10)+":"+str(i.position.y/(16*5)+10))
 				CollisionContainer.remove_child(i)
+				i.queue_free()
 	Server._ini_block_change(name, type, new_name)

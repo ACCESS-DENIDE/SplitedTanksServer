@@ -89,6 +89,8 @@ func _client_despawn(name:String):
 @rpc("any_peer")
 func _target_req():
 	pass
+@rpc("any_peer")
+func _update_locals(data={}):
 	pass
 
 

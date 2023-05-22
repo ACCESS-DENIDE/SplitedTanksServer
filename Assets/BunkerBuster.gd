@@ -1,7 +1,7 @@
 extends Area2D
 
 var Server
-var Parent:String
+var Parent
 var dir:int=0
 var SPEED
 var flg:bool=true
@@ -42,7 +42,7 @@ func _process(delta):
 
 func _on_body_entered(body):
 	if (flg):
-		if(!(body.name==Parent)):
+		if(!(body==Parent)):
 			if(body.is_blocking_projectile):
 				Server.MapManager._call_replace(body.name, 0, "")
 			Server.MapManager._call_replace(self.name, 0, self.name)
@@ -54,3 +54,4 @@ func _on_body_entered(body):
 			Server._ini_spawn(26, ("Exp:"+name),position)
 			flg=false
 	pass # Replace with function body.
+

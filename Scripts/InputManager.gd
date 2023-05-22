@@ -55,21 +55,25 @@ func _shoot(id:int):
 						var bul=preload("res://Assets/BunkerBuster.tscn").instantiate()
 						bul.position=PlayerManager.players_links[id]["Inst"].position
 						bul.dir=PlayerManager.players_links[id]["Inst"].rotation_degrees
-						bul.Parent=PlayerManager.players_links[id]["Inst"].name
+						bul.Parent=PlayerManager.players_links[id]["Inst"]
 						bul.Server=Server
 						bul.name="BB"+str(id)
 						CollisionContainer.add_child(bul)
 						Server._ini_spawn(29, bul.name, bul.position)
 						PlayerManager.players_links[id]["Inst"].supercharge=false
+						PlayerManager.players_links[id]["Phase"]=1
+						PlayerManager.players_links[id]["Inst"]._reload_based_gun()
 					else:
 						var bul=preload("res://Assets/Bulet.tscn").instantiate()
 						bul.position=PlayerManager.players_links[id]["Inst"].position
 						bul.dir=PlayerManager.players_links[id]["Inst"].rotation_degrees
-						bul.Parent=PlayerManager.players_links[id]["Inst"].name
+						bul.Parent=PlayerManager.players_links[id]["Inst"]
 						bul.Server=Server
 						bul.name="bulet"+str(id)+str(Time.get_ticks_msec())
 						CollisionContainer.add_child(bul)
 						Server._ini_spawn(13, bul.name, bul.position)
+						PlayerManager.players_links[id]["Phase"]=1
+						PlayerManager.players_links[id]["Inst"]._reload_based_gun()
 				1:
 					if(PlayerManager.players_links[id]["Inst"].supercharge):
 						Server._rquest_target(id, _airStrike)

@@ -1,7 +1,7 @@
 extends Area2D
 
 var Server
-var Parent:String
+var Parent
 var dir:int=0
 var SPEED
 var flg:bool=true
@@ -41,7 +41,7 @@ func _process(delta):
 
 func _on_body_entered(body):
 	if (flg):
-		if(!(body.name==Parent)):
+		if(!(body==Parent)):
 			if(body.is_damageble):
 				body.damage()
 			Server.MapManager._call_replace(self.name, 0, self.name)

@@ -18,4 +18,5 @@ func _on_body_entered(body):
 			body.damage()
 			Server._ini_spawn(17, ("Exp:"+name), position)
 			get_parent().remove_child(self)
+			queue_free()
 	pass # Replace with function body.

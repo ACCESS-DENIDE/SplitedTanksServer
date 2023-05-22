@@ -47,6 +47,7 @@ func _on_body_entered(body):
 				body.damage()
 			Server.MapManager._call_replace(self.name, 0, self.name)
 			get_parent().remove_child(self)
+			queue_free()
 			parent.SPEED=Server.Constants.tank_speed
 			Server._ini_spawn(26, ("Exp:"+name),position)
 			if(Server.PlayerManager.players_links.has(parent.my_master)):
