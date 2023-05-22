@@ -18,8 +18,10 @@ wait_time = 3.0
 one_shot = true
 
 [node name="Invincible" type="Timer" parent="."]
+one_shot = true
 
 [node name="Boost" type="Timer" parent="."]
+one_shot = true
 
 [connection signal="timeout" from="Revive" to="." method="_on_revive_timeout"]
 [connection signal="timeout" from="Invincible" to="." method="_on_invincible_timeout"]

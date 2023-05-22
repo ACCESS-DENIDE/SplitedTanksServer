@@ -35,8 +35,9 @@ func _blast():
 				shift_x-=1
 				
 				pass
-	Server.PlayerManager.players_links[parent.my_master]["Inst"]._invincibilate(0.5)
-	Server.PlayerManager.players_links[parent.my_master]["Inst"].SPEED=Server.Constants.tank_speed
+	if(Server.PlayerManager.players_links.has(parent.my_master)):
+		Server.PlayerManager.players_links[parent.my_master]["Inst"]._invincibilate(0.5)
+		Server.PlayerManager.players_links[parent.my_master]["Inst"].SPEED=Server.Constants.tank_speed
 	for i in range (0, len):
 		if(i>0):
 			Server.MapManager._hit_cords(shift_x, shift_y)
@@ -58,9 +59,11 @@ func _blast():
 				
 				shift_x+=1
 				pass
-	Server.PlayerManager.players_links[parent.my_master]["Phase"]=0
+	if(Server.PlayerManager.players_links.has(parent.my_master)):
+				Server.PlayerManager.players_links[parent.my_master]["Phase"]=0
 	Server.MapManager._call_replace(self.name, 0, self.name)
-	Server.PlayerManager.players_links[parent.my_master]["Inst"].remove_child(anker)
+	if(Server.PlayerManager.players_links.has(parent.my_master)):
+		Server.PlayerManager.players_links[parent.my_master]["Inst"].remove_child(anker)
 	get_parent().remove_child(self)
 	
 	pass

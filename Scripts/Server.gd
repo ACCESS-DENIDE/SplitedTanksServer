@@ -49,6 +49,8 @@ func _ini_map_unload():
 func _ini_block_change(name:String, type:int, new_name:String):
 	rpc("_changeBlock", name, type, new_name)
 
+func _update_locals_of_peer(id:int, data={}):
+	rpc_id(id, "_update_locals", data)
 
 @rpc("any_peer")
 func _PU_pressed():
@@ -87,6 +89,6 @@ func _client_despawn(name:String):
 @rpc("any_peer")
 func _target_req():
 	pass
-
+	pass
 
 

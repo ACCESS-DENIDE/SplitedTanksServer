@@ -24,12 +24,15 @@ func _add_player(peer_id:int):
 		new_tank.name="Player"+str(peer_id)
 		new_tank.Server=Server
 		new_tank.my_master=peer_id
+		new_tank.supercharge=true
 		CollisionContainer.add_child(new_tank)
 		active_players=0
 		for i in players_links.keys():
 			Server._id_ini_spawn(peer_id,active_players, str(i), players_links[i]["Inst"].position)
 			active_players+=1
 		for i in CollisionContainer.get_children():
+			if(i.name.contains("Crate")):
+				Server._id_ini_spawn(peer_id, i.type, i.name, i.position)
 			if(i.name.contains("Block")):
 				Server._id_ini_spawn(peer_id, i.type, i.name, i.position)
 			if(i.name.contains("Item")):
@@ -37,7 +40,14 @@ func _add_player(peer_id:int):
 		players_links[peer_id]={}
 		players_links[peer_id]["Team"]=active_players
 		players_links[peer_id]["Inst"]=new_tank
-		players_links[peer_id]["GT"]=1
+		match active_players:
+			0:
+				players_links[peer_id]["GT"]=1
+				pass
+			1:
+				players_links[peer_id]["GT"]=1
+				pass
+		
 		players_links[peer_id]["PU"]=-1
 		players_links[peer_id]["Name"]=""
 		players_links[peer_id]["Phase"]=0
@@ -45,5 +55,6 @@ func _add_player(peer_id:int):
 		new_tank.position=new_tank.respPos
 		Server._ini_spawn( active_players, str(peer_id), new_tank.respPos)
 		active_players+=1
+		Server._update_locals_of_peer(peer_id, {"Powerup":players_links[peer_id]["PU"]})
 		InputManager.delta_time[peer_id]=Time.get_ticks_msec()
 		

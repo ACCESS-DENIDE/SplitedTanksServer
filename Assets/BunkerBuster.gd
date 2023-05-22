@@ -16,6 +16,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	rotation_degrees=dir
+	print(SPEED*delta)
 	match dir:
 		0:
 			position.y-=SPEED*delta
@@ -42,6 +43,11 @@ func _process(delta):
 func _on_body_entered(body):
 	if (flg):
 		if(!(body.name==Parent)):
+			if(body.is_blocking_projectile):
+				Server.MapManager._call_replace(body.name, 0, "")
+			Server.MapManager._call_replace(self.name, 0, self.name)
+			Server._ini_spawn(26, ("Exp:"+name),position)
+			flg=false
 			if(body.is_damageble):
 				body.damage()
 			Server.MapManager._call_replace(self.name, 0, self.name)

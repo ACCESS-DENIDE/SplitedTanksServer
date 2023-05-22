@@ -17,6 +17,7 @@ func _ready():
 
 func _add_item(id:int):
 	Server.PlayerManager.players_links[my_master]["PU"]=id
+	Server._update_locals_of_peer(my_master, {"Powerup":id})
 
 func _use_item():
 	match Server.PlayerManager.players_links[my_master]["PU"]:
@@ -27,7 +28,11 @@ func _use_item():
 			_boost(Server.Constants.speedboost_time)
 			pass
 		20:
-			
+			var new_mine=preload("res://Assets/Mine.tscn").instantiate()
+			new_mine.Server=Server
+			new_mine.ally=self
+			new_mine.position=position
+			get_parent().add_child(new_mine)
 			pass
 		21:
 			supercharge=true
@@ -45,6 +50,7 @@ func _use_item():
 			Server.PlayerManager.players_links[my_master]["GT"]=3
 			pass
 	Server.PlayerManager.players_links[my_master]["PU"]=-1
+	Server._update_locals_of_peer(my_master, {"Powerup":-1})
 
 func damage():
 	if(!is_invincible):

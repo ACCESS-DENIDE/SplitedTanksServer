@@ -7,3 +7,6 @@ const artillery_speed=200
 const boost_power=2
 const invincible_time=5
 const speedboost_time=10
+const MinCrateSpawn=15
+const MaxCrateSpawn=30
+const CrateSpawnChance=30

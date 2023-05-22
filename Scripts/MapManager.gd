@@ -10,7 +10,7 @@ var bases={}
 var map={}
 
 func _loadMap(path:String):
-	path="res://Maps/IdTester.json"
+	path="res://Maps/CumCramer.json"
 	var program=FileAccess.open(path, FileAccess.READ)
 	var blocks=JSON.parse_string(program.get_as_text())
 	var root_cord=-(10*16*5)
@@ -20,6 +20,7 @@ func _loadMap(path:String):
 		var newBlock=preload("res://Assets/BlockCollision.tscn").instantiate()
 		newBlock.position.x=x
 		newBlock.position.y=y
+		
 		newBlock.name="Block"+str(x)+":"+str(y)
 		newBlock.Server=Server
 		newBlock._change_type(int(blocks[i]))
@@ -32,7 +33,8 @@ func _loadMap(path:String):
 
 func _spawn_item(id:int,pos:Vector2):
 	var new_item=preload("res://Assets/ItemCol.tscn").instantiate()
-	new_item.name="Item"+str(pos.x)+":"+str(pos.y)
+	
+	new_item.name="Item"+str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)
 	new_item.position=pos
 	new_item.Server=Server
 	map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_item
@@ -58,6 +60,10 @@ func _unload_map():
 	for i in CollisionContainer.get_children():
 		if(i.name.contains("Block")):
 			CollisionContainer.remove_child(i)
+		if(i.name.contains("Item")):
+			CollisionContainer.remove_child(i)
+		if(i.name.contains("Crate")):
+			CollisionContainer.remove_child(i)
 	pass
 
 func _hit_cords(x:int, y:int):
@@ -75,6 +81,17 @@ func _hit_cords(x:int, y:int):
 				if((abs(abs(i["Inst"].position.x)-(abs(root_cord+(x*16*5))))<8*5)&&(abs(abs(i["Inst"].position.y)-(abs(root_cord+(y*16*5))))<8*5)):
 					i["Inst"].damage()
 
+
+func _spawn_Block(name:String, type:int, x:int, y:int):
+	var root_cord=-(10*16*5)
+	var newb=preload("res://Assets/BlockCollision.tscn").instantiate()
+	newb.name=name
+	newb.Server=Server
+	newb._change_type(type)
+	newb.position=Vector2((x*16*5)+root_cord,(y*16*5)+root_cord )
+	map[str(x)+":"+str(y)]=newb
+	CollisionContainer.add_child(newb)
+	Server._ini_spawn(type, name, newb.position)
 
 func _call_replace(name:String, type:int, new_name:String):
 	for i in CollisionContainer.get_children():

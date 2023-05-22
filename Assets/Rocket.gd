@@ -49,6 +49,7 @@ func _on_body_entered(body):
 			get_parent().remove_child(self)
 			parent.SPEED=Server.Constants.tank_speed
 			Server._ini_spawn(26, ("Exp:"+name),position)
-			Server.PlayerManager.players_links[parent.my_master]["Phase"]=0
+			if(Server.PlayerManager.players_links.has(parent.my_master)):
+				Server.PlayerManager.players_links[parent.my_master]["Phase"]=0
 			flg=false
 	pass # Replace with function body.

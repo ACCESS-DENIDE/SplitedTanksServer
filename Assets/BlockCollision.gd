@@ -63,7 +63,55 @@ func damage():
 			Server.MapManager._call_replace(name, 0,"")
 			pass
 		12:
+			print(name)
 			Server.MapManager._call_replace(name, 0,"")
-			Server.MapManager._spawn_item(24, position)
+			var rng = RandomNumberGenerator.new()
+			randomize()
+			match rng.randi_range(0,2):
+				0:
+					randomize()
+					match rng.randi_range(0, 3):
+						0:
+							Server.MapManager._spawn_item(18, position)
+							pass
+						1:
+							Server.MapManager._spawn_item(19, position)
+							pass
+						2:
+							Server.MapManager._spawn_item(20, position)
+							pass
+						3:
+							Server.MapManager._spawn_item(21, position)
+							pass
+					pass
+				1:
+					randomize()
+					match rng.randi_range(0, 3):
+						0:
+							Server.MapManager._spawn_item(22, position)
+							pass
+						1:
+							Server.MapManager._spawn_item(23, position)
+							pass
+						2:
+							Server.MapManager._spawn_item(24, position)
+							pass
+						3:
+							Server.MapManager._spawn_item(25, position)
+							pass
+					pass
+				2:
+					randomize()
+					match rng.randi_range(0, 3):
+						0:
+							pass
+						1:
+							pass
+						2:
+							pass
+						3:
+							pass
+					pass
+			
 			pass
 
