@@ -8,6 +8,7 @@ var respPos:Vector2=Vector2(0,0)
 var dir=0
 var is_invincible:bool=false
 var supercharge:bool=false
+var block_amount={}
 
 @onready var ReviveTimer=$Revive
 # Called when the node enters the scene tree for the first time.
@@ -19,7 +20,7 @@ func _ready():
 
 func _add_item(id:int):
 	Server.PlayerManager.players_links[my_master]["PU"]=id
-	Server._update_locals_of_peer(my_master, {"Powerup":id})
+	Server._update_locals_of_peer(my_master, {"Powerup":id, "blocks":block_amount})
 
 func _use_item():
 	match Server.PlayerManager.players_links[my_master]["PU"]:

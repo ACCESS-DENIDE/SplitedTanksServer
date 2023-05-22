@@ -14,7 +14,7 @@ func _strike(x:int, y:int, striker_id:int):
 func _on_striker_timeout():
 	for i in range( -2, 3):
 		for g in range( -2, 3):
-			Server.MapManager._hit_cords(x_local+i, y_local+g)
+			Server.MapManager._hit_cords(x_local+i , y_local+g)
 	get_parent().remove_child(self)
 	queue_free()
 	pass # Replace with function body.
