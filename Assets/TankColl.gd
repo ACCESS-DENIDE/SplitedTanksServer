@@ -58,9 +58,9 @@ func damage():
 	if(!is_invincible):
 		dead=true
 		ReviveTimer.start()
-		Server._ini_spawn(17, ("Exp:"+name), position)
+		Server.MapManager._reliable_spawn(name ,17, position)
 		position.y=10000
-		Server._call_sync(str(my_master), position, rotation)
+		Server._call_sync(name, position, rotation)
 		Server.PlayerManager.players_links[my_master]["Inst"].SPEED=0
 	
 
@@ -78,7 +78,7 @@ func _on_revive_timeout():
 	_invincibilate(Server.Constants.spawn_invincible)
 	position=respPos
 	dead=false
-	Server._call_sync(str(my_master), position, rotation)
+	Server._call_sync(name, position, rotation)
 	Server.PlayerManager.players_links[my_master]["Inst"].SPEED=Server.Constants.tank_speed
 	pass # Replace with function body.
 

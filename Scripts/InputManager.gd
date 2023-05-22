@@ -12,7 +12,7 @@ var delta_time={}
 
 
 func _move_player(peer_id:int,dir:int):
-	
+	print(dir)
 	SPEED=PlayerManager.players_links[peer_id]["Inst"].SPEED
 	var vec:Vector2
 	vec.x=0
@@ -43,7 +43,7 @@ func _move_player(peer_id:int,dir:int):
 			PlayerManager.players_links[peer_id]["Inst"].velocity.x=move_toward(PlayerManager.players_links[peer_id]["Inst"].velocity.x, 0, SPEED)
 			PlayerManager.players_links[peer_id]["Inst"].velocity.y=move_toward(PlayerManager.players_links[peer_id]["Inst"].velocity.y, 0, SPEED)
 		PlayerManager.players_links[peer_id]["Inst"].move_and_slide()
-		Server._call_sync(str(peer_id), PlayerManager.players_links[peer_id]["Inst"].position, PlayerManager.players_links[peer_id]["Inst"].rotation)
+		Server._call_sync(PlayerManager.players_links[peer_id]["Inst"].name, PlayerManager.players_links[peer_id]["Inst"].position, PlayerManager.players_links[peer_id]["Inst"].rotation)
 		delta_time[peer_id]=Time.get_ticks_msec()
 
 func _shoot(id:int):
@@ -52,26 +52,16 @@ func _shoot(id:int):
 			match PlayerManager.players_links[id]["GT"]:
 				0:
 					if(PlayerManager.players_links[id]["Inst"].supercharge):
-						var bul=preload("res://Assets/BunkerBuster.tscn").instantiate()
-						bul.position=PlayerManager.players_links[id]["Inst"].position
+						var bul=Server.MapManager._reliable_spawn(str(id), 29,PlayerManager.players_links[id]["Inst"].position)
 						bul.dir=PlayerManager.players_links[id]["Inst"].rotation_degrees
 						bul.Parent=PlayerManager.players_links[id]["Inst"]
-						bul.Server=Server
-						bul.name="BB"+str(id)
-						CollisionContainer.add_child(bul)
-						Server._ini_spawn(29, bul.name, bul.position)
 						PlayerManager.players_links[id]["Inst"].supercharge=false
 						PlayerManager.players_links[id]["Phase"]=1
 						PlayerManager.players_links[id]["Inst"]._reload_based_gun()
 					else:
-						var bul=preload("res://Assets/Bulet.tscn").instantiate()
-						bul.position=PlayerManager.players_links[id]["Inst"].position
+						var bul=Server.MapManager._reliable_spawn(str(id), 13,PlayerManager.players_links[id]["Inst"].position)
 						bul.dir=PlayerManager.players_links[id]["Inst"].rotation_degrees
 						bul.Parent=PlayerManager.players_links[id]["Inst"]
-						bul.Server=Server
-						bul.name="bulet"+str(id)+str(Time.get_ticks_msec())
-						CollisionContainer.add_child(bul)
-						Server._ini_spawn(13, bul.name, bul.position)
 						PlayerManager.players_links[id]["Phase"]=1
 						PlayerManager.players_links[id]["Inst"]._reload_based_gun()
 				1:
@@ -81,13 +71,8 @@ func _shoot(id:int):
 						PlayerManager.players_links[id]["Inst"].supercharge=false
 						PlayerManager.players_links[id]["Phase"]=99
 					else:
-						var roc=preload("res://Assets/Rocket.tscn").instantiate()
-						roc.position=PlayerManager.players_links[id]["Inst"].position
+						var roc=Server.MapManager._reliable_spawn(str(id), 14,PlayerManager.players_links[id]["Inst"].position)
 						roc.parent=PlayerManager.players_links[id]["Inst"]
-						roc.Server=Server
-						roc.name="rocket"+str(id)+str(Time.get_ticks_msec())
-						add_child(roc)
-						Server._ini_spawn(14, roc.name, roc.position)
 						PlayerManager.players_links[id]["Inst"].SPEED=0
 						PlayerManager.players_links[id]["Phase"]=1
 					pass
@@ -100,16 +85,16 @@ func _shoot(id:int):
 						pass
 					else:
 						var lb=preload("res://Assets/PlasmaIgnitor.tscn").instantiate()
-						var ank=preload("res://Assets/PlasmaAnker.tscn").instantiate()
+						lb.Server=Server
+						lb.name="Ignitor!"+str(id)
+						Server.CollisionContainer.add_child(lb)
+						var ank=Server.MapManager._reliable_spawn(str(id), 27,Vector2(0,0))
+						CollisionContainer.remove_child(ank)
 						PlayerManager.players_links[id]["Inst"].add_child(ank)
 						ank.position.y-=10
 						lb.anker=ank
 						lb.parent=PlayerManager.players_links[id]["Inst"]
-						lb.Server=Server
-						lb.name="plasma"+str(id)
 						PlayerManager.players_links[id]["Inst"].SPEED=Server.Constants.tank_speed/2
-						add_child(lb)
-						Server._ini_spawn(27, "plasma"+str(id), PlayerManager.players_links[id]["Inst"].position)
 						PlayerManager.players_links[id]["Phase"]=2
 					pass
 				3:
@@ -120,17 +105,17 @@ func _shoot(id:int):
 						var my_random_number = rng.randf_range(0, Server.PlayerManager.active_players)
 						var victum=Server.PlayerManager.players_links[Server.PlayerManager.players_links.keys()[my_random_number]]
 						victum["Inst"].damage()
-						Server._ini_spawn(30, ("Mafia:"+name),Vector2(0,0))
+						Server.MapManager._reliable_spawn("Mafia"+str(id) ,30,Vector2(0,0))
 					else:
 						Server._rquest_target(id, _artillary_strike)
 						PlayerManager.players_links[id]["Inst"].SPEED=0
 						PlayerManager.players_links[id]["Phase"]=1
 					pass
 		else:
-			for i in get_children():
-				if(i.name.contains("plasma"+str(id))):
+			for i in Server.CollisionContainer.get_children():
+				if(i.name.contains("Ignitor!"+str(id))):
 					i._launc()
-				if(i.name.contains("rocket"+str(id))):
+				if(i.name.contains("Rocket!"+str(id))):
 					i._ignition()
 
 func _PU_Use(peer_id):
@@ -163,5 +148,5 @@ func _airStrike(x:int, y:int, striker_id:int):
 	for i in range(0, 22):
 		Server.MapManager._hit_cords(x, i)
 		Server.MapManager._hit_cords(i, y)
-		Server._ini_spawn(17, "AirStrike"+str(striker_id), Vector2(((i*80)+root_cord),(y*80)+root_cord) )
-		Server._ini_spawn(17, "AirStrike"+str(striker_id), Vector2(((x*80)+root_cord),(i*80)+root_cord) )
+		Server.MapManager._reliable_spawn( str(striker_id),17, Vector2(((i*80)+root_cord),(y*80)+root_cord) )
+		Server.MapManager._reliable_spawn( str(striker_id),17, Vector2(((x*80)+root_cord),(i*80)+root_cord) )

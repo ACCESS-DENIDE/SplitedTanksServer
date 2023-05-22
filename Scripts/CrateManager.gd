@@ -29,6 +29,7 @@ func _on_max_timeout():
 	_spawn()
 
 func _spawn():
+	var root_cord=-(10*16*5)
 	can_spawn=false
 	$Min.start()
 	$Max.start()
@@ -38,4 +39,4 @@ func _spawn():
 	var y = rng.randi_range(0, 21)
 	if(!(MapManager.map.keys().has(str(x)+":"+str(y)))):
 		MapManager._hit_cords(x, y)
-		MapManager._spawn_Block("Crate"+(str(x)+":"+str(y)), 12, x, y)
+		MapManager._reliable_spawn((str(x)+":"+str(y)), 12, Vector2((x*16*5)+root_cord, (y*16*5)+root_cord))

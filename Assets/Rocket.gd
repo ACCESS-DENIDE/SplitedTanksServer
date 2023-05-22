@@ -46,10 +46,8 @@ func _on_body_entered(body):
 			if(body.is_damageble):
 				body.damage()
 			Server.MapManager._call_replace(self.name, 0, self.name)
-			get_parent().remove_child(self)
-			queue_free()
 			parent.SPEED=Server.Constants.tank_speed
-			Server._ini_spawn(26, ("Exp:"+name),position)
+			Server.MapManager._reliable_spawn(name,26,position)
 			if(Server.PlayerManager.players_links.has(parent.my_master)):
 				Server.PlayerManager.players_links[parent.my_master]["Phase"]=0
 			flg=false

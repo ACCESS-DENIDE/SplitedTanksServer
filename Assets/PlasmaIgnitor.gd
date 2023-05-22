@@ -17,7 +17,7 @@ func _blast():
 	var rotator=0
 	while (fl && (len<21)):
 		if(Server.MapManager.map.keys().has(str(shift_x)+":"+str(shift_y))):
-			if (Server.MapManager.map[str(shift_x)+":"+str(shift_y)].is_blocking_projectile):
+			if (Server.MapManager.map[str(shift_x)+":"+str(shift_y)].is_blocking_projectile && !Server.MapManager.map[str(shift_x)+":"+str(shift_y)].is_damageble):
 				fl=false
 		len+=1
 		
@@ -44,7 +44,7 @@ func _blast():
 	for i in range (0, len):
 		if(i>0):
 			Server.MapManager._hit_cords(shift_x, shift_y)
-			Server._ini_spawn(15, ("Beam"+name),Vector2(shift_x*16*5-800, shift_y*16*5-800), rotator)
+			Server.MapManager._reliable_spawn(name, 15,Vector2(shift_x*16*5-800, shift_y*16*5-800), rotator)
 		match dir:
 			0:
 				
@@ -65,16 +65,16 @@ func _blast():
 	if(Server.PlayerManager.players_links.has(parent.my_master)):
 				Server.PlayerManager.players_links[parent.my_master]["Phase"]=0
 	Server.MapManager._call_replace(self.name, 0, self.name)
+	Server.MapManager._call_replace(anker.name, 0, self.name)
 	if(Server.PlayerManager.players_links.has(parent.my_master)):
 		Server.PlayerManager.players_links[parent.my_master]["Inst"].remove_child(anker)
 		anker.queue_free()
-	get_parent().remove_child(self)
-	queue_free()
+	
 	
 	pass
 
 func _process(delta):
-	Server._call_sync((name), anker.global_position, parent.rotation)
+	Server._call_sync((anker.name), anker.global_position, parent.rotation)
 
 func _on_ignition_timer_timeout():
 	Ignited=true

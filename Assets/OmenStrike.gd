@@ -8,7 +8,7 @@ func _strike(x:int, y:int, striker_id:int):
 	x_local=x
 	y_local=y
 	root_cord=-(10*16*5)
-	Server._ini_spawn(28, "Strike"+str(striker_id), Vector2(((x*80)+root_cord),(y*80)+root_cord) )
+	Server.MapManager._reliable_spawn(str(striker_id) , 28, Vector2(((x*80)+root_cord),(y*80)+root_cord) )
 
 
 func _on_striker_timeout():

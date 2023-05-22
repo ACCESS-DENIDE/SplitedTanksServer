@@ -16,7 +16,7 @@ func _on_body_entered(body):
 	if(body.is_damageble):
 		if(body!=ally):
 			body.damage()
-			Server._ini_spawn(17, ("Exp:"+name), position)
+			Server.MapManager._reliable_spawn(name,17, position)
 			get_parent().remove_child(self)
 			queue_free()
 	pass # Replace with function body.

@@ -21,12 +21,9 @@ func _remoe_player(peer_id:int):
 
 func _add_player(peer_id:int):
 	if(active_players<4):
-		var new_tank=preload("res://Assets/TankColl.tscn").instantiate()
-		new_tank.name="Player"+str(peer_id)
-		new_tank.Server=Server
+		var new_tank=Server.MapManager._reliable_spawn( str(peer_id),active_players, Vector2(0,0))
 		new_tank.my_master=peer_id
 		new_tank.supercharge=true
-		CollisionContainer.add_child(new_tank)
 		active_players=0
 		for i in players_links.keys():
 			Server._id_ini_spawn(peer_id,active_players, str(i), players_links[i]["Inst"].position)
@@ -43,7 +40,7 @@ func _add_player(peer_id:int):
 		players_links[peer_id]["Inst"]=new_tank
 		match active_players:
 			0:
-				players_links[peer_id]["GT"]=0
+				players_links[peer_id]["GT"]=2
 				pass
 			1:
 				players_links[peer_id]["GT"]=1
@@ -52,9 +49,8 @@ func _add_player(peer_id:int):
 		players_links[peer_id]["PU"]=-1
 		players_links[peer_id]["Name"]=""
 		players_links[peer_id]["Phase"]=0
-		MapManager._asign_base()
+		#MapManager._asign_base()
 		new_tank.position=new_tank.respPos
-		Server._ini_spawn( active_players, str(peer_id), new_tank.respPos)
 		active_players+=1
 		Server._update_locals_of_peer(peer_id, {"Powerup":players_links[peer_id]["PU"]})
 		InputManager.delta_time[peer_id]=Time.get_ticks_msec()

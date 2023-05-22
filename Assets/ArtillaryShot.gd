@@ -25,7 +25,7 @@ func _calculate_strike():
 		Server.PlayerManager.players_links[striker_id]["Inst"].SPEED=Server.Constants.tank_speed
 
 func _on_striker_timeout():
-	Server._ini_spawn(17, ("Exp:"+name),Vector2(root_cord+x_cont*16*5, root_cord+y_cont*16*5))
+	Server.MapManager._reliable_spawn(name ,17,Vector2(root_cord+x_cont*16*5, root_cord+y_cont*16*5))
 	Server.MapManager._hit_cords(x_cont, y_cont)
 	if(Server.PlayerManager.players_links.has(striker_id)):
 		Server.PlayerManager.players_links[striker_id]["Phase"]=0

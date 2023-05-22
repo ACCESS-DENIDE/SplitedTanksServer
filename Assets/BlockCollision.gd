@@ -72,32 +72,32 @@ func damage():
 					randomize()
 					match rng.randi_range(0, 3):
 						0:
-							Server.MapManager._spawn_item(18, position)
+							Server.MapManager._reliable_spawn( str(position.x/80)+":"+str(position.y/80), 18, position)
 							pass
 						1:
-							Server.MapManager._spawn_item(19, position)
+							Server.MapManager._reliable_spawn( str(position.x/80)+":"+str(position.y/80), 19, position)
 							pass
 						2:
-							Server.MapManager._spawn_item(20, position)
+							Server.MapManager._reliable_spawn( str(position.x/80)+":"+str(position.y/80), 20, position)
 							pass
 						3:
-							Server.MapManager._spawn_item(21, position)
+							Server.MapManager._reliable_spawn( str(position.x/80)+":"+str(position.y/80), 21, position)
 							pass
 					pass
 				1:
 					randomize()
 					match rng.randi_range(0, 3):
 						0:
-							Server.MapManager._spawn_item(22, position)
+							Server.MapManager._reliable_spawn( str(position.x/80)+":"+str(position.y/80), 22, position)
 							pass
 						1:
-							Server.MapManager._spawn_item(23, position)
+							Server.MapManager._reliable_spawn( str(position.x/80)+":"+str(position.y/80), 23, position)
 							pass
 						2:
-							Server.MapManager._spawn_item(24, position)
+							Server.MapManager._reliable_spawn( str(position.x/80)+":"+str(position.y/80), 24, position)
 							pass
 						3:
-							Server.MapManager._spawn_item(25, position)
+							Server.MapManager._reliable_spawn( str(position.x/80)+":"+str(position.y/80), 25, position)
 							pass
 					pass
 				2:

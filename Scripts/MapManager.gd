@@ -6,6 +6,7 @@ extends Node
 @onready var MapManager=$"."
 @onready var PlayerManager=$"../PlayerManager"
 
+var salt=0
 var bases={}
 var map={}
 
@@ -17,31 +18,19 @@ func _loadMap(path:String):
 	for i in blocks.keys():
 		var x=root_cord+(int(i.split(":")[0])*16*5)
 		var y=root_cord+(int(i.split(":")[1])*16*5)
-		var newBlock=preload("res://Assets/BlockCollision.tscn").instantiate()
-		newBlock.position.x=x
-		newBlock.position.y=y
-		
-		newBlock.name="Block"+str(x)+":"+str(y)
-		newBlock.Server=Server
-		newBlock._change_type(int(blocks[i]))
-		map[i]=newBlock
-		if(int(blocks[i])==11):
-			bases[bases.size()]=newBlock
-		CollisionContainer.add_child(newBlock)
-		Server._ini_spawn(int(blocks[i]), newBlock.name,newBlock.position)
+		Server.MapManager._reliable_spawn(str(x)+"!"+str(y) ,int(blocks[i]),Vector2(x, y))
 
 
 func _spawn_item(id:int,pos:Vector2):
-	var new_item=preload("res://Assets/ItemCol.tscn").instantiate()
-	
-	new_item.name="Item"+str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)
-	new_item.position=pos
-	new_item.Server=Server
-	map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_item
-	print(str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10))
-	CollisionContainer.add_child(new_item)
-	new_item.id=id
-	Server._ini_spawn(id,new_item.name, pos)
+	#var new_item=preload("res://Assets/ItemCol.tscn").instantiate()
+	#new_item.name="Item"+str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)
+	#new_item.position=pos
+	#new_item.Server=Server
+	#map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_item
+	#CollisionContainer.add_child(new_item)
+	#new_item.id=id
+	#Server._ini_spawn(id,new_item.name, pos)
+	pass
 
 
 func _asign_base():
@@ -84,22 +73,189 @@ func _hit_cords(x:int, y:int):
 				if((abs(abs(i["Inst"].position.x)-(abs(root_cord+(x*16*5))))<8*5)&&(abs(abs(i["Inst"].position.y)-(abs(root_cord+(y*16*5))))<8*5)):
 					i["Inst"].damage()
 
-func _reliable_spawn(id:int, pos:Vector2, rot:float=0):
+func _reliable_spawn(static_name:String,id:int, pos:Vector2, rot:float=0)->Node:
+	var new_spawn=null
+	var name
 	match id:
 		0:
+			new_spawn=preload("res://Assets/TankColl.tscn").instantiate()	
+			name="Tank!"+static_name+"!"+str(salt)
 			pass
+		1:
+			new_spawn=preload("res://Assets/TankColl.tscn").instantiate()
+			name="Tank!"+static_name+"!"+str(salt)
+			pass
+		2:
+			new_spawn=preload("res://Assets/TankColl.tscn").instantiate()
+			name="Tank!"+static_name+"!"+str(salt)
+			pass
+		3:
+			new_spawn=preload("res://Assets/TankColl.tscn").instantiate()
+			name="Tank!"+static_name+"!"+str(salt)
+			pass
+		4:
+			new_spawn=preload("res://Assets/BlockCollision.tscn").instantiate()
+			name="Block!"+static_name+"!"+str(salt)
+			new_spawn._change_type(id)
+			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			pass
+		5:
+			new_spawn=preload("res://Assets/BlockCollision.tscn").instantiate()
+			name="Block!"+static_name+"!"+str(salt)
+			new_spawn._change_type(id)
+			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			pass
+		6:
+			new_spawn=preload("res://Assets/BlockCollision.tscn").instantiate()
+			name="Block!"+static_name+"!"+str(salt)
+			new_spawn._change_type(id)
+			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			pass
+		7:
+			new_spawn=preload("res://Assets/BlockCollision.tscn").instantiate()
+			name="Block!"+static_name+"!"+str(salt)
+			new_spawn._change_type(id)
+			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			pass
+		8:
+			new_spawn=preload("res://Assets/BlockCollision.tscn").instantiate()
+			name="Block!"+static_name+"!"+str(salt)
+			new_spawn._change_type(id)
+			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			pass
+		9:
+			new_spawn=preload("res://Assets/BlockCollision.tscn").instantiate()
+			name="Block!"+static_name+"!"+str(salt)
+			new_spawn._change_type(id)
+			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			pass
+		10:
+			new_spawn=preload("res://Assets/BlockCollision.tscn").instantiate()
+			name="Block!"+static_name+"!"+str(salt)
+			new_spawn._change_type(id)
+			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			pass
+		11:
+			new_spawn=preload("res://Assets/BlockCollision.tscn").instantiate()
+			name="Block!"+static_name+"!"+str(salt)
+			new_spawn._change_type(id)
+			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			pass
+		12:
+			new_spawn=preload("res://Assets/BlockCollision.tscn").instantiate()
+			name="Block!"+static_name+"!"+str(salt)
+			new_spawn._change_type(id)
+			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			pass
+		13:
+			new_spawn=preload("res://Assets/Bulet.tscn").instantiate()
+			name="Bulet!"+static_name+"!"+str(salt)
+			pass
+		14:
+			new_spawn=preload("res://Assets/Rocket.tscn").instantiate()
+			name="Rocket!"+static_name+"!"+str(salt)
+			
+			pass
+		15:
+			name="Laser!"+static_name+"!"+str(salt)
+			pass
+		16:
+			name="Artillary!"+static_name+"!"+str(salt)
+			pass
+		17:
+			name="Explode!"+static_name+"!"+str(salt)
+			pass
+		18:
+			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
+			name="Item!"+static_name+"!"+str(salt)
+			new_spawn.id=id
+			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			pass
+		19:
+			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
+			name="Item!"+static_name+"!"+str(salt)
+			new_spawn.id=id
+			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			pass
+		20:
+			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
+			name="Item!"+static_name+"!"+str(salt)
+			new_spawn.id=id
+			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			pass
+		21:
+			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
+			name="Item!"+static_name+"!"+str(salt)
+			new_spawn.id=id
+			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			pass
+		22:
+			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
+			name="Item!"+static_name+"!"+str(salt)
+			new_spawn.id=id
+			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			pass
+		23:
+			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
+			name="Item!"+static_name+"!"+str(salt)
+			new_spawn.id=id
+			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			pass
+		24:
+			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
+			name="Item!"+static_name+"!"+str(salt)
+			new_spawn.id=id
+			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			pass
+		25:
+			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
+			name="Item!"+static_name+"!"+str(salt)
+			new_spawn.id=id
+			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			pass
+		26:
+			name="MiniBoom!"+static_name+"!"+str(salt)
+			pass
+		27:
+			new_spawn=preload("res://Assets/PlasmaAnker.tscn").instantiate()
+			name="Anker!"+static_name+"!"+str(salt)
+			
+			pass
+		28:
+			
+			name="Omen!"+static_name+"!"+str(salt)
+			pass
+		29:
+			new_spawn=preload("res://Assets/BunkerBuster.tscn").instantiate()
+			name="BB!"+static_name+"!"+str(salt)
+			pass
+		30:
+			name="Mafia!"+static_name+"!"+str(salt)
+			pass
+		31:
+			pass
+	if(new_spawn!=null):
+		new_spawn.Server=Server
+		new_spawn.name=name
+		new_spawn.position=pos
+		new_spawn.rotation=rot
+		CollisionContainer.add_child(new_spawn)
+	Server._ini_spawn(id,name, pos, rot)
+	salt+=1
+	return new_spawn
 
 
 func _spawn_Block(name:String, type:int, x:int, y:int):
-	var root_cord=-(10*16*5)
-	var newb=preload("res://Assets/BlockCollision.tscn").instantiate()
-	newb.name=name
-	newb.Server=Server
-	newb._change_type(type)
-	newb.position=Vector2((x*16*5)+root_cord,(y*16*5)+root_cord )
-	map[str(x)+":"+str(y)]=newb
-	CollisionContainer.add_child(newb)
-	Server._ini_spawn(type, name, newb.position)
+	#var root_cord=-(10*16*5)
+	#var newb=preload("res://Assets/BlockCollision.tscn").instantiate()
+	#newb.name=name
+	#newb.Server=Server
+	#newb._change_type(type)
+	#newb.position=Vector2((x*16*5)+root_cord,(y*16*5)+root_cord )
+	#map[str(x)+":"+str(y)]=newb
+	#CollisionContainer.add_child(newb)
+	#Server._ini_spawn(type, name, newb.position)
+	pass
 
 func _call_replace(name:String, type:int, new_name:String):
 	for i in CollisionContainer.get_children():
