@@ -1,7 +1,8 @@
 extends Area2D
 
-var ally
+var parent:int
 var Server
+var flg=true
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -13,10 +14,21 @@ func _process(delta):
 
 
 func _on_body_entered(body):
-	if(body.is_damageble):
-		if(body!=ally):
-			body.damage()
-			Server.MapManager._reliable_spawn(name,17, position)
-			get_parent().remove_child(self)
-			queue_free()
+	if (flg):
+		if(Server.PlayerManager.players_links.keys().has(parent)):
+			if(!(body==Server.PlayerManager.players_links[parent]["Inst"])):
+				if(body.is_damageble):
+					body.damage()
+					Server.MapManager._reliable_spawn(name,17, position)
+					get_parent().remove_child(self)
+					queue_free()
+					flg=false
+		else:
+			if(body.is_damageble):
+					body.damage()
+					Server.MapManager._reliable_spawn(name,17, position)
+					get_parent().remove_child(self)
+					queue_free()
+					flg=false
+			
 	pass # Replace with function body.

@@ -1,5 +1,5 @@
 extends Area2D
-var parent:Node
+var parent:int
 var SPEED
 var Server
 var flg=true
@@ -12,7 +12,8 @@ func _ready():
 func _process(delta):
 	
 	if(!ignited):
-		my_dir=parent.dir
+		if(Server.PlayerManager.players_links.keys().has(parent)):
+			my_dir=Server.PlayerManager.players_links[parent]["Inst"].dir
 	
 	match my_dir:
 		0:
@@ -38,17 +39,24 @@ func _ignition():
 	if(!ignited):
 		SPEED=SPEED*2
 		ignited=true
-		parent.SPEED=Server.Constants.tank_speed
+		if(Server.PlayerManager.players_links.keys().has(parent)):
+			Server.PlayerManager.players_links[parent]["Inst"].SPEED=Server.Constants.tank_speed
 
 func _on_body_entered(body):
 	if (flg):
-		if(!(body==parent)):
+		if(Server.PlayerManager.players_links.keys().has(parent)):
+			if(!(body==Server.PlayerManager.players_links[parent]["Inst"])):
+				if(body.is_damageble):
+					body.damage()
+				Server.MapManager._call_replace(self.name, 0, self.name)
+				Server.PlayerManager.players_links[parent]["Inst"].SPEED=Server.Constants.tank_speed
+				Server.MapManager._reliable_spawn(name,26,position)
+				Server.PlayerManager.players_links[parent]["Phase"]=0
+				flg=false
+		else:
 			if(body.is_damageble):
 				body.damage()
 			Server.MapManager._call_replace(self.name, 0, self.name)
-			parent.SPEED=Server.Constants.tank_speed
 			Server.MapManager._reliable_spawn(name,26,position)
-			if(Server.PlayerManager.players_links.has(parent.my_master)):
-				Server.PlayerManager.players_links[parent.my_master]["Phase"]=0
 			flg=false
 	pass # Replace with function body.

@@ -12,9 +12,10 @@ var players_links={}
 func _remoe_player(peer_id:int):
 	if( players_links.keys().has(peer_id)):
 			active_players-=1
+			MapManager.bases.push_back(players_links[peer_id]["Inst"].base)
+			Server._ini_despawn(players_links[peer_id]["Inst"].name)
 			CollisionContainer.remove_child(players_links[peer_id]["Inst"])
 			players_links[peer_id]["Inst"].queue_free()
-			Server._ini_despawn(str(peer_id))
 			players_links.erase(peer_id)
 			#MapManager._asign_base()
 			InputManager.delta_time.erase(peer_id)
@@ -23,7 +24,7 @@ func _add_player(peer_id:int):
 	if(active_players<4):
 		var new_tank=Server.MapManager._reliable_spawn( str(peer_id),active_players, Vector2(0,0))
 		new_tank.my_master=peer_id
-		#new_tank.supercharge=true
+		new_tank.supercharge=true
 		active_players=0
 		for i in players_links.keys():
 			Server._id_ini_spawn(peer_id,active_players, players_links[i]["Inst"].name, players_links[i]["Inst"].position)
@@ -40,7 +41,7 @@ func _add_player(peer_id:int):
 		players_links[peer_id]["Inst"]=new_tank
 		match active_players:
 			0:
-				players_links[peer_id]["GT"]=0
+				players_links[peer_id]["GT"]=1
 				pass
 			1:
 				players_links[peer_id]["GT"]=0
@@ -49,9 +50,11 @@ func _add_player(peer_id:int):
 		players_links[peer_id]["PU"]=-1
 		players_links[peer_id]["Name"]=""
 		players_links[peer_id]["Phase"]=0
+		players_links[peer_id]["Blocks"]={"Brick"=1, "Concreete"=1, "Bush"=1, "Water"=1, "Field"=1}
 		MapManager._asign_base(new_tank)
 		new_tank.position=new_tank.respPos
+		Server._call_sync(players_links[peer_id]["Inst"].name, players_links[peer_id]["Inst"].position, players_links[peer_id]["Inst"].rotation)
 		active_players+=1
-		Server._update_locals_of_peer(peer_id, {"Powerup":players_links[peer_id]["PU"]})
+		Server._update_locals_of_peer(peer_id, {"Powerup":players_links[peer_id]["PU"], "Blocks":players_links[peer_id]["Blocks"]})
 		InputManager.delta_time[peer_id]=Time.get_ticks_msec()
 		

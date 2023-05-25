@@ -27,9 +27,9 @@ func _ready():
 func _on_network_connected(peer_id:int):
 	PlayerManager._add_player(peer_id)
 
-func _rquest_target(peer:int, callback:Callable):
+func _rquest_target(peer:int, callback:Callable, need_meta:bool=false):
 	target_wait[peer]=callback
-	rpc_id(peer, "_target_req")
+	rpc_id(peer, "_target_req", need_meta)
 
 func _on_network_disconnected(peer_id:int):
 	PlayerManager._remoe_player(peer_id)
@@ -51,7 +51,9 @@ func _ini_block_change(name:String, type:int, new_name:String):
 
 func _update_locals_of_peer(id:int, data={}):
 	rpc_id(id, "_update_locals", data)
-
+@rpc("any_peer")
+func _build_pressed():
+	InputManager._build(multiplayer.get_remote_sender_id())
 @rpc("any_peer")
 func _PU_pressed():
 	InputManager._PU_Use(multiplayer.get_remote_sender_id())
@@ -69,8 +71,11 @@ func _setName(name:String):
 func _call_sync(name:String, pos:Vector2, rot:float):
 	rpc("_sync", name, pos, rot)
 @rpc("any_peer")
-func _target_send(x:int, y:int):
-	target_wait[multiplayer.get_remote_sender_id()].call(x, y, multiplayer.get_remote_sender_id())
+func _target_send(x:int, y:int, meta:int=-1):
+	if (meta==-1):
+		target_wait[multiplayer.get_remote_sender_id()].call(x, y, multiplayer.get_remote_sender_id())
+	else:
+		target_wait[multiplayer.get_remote_sender_id()].call(x, y, multiplayer.get_remote_sender_id(), meta)
 @rpc("any_peer","unreliable")
 func _sync(name:String, pos:Vector2, rot:float):
 	pass
@@ -87,7 +92,7 @@ func _client_spawn(id:int, name:String, pos:Vector2, rot:float=0.0):
 func _client_despawn(name:String):
 	pass
 @rpc("any_peer")
-func _target_req():
+func _target_req(need_meta:bool):
 	pass
 @rpc("any_peer")
 func _update_locals(data={}):

@@ -8,7 +8,6 @@ var respPos:Vector2=Vector2(0,0)
 var dir=0
 var is_invincible:bool=false
 var supercharge:bool=false
-var block_amount={}
 var base:Node
 
 @onready var ReviveTimer=$Revive
@@ -21,7 +20,7 @@ func _ready():
 
 func _add_item(id:int):
 	Server.PlayerManager.players_links[my_master]["PU"]=id
-	Server._update_locals_of_peer(my_master, {"Powerup":id, "blocks":block_amount})
+	Server._update_locals_of_peer(my_master, {"Powerup":id, "Blocks":Server.PlayerManager.players_links[my_master]["Blocks"]})
 
 func _asign_base(base_in:Node):
 	base=base_in
@@ -57,8 +56,13 @@ func _use_item():
 		25:
 			Server.PlayerManager.players_links[my_master]["GT"]=3
 			pass
+		31:
+			var rng = RandomNumberGenerator.new()
+			randomize()
+			Server.PlayerManager.players_links[my_master]["Blocks"][Server.PlayerManager.players_links[my_master]["Blocks"].keys()[rng.randi_range(0, 4)]]+=1
+			pass
 	Server.PlayerManager.players_links[my_master]["PU"]=-1
-	Server._update_locals_of_peer(my_master, {"Powerup":-1})
+	Server._update_locals_of_peer(my_master, {"Powerup":-1, "Blocks":Server.PlayerManager.players_links[my_master]["Blocks"]})
 
 func damage():
 	if(!is_invincible):

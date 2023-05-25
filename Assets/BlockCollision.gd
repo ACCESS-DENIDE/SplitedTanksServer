@@ -101,9 +101,11 @@ func damage():
 							pass
 					pass
 				2:
+					Server.MapManager._reliable_spawn( str(position.x/80)+":"+str(position.y/80), 31, position)
 					randomize()
 					match rng.randi_range(0, 3):
 						0:
+							
 							pass
 						1:
 							pass

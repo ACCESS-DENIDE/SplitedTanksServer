@@ -53,14 +53,14 @@ func _shoot(id:int):
 					if(PlayerManager.players_links[id]["Inst"].supercharge):
 						var bul=Server.MapManager._reliable_spawn(str(id), 29,PlayerManager.players_links[id]["Inst"].position)
 						bul.dir=PlayerManager.players_links[id]["Inst"].rotation_degrees
-						bul.Parent=PlayerManager.players_links[id]["Inst"]
+						bul.parent=id
 						PlayerManager.players_links[id]["Inst"].supercharge=false
 						PlayerManager.players_links[id]["Phase"]=1
 						PlayerManager.players_links[id]["Inst"]._reload_based_gun()
 					else:
 						var bul=Server.MapManager._reliable_spawn(str(id), 13,PlayerManager.players_links[id]["Inst"].position)
 						bul.dir=PlayerManager.players_links[id]["Inst"].rotation_degrees
-						bul.Parent=PlayerManager.players_links[id]["Inst"]
+						bul.parent=id
 						PlayerManager.players_links[id]["Phase"]=1
 						PlayerManager.players_links[id]["Inst"]._reload_based_gun()
 				1:
@@ -71,7 +71,8 @@ func _shoot(id:int):
 						PlayerManager.players_links[id]["Phase"]=99
 					else:
 						var roc=Server.MapManager._reliable_spawn(str(id), 14,PlayerManager.players_links[id]["Inst"].position)
-						roc.parent=PlayerManager.players_links[id]["Inst"]
+						roc.parent=id
+						roc.my_dir=PlayerManager.players_links[id]["Inst"].dir
 						PlayerManager.players_links[id]["Inst"].SPEED=0
 						PlayerManager.players_links[id]["Phase"]=1
 					pass
@@ -92,7 +93,7 @@ func _shoot(id:int):
 						PlayerManager.players_links[id]["Inst"].add_child(ank)
 						ank.position.y-=10
 						lb.anker=ank
-						lb.parent=PlayerManager.players_links[id]["Inst"]
+						lb.parent=id
 						PlayerManager.players_links[id]["Inst"].SPEED=Server.Constants.tank_speed/2
 						PlayerManager.players_links[id]["Phase"]=2
 					pass
@@ -119,6 +120,47 @@ func _shoot(id:int):
 
 func _PU_Use(peer_id):
 	PlayerManager.players_links[peer_id]["Inst"]._use_item()
+
+func _build(peer_id):
+	PlayerManager.players_links[peer_id]["Inst"].SPEED=0
+	PlayerManager.players_links[peer_id]["Phase"]=2
+	Server._rquest_target(peer_id, _set_block, true)
+
+
+func _set_block(x, y, peer_id, meta):
+	match meta:
+		0:
+			if (PlayerManager.players_links[peer_id]["Blocks"]["Brick"]>0):
+				if(!MapManager.map.keys().has(str(x)+":"+str(y))):
+					PlayerManager.players_links[peer_id]["Blocks"]["Brick"]-=1
+					MapManager._reliable_spawn(str(x)+"!"+str(y), 8, Vector2(((x*80)+root_cord),(y*80)+root_cord))
+			pass
+		1:
+			if (PlayerManager.players_links[peer_id]["Blocks"]["Concreete"]>0):
+				if(!MapManager.map.keys().has(str(x)+":"+str(y))):
+					PlayerManager.players_links[peer_id]["Blocks"]["Concreete"]-=1
+					MapManager._reliable_spawn(str(x)+"!"+str(y), 4, Vector2(((x*80)+root_cord),(y*80)+root_cord))
+			pass
+		2:
+			if (PlayerManager.players_links[peer_id]["Blocks"]["Bush"]>0):
+				if(!MapManager.map.keys().has(str(x)+":"+str(y))):
+					PlayerManager.players_links[peer_id]["Blocks"]["Bush"]-=1
+					MapManager._reliable_spawn(str(x)+"!"+str(y), 7, Vector2(((x*80)+root_cord),(y*80)+root_cord))
+			pass
+		3:
+			if (PlayerManager.players_links[peer_id]["Blocks"]["Water"]>0):
+				if(!MapManager.map.keys().has(str(x)+":"+str(y))):
+					PlayerManager.players_links[peer_id]["Blocks"]["Water"]-=1
+					MapManager._reliable_spawn(str(x)+"!"+str(y), 5, Vector2(((x*80)+root_cord),(y*80)+root_cord))
+			pass
+		4:
+			if (PlayerManager.players_links[peer_id]["Blocks"]["Field"]>0):
+				if(!MapManager.map.keys().has(str(x)+":"+str(y))):
+					PlayerManager.players_links[peer_id]["Blocks"]["Field"]-=1
+					MapManager._reliable_spawn(str(x)+"!"+str(y), 6, Vector2(((x*80)+root_cord),(y*80)+root_cord))
+			pass
+	Server._update_locals_of_peer(peer_id, {"Powerup":Server.PlayerManager.players_links[peer_id]["PU"], "Blocks":Server.PlayerManager.players_links[peer_id]["Blocks"]})
+	pass
 
 var root_cord=-(10*16*5)
 var x_cont:int

@@ -42,7 +42,7 @@ func _asign_base(player:Node):
 		randomize()
 		var val=rng.randi_range(0, bases.size()-1)
 		player._asign_base(bases[val])
-		bases.erase(val)
+		bases.erase(bases[val])
 
 func _unload_map():
 	Server._ini_map_unload()
@@ -234,6 +234,10 @@ func _reliable_spawn(static_name:String,id:int, pos:Vector2, rot:float=0)->Node:
 			name="Mafia!"+static_name+"!"+str(salt)
 			pass
 		31:
+			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
+			name="Item!"+static_name+"!"+str(salt)
+			new_spawn.id=id
+			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
 			pass
 	if(new_spawn!=null):
 		new_spawn.Server=Server
