@@ -12,7 +12,6 @@ var delta_time={}
 
 
 func _move_player(peer_id:int,dir:int):
-	print(dir)
 	SPEED=PlayerManager.players_links[peer_id]["Inst"].SPEED
 	var vec:Vector2
 	vec.x=0

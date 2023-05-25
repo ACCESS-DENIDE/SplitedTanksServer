@@ -7,7 +7,7 @@ extends Node
 @onready var PlayerManager=$"../PlayerManager"
 
 var salt=0
-var bases={}
+var bases=[]
 var map={}
 
 func _loadMap(path:String):
@@ -18,7 +18,10 @@ func _loadMap(path:String):
 	for i in blocks.keys():
 		var x=root_cord+(int(i.split(":")[0])*16*5)
 		var y=root_cord+(int(i.split(":")[1])*16*5)
-		Server.MapManager._reliable_spawn(str(x)+"!"+str(y) ,int(blocks[i]),Vector2(x, y))
+		if(blocks[i]==11):
+			bases.push_back(Server.MapManager._reliable_spawn(str(x)+"!"+str(y) ,int(blocks[i]),Vector2(x, y)))
+		else:
+			Server.MapManager._reliable_spawn(str(x)+"!"+str(y) ,int(blocks[i]),Vector2(x, y))
 
 
 func _spawn_item(id:int,pos:Vector2):
@@ -33,15 +36,13 @@ func _spawn_item(id:int,pos:Vector2):
 	pass
 
 
-func _asign_base():
-	for i in PlayerManager.players_links.values():
-		i["Inst"].respPos=Vector2(0,0)
-	for i in range(0,3):
-		var rsppos
-		if(bases.size()>i):
-			rsppos=bases[i].position
-			if(PlayerManager.players_links.size()>i):
-				PlayerManager.players_links[PlayerManager.players_links.keys()[i]]["Inst"].respPos=rsppos
+func _asign_base(player:Node):
+	if(bases.size()!=0):
+		var rng = RandomNumberGenerator.new()
+		randomize()
+		var val=rng.randi_range(0, bases.size()-1)
+		player._asign_base(bases[val])
+		bases.erase(val)
 
 func _unload_map():
 	Server._ini_map_unload()
