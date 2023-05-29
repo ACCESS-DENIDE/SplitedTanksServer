@@ -7,18 +7,19 @@ var SPEED
 @onready var InputManager=$"."
 @onready var MapManager=$"../MapManager"
 @onready var PlayerManager=$"../PlayerManager"
-var delta_time={}
 
 
 
-func _move_player(peer_id:int,dir:int):
+
+func _move_player(peer_id:int,direct:int):
 	SPEED=PlayerManager.players_links[peer_id]["Inst"].SPEED
 	var vec:Vector2
 	vec.x=0
 	vec.y=0
-	PlayerManager.players_links[peer_id]["Inst"].dir=dir
+	if(direct!=-1):
+		PlayerManager.players_links[peer_id]["Inst"].dir=direct
 	if(!(PlayerManager.players_links[peer_id]["Inst"].SPEED==0)):
-		match dir:
+		match direct:
 			0:
 				vec.y=-1
 				PlayerManager.players_links[peer_id]["Inst"].rotation_degrees=0
@@ -35,15 +36,16 @@ func _move_player(peer_id:int,dir:int):
 				vec.x=-1
 				PlayerManager.players_links[peer_id]["Inst"].rotation_degrees=-90
 				pass
-		if (vec):
+		if (vec.length()!=0):
 			PlayerManager.players_links[peer_id]["Inst"].velocity.x=vec.x*SPEED
 			PlayerManager.players_links[peer_id]["Inst"].velocity.y=vec.y*SPEED
+			Server._set_states(PlayerManager.players_links[peer_id]["Inst"].name, 0)
 		else:
 			PlayerManager.players_links[peer_id]["Inst"].velocity.x=move_toward(PlayerManager.players_links[peer_id]["Inst"].velocity.x, 0, SPEED)
 			PlayerManager.players_links[peer_id]["Inst"].velocity.y=move_toward(PlayerManager.players_links[peer_id]["Inst"].velocity.y, 0, SPEED)
+			Server._set_states(PlayerManager.players_links[peer_id]["Inst"].name, 1)
 		PlayerManager.players_links[peer_id]["Inst"].move_and_slide()
 		Server._call_sync(PlayerManager.players_links[peer_id]["Inst"].name, PlayerManager.players_links[peer_id]["Inst"].position, PlayerManager.players_links[peer_id]["Inst"].rotation)
-		delta_time[peer_id]=Time.get_ticks_msec()
 
 func _shoot(id:int):
 	if(!(PlayerManager.players_links[id]["Inst"].dead)):
@@ -104,7 +106,7 @@ func _shoot(id:int):
 						PlayerManager.players_links[id]["Inst"].supercharge=false
 						var my_random_number = rng.randf_range(0, Server.PlayerManager.active_players)
 						var victum=Server.PlayerManager.players_links[Server.PlayerManager.players_links.keys()[my_random_number]]
-						victum["Inst"].damage()
+						victum["Inst"].damage(id)
 						Server.MapManager._reliable_spawn("Mafia"+str(id) ,30,Vector2(0,0))
 					else:
 						Server._rquest_target(id, _artillary_strike)
@@ -159,6 +161,8 @@ func _set_block(x, y, peer_id, meta):
 					PlayerManager.players_links[peer_id]["Blocks"]["Field"]-=1
 					MapManager._reliable_spawn(str(x)+"!"+str(y), 6, Vector2(((x*80)+root_cord),(y*80)+root_cord))
 			pass
+	PlayerManager.players_links[peer_id]["Inst"].SPEED=Server.Constants.tank_speed
+	PlayerManager.players_links[peer_id]["Phase"]=0
 	Server._update_locals_of_peer(peer_id, {"Powerup":Server.PlayerManager.players_links[peer_id]["PU"], "Blocks":Server.PlayerManager.players_links[peer_id]["Blocks"]})
 	pass
 
@@ -187,7 +191,7 @@ func _airStrike(x:int, y:int, striker_id:int):
 	PlayerManager.players_links[striker_id]["Phase"]=0
 	Server.PlayerManager.players_links[striker_id]["Inst"].SPEED=Server.Constants.tank_speed
 	for i in range(0, 22):
-		Server.MapManager._hit_cords(x, i)
-		Server.MapManager._hit_cords(i, y)
+		Server.MapManager._hit_cords(x, i, striker_id)
+		Server.MapManager._hit_cords(i, y, striker_id)
 		Server.MapManager._reliable_spawn( str(striker_id),17, Vector2(((i*80)+root_cord),(y*80)+root_cord) )
 		Server.MapManager._reliable_spawn( str(striker_id),17, Vector2(((x*80)+root_cord),(i*80)+root_cord) )

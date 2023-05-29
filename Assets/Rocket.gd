@@ -47,16 +47,18 @@ func _on_body_entered(body):
 		if(Server.PlayerManager.players_links.keys().has(parent)):
 			if(!(body==Server.PlayerManager.players_links[parent]["Inst"])):
 				if(body.is_damageble):
-					body.damage()
-				Server.MapManager._call_replace(self.name, 0, self.name)
+					body.damage(parent)
+			
 				Server.PlayerManager.players_links[parent]["Inst"].SPEED=Server.Constants.tank_speed
 				Server.MapManager._reliable_spawn(name,26,position)
 				Server.PlayerManager.players_links[parent]["Phase"]=0
 				flg=false
+				Server.MapManager._call_replace(self.name, 0, self.name)
 		else:
 			if(body.is_damageble):
-				body.damage()
-			Server.MapManager._call_replace(self.name, 0, self.name)
+				body.damage(-1)
+			
 			Server.MapManager._reliable_spawn(name,26,position)
 			flg=false
+			Server.MapManager._call_replace(self.name, 0, self.name)
 	pass # Replace with function body.

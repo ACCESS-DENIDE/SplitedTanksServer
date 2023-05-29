@@ -38,5 +38,5 @@ func _spawn():
 	randomize()
 	var y = rng.randi_range(0, 21)
 	if(!(MapManager.map.keys().has(str(x)+":"+str(y)))):
-		MapManager._hit_cords(x, y)
+		MapManager._hit_cords(x, y, -1)
 		MapManager._reliable_spawn((str(x)+":"+str(y)), 12, Vector2((x*16*5)+root_cord, (y*16*5)+root_cord))

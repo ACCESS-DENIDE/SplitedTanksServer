@@ -5,8 +5,7 @@ var id:int
 var is_damageble=true
 var is_blocking_projectile=false
 
-func damage():
-	get_parent().remove_child(self)
+func damage(killer:int):
 	Server.MapManager._call_replace(self.name, 0, self.name)
 	
 	pass

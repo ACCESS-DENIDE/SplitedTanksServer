@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://lw40yit84mbb"]
+
+[ext_resource type="Script" path="res://Assets/Trap.gd" id="1_iko37"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3f5ps"]
+
+[node name="Trap" type="Area2D"]
+scale = Vector2(2, 2)
+script = ExtResource("1_iko37")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_3f5ps")
+
+[node name="HoldTime" type="Timer" parent="."]
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="HoldTime" to="." method="_on_hold_time_timeout"]

@@ -51,7 +51,7 @@ func _change_type(type_inp:int):
 			collision_layer=3
 			pass
 
-func damage():
+func damage(killer:int):
 	match  type:
 		8:
 			Server.MapManager._call_replace(name, 9,name)
@@ -63,56 +63,25 @@ func damage():
 			Server.MapManager._call_replace(name, 0,"")
 			pass
 		12:
-			print(name)
 			Server.MapManager._call_replace(name, 0,"")
 			var rng = RandomNumberGenerator.new()
 			randomize()
 			match rng.randi_range(0,2):
 				0:
 					randomize()
-					match rng.randi_range(0, 3):
-						0:
-							Server.MapManager._reliable_spawn( str(position.x/80)+":"+str(position.y/80), 18, position)
-							pass
-						1:
-							Server.MapManager._reliable_spawn( str(position.x/80)+":"+str(position.y/80), 19, position)
-							pass
-						2:
-							Server.MapManager._reliable_spawn( str(position.x/80)+":"+str(position.y/80), 20, position)
-							pass
-						3:
-							Server.MapManager._reliable_spawn( str(position.x/80)+":"+str(position.y/80), 21, position)
-							pass
+					var ri=rng.randi_range(0, 15)
+					if(ri<4):
+						Server.MapManager._reliable_spawn( str(position.x/80)+":"+str(position.y/80), ri+18, position)
+					else:
+						Server.MapManager._reliable_spawn( str(position.x/80)+":"+str(position.y/80), ri+28, position)
+						
 					pass
 				1:
 					randomize()
-					match rng.randi_range(0, 3):
-						0:
-							Server.MapManager._reliable_spawn( str(position.x/80)+":"+str(position.y/80), 22, position)
-							pass
-						1:
-							Server.MapManager._reliable_spawn( str(position.x/80)+":"+str(position.y/80), 23, position)
-							pass
-						2:
-							Server.MapManager._reliable_spawn( str(position.x/80)+":"+str(position.y/80), 24, position)
-							pass
-						3:
-							Server.MapManager._reliable_spawn( str(position.x/80)+":"+str(position.y/80), 25, position)
-							pass
+					Server.MapManager._reliable_spawn( str(position.x/80)+":"+str(position.y/80), rng.randi_range(0, 3)+22, position)
 					pass
 				2:
 					Server.MapManager._reliable_spawn( str(position.x/80)+":"+str(position.y/80), 31, position)
-					randomize()
-					match rng.randi_range(0, 3):
-						0:
-							
-							pass
-						1:
-							pass
-						2:
-							pass
-						3:
-							pass
 					pass
 			
 			pass

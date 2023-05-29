@@ -59,20 +59,21 @@ func _unload_map():
 			i.queue_free()
 	pass
 
-func _hit_cords(x:int, y:int):
+func _hit_cords(x:int, y:int, striker_id:int):
 	var root_cord=-(10*16*5)
 	if(map.keys().has(str(x)+":"+str(y))):
 		if(map[str(x)+":"+str(y)].is_damageble):
-			map[str(x)+":"+str(y)].damage()
+			map[str(x)+":"+str(y)].damage(striker_id)
 		elif (!(map[str(x)+":"+str(y)].is_blocking_projectile)):
 			for i in PlayerManager.players_links.values():
-				if((abs(abs(i["Inst"].position.x)-(abs(root_cord+(x*16*5))))<8*5)&&(abs(abs(i["Inst"].position.y)-(abs(root_cord+(y*16*5))))<8*5)):
-					i["Inst"].damage()
+				if(i["Inst"]!=null):
+					if((abs((i["Inst"].position.x)-((root_cord+(x*16*5))))<8*5)&&(abs((i["Inst"].position.y)-((root_cord+(y*16*5))))<8*5)):
+						i["Inst"].damage(striker_id)
 	else:
 			for i in PlayerManager.players_links.values():
-				
-				if((abs(abs(i["Inst"].position.x)-(abs(root_cord+(x*16*5))))<8*5)&&(abs(abs(i["Inst"].position.y)-(abs(root_cord+(y*16*5))))<8*5)):
-					i["Inst"].damage()
+				if(i["Inst"]!=null):
+					if((abs((i["Inst"].position.x)-((root_cord+(x*16*5))))<8*5)&&(abs((i["Inst"].position.y)-((root_cord+(y*16*5))))<8*5)):
+						i["Inst"].damage(striker_id)
 
 func _reliable_spawn(static_name:String,id:int, pos:Vector2, rot:float=0)->Node:
 	var new_spawn=null
@@ -239,6 +240,82 @@ func _reliable_spawn(static_name:String,id:int, pos:Vector2, rot:float=0)->Node:
 			new_spawn.id=id
 			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
 			pass
+		32:
+			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
+			name="Item!"+static_name+"!"+str(salt)
+			new_spawn.id=id
+			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			pass
+		33:
+			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
+			name="Item!"+static_name+"!"+str(salt)
+			new_spawn.id=id
+			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			pass
+		34:
+			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
+			name="Item!"+static_name+"!"+str(salt)
+			new_spawn.id=id
+			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			pass
+		35:
+			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
+			name="Item!"+static_name+"!"+str(salt)
+			new_spawn.id=id
+			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			pass
+		36:
+			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
+			name="Item!"+static_name+"!"+str(salt)
+			new_spawn.id=id
+			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			pass
+		37:
+			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
+			name="Item!"+static_name+"!"+str(salt)
+			new_spawn.id=id
+			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			pass
+		38:
+			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
+			name="Item!"+static_name+"!"+str(salt)
+			new_spawn.id=id
+			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			pass
+		39:
+			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
+			name="Item!"+static_name+"!"+str(salt)
+			new_spawn.id=id
+			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			pass
+		40:
+			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
+			name="Item!"+static_name+"!"+str(salt)
+			new_spawn.id=id
+			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			pass
+		41:
+			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
+			name="Item!"+static_name+"!"+str(salt)
+			new_spawn.id=id
+			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			pass
+		42:
+			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
+			name="Item!"+static_name+"!"+str(salt)
+			new_spawn.id=id
+			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			pass
+		43:
+			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
+			name="Item!"+static_name+"!"+str(salt)
+			new_spawn.id=id
+			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			pass
+		45:
+			new_spawn=preload("res://Assets/Fazbear.tscn").instantiate()
+			name="Item!"+static_name+"!"+str(salt)
+			pass
 	if(new_spawn!=null):
 		new_spawn.Server=Server
 		new_spawn.name=name
@@ -268,6 +345,7 @@ func _call_replace(name:String, type:int, new_name:String):
 			if(type!=0):
 				i._change_type(type)
 			else:
+				print(str(i.position.x/(16*5)+10)+":"+str(i.position.y/(16*5)+10))
 				map.erase(str(i.position.x/(16*5)+10)+":"+str(i.position.y/(16*5)+10))
 				CollisionContainer.remove_child(i)
 				i.queue_free()

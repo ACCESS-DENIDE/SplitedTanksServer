@@ -9,6 +9,8 @@ var dir=0
 var is_invincible:bool=false
 var supercharge:bool=false
 var base:Node
+var noU:bool=false
+var JewMode:bool=false
 
 @onready var ReviveTimer=$Revive
 # Called when the node enters the scene tree for the first time.
@@ -37,7 +39,7 @@ func _use_item():
 		20:
 			var new_mine=preload("res://Assets/Mine.tscn").instantiate()
 			new_mine.Server=Server
-			new_mine.ally=self
+			new_mine.parent=my_master
 			new_mine.position=position
 			get_parent().add_child(new_mine)
 			pass
@@ -61,20 +63,78 @@ func _use_item():
 			randomize()
 			Server.PlayerManager.players_links[my_master]["Blocks"][Server.PlayerManager.players_links[my_master]["Blocks"].keys()[rng.randi_range(0, 4)]]+=1
 			pass
+		32:
+			
+			pass
+		33:
+			var new_trap=preload("res://Assets/Trap.tscn").instantiate()
+			new_trap.Server=Server
+			new_trap.parent=my_master
+			new_trap.position=position
+			get_parent().add_child(new_trap)
+			pass
+		34:
+			Server._rquest_target(my_master, _teleport)
+			Server.PlayerManager.players_links[my_master]["Phase"]=10
+			pass
+		35:
+			
+			pass
+		36:
+			noU=true
+			pass
+		37:
+			
+			pass
+		38:
+			JewMode=true
+			pass
+		39:
+			
+			pass
+		40:
+			
+			pass
+		41:
+			
+			pass
+		42:
+			var FF=Server.MapManager._reliable_spawn( str(position.x/80)+":"+str(position.y/80), 45, Vector2(0,0))
+			FF.target=my_master
+			pass
+		43:
+			
+			pass
+			
 	Server.PlayerManager.players_links[my_master]["PU"]=-1
 	Server._update_locals_of_peer(my_master, {"Powerup":-1, "Blocks":Server.PlayerManager.players_links[my_master]["Blocks"]})
 
-func damage():
+func damage(killer:int):
 	if(!is_invincible):
-		dead=true
-		ReviveTimer.start()
-		Server.MapManager._reliable_spawn(name ,17, position)
-		position.y=10000
-		Server._call_sync(name, position, rotation)
-		Server.PlayerManager.players_links[my_master]["Inst"].SPEED=0
+		if(!noU):
+			dead=true
+			ReviveTimer.start()
+			Server.MapManager._reliable_spawn(name ,17, position)
+			position.y=10000
+			Server._call_sync(name, position, rotation)
+			Server.PlayerManager.players_links[my_master]["Inst"].SPEED=0
+			if(Server.PlayerManager.players_links.has(killer)):
+				if(killer!=my_master):
+					Server.PlayerManager.players_links[killer]["Score"]+=Server.Constants.kill_score
+					
+					if (Server.PlayerManager.players_links[killer]["Inst"].JewMode):
+						Server.PlayerManager.players_links[killer]["Score"]+=int(Server.PlayerManager.players_links[my_master]["Score"]/2)
+						Server.PlayerManager.players_links[my_master]["Score"]-=int(Server.PlayerManager.players_links[my_master]["Score"]/2)
+						Server.PlayerManager.players_links[killer]["Inst"].JewMode=false
+					Server.PlayerManager._update_scores()
+		else:
+			if(killer!=-1):
+				Server.PlayerManager.players_links[killer]["Inst"].damage(my_master)
+			noU=false
 	
 
 func _invincibilate(time:float):
+	Server._set_states(name, 2)
 	is_invincible=true
 	$Invincible.wait_time=time
 	$Invincible.start()
@@ -95,6 +155,7 @@ func _on_revive_timeout():
 
 func _on_invincible_timeout():
 	is_invincible=false
+	Server._set_states(name, 3)
 	pass # Replace with function body.
 
 
@@ -108,3 +169,13 @@ func _reload_based_gun():
 func _on_base_reload_timeout():
 	Server.PlayerManager.players_links[my_master]["Phase"]=0
 	pass # Replace with function body.
+
+
+@warning_ignore("unused_parameter")
+func _teleport(x, y, sender_id):
+	var root_cord=-(10*16*5)
+	_reload_based_gun()
+	if(!Server.MapManager.map.has(str(x)+":"+str(y))):
+		position.x=(root_cord+(x*16*5))
+		position.y=(root_cord+(y*16*5))
+		Server._call_sync(name, position, rotation)

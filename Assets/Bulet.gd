@@ -33,8 +33,9 @@ func _process(delta):
 			position.x-=SPEED*delta
 			pass
 	if(position.length()>kill_dist):
-		Server.MapManager._call_replace(self.name, 0, self.name)
+		
 		flg=false
+		Server.MapManager._call_replace(self.name, 0, self.name)
 	Server._call_sync(name, position, rotation)
 	pass
 
@@ -44,14 +45,16 @@ func _on_body_entered(body):
 		if(Server.PlayerManager.players_links.keys().has(parent)):
 			if(!(body==Server.PlayerManager.players_links[parent]["Inst"])):
 				if(body.is_damageble):
-					body.damage()
-				Server.MapManager._call_replace(self.name, 0, self.name)
+					body.damage(parent)
+				
 				Server.MapManager._reliable_spawn(name,26,position)
 				flg=false
+				Server.MapManager._call_replace(self.name, 0, self.name)
 		else:
 			if(body.is_damageble):
-				body.damage()
-			Server.MapManager._call_replace(self.name, 0, self.name)
+				body.damage(-1)
+			
 			Server.MapManager._reliable_spawn(name,26,position)
 			flg=false
+			Server.MapManager._call_replace(self.name, 0, self.name)
 	pass # Replace with function body.

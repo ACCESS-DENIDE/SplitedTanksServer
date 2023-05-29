@@ -5,6 +5,8 @@ extends Node
 @onready var MapManager=$MapManager
 @onready var PlayerManager=$PlayerManager
 @onready var Constants=$Constants
+@onready var NavMap=$NavigationRegion2D
+
 
 var target_wait={}
 
@@ -23,6 +25,8 @@ func _ready():
 	MapManager._loadMap("Cock")
 
 
+func _set_states(peer_name:String, state:int):
+	rpc("_get_state", peer_name, state)
 
 func _on_network_connected(peer_id:int):
 	PlayerManager._add_player(peer_id)
@@ -68,6 +72,7 @@ func _call_move(dir:int):
 @rpc("any_peer")
 func _setName(name:String):
 	PlayerManager.players_links[multiplayer.get_remote_sender_id()]["Name"]=name
+	PlayerManager._update_scores()
 func _call_sync(name:String, pos:Vector2, rot:float):
 	rpc("_sync", name, pos, rot)
 @rpc("any_peer")
@@ -98,4 +103,6 @@ func _target_req(need_meta:bool):
 func _update_locals(data={}):
 	pass
 
-
+@rpc("any_peer")
+func _get_state(peer_name:String, state:int):
+	pass

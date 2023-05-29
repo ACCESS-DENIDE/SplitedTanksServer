@@ -16,7 +16,6 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	rotation_degrees=dir
-	print(SPEED*delta)
 	match dir:
 		0:
 			position.y-=SPEED*delta
@@ -34,8 +33,9 @@ func _process(delta):
 			position.x-=SPEED*delta
 			pass
 	if(position.length()>kill_dist):
-		Server.MapManager._call_replace(self.name, 0, self.name)
+		
 		flg=false
+		Server.MapManager._call_replace(self.name, 0, self.name)
 	Server._call_sync(name, position, rotation)
 	pass
 
@@ -45,15 +45,29 @@ func _on_body_entered(body):
 		if(Server.PlayerManager.players_links.keys().has(parent)):
 			if(!(body==Server.PlayerManager.players_links[parent]["Inst"])):
 				if(body.is_damageble):
-					body.damage()
-				Server.MapManager._call_replace(self.name, 0, self.name)
-				Server.MapManager._reliable_spawn(name,26,position)
-				flg=false
+					body.damage(parent)
+					flg=false
+					Server.MapManager._call_replace(body.name, 0, "")
+					Server.MapManager._reliable_spawn(name,26,position)
+					Server.MapManager._call_replace(self.name, 0, self.name)
+				else:
+					if(body.is_blocking_projectile):
+						flg=false
+						Server.MapManager._call_replace(body.name, 0, "")
+						Server.MapManager._reliable_spawn(name,26,position)
+						Server.MapManager._call_replace(self.name, 0, self.name)
 		else:
 			if(body.is_damageble):
-				body.damage()
-			Server.MapManager._call_replace(self.name, 0, self.name)
-			Server.MapManager._reliable_spawn(name,26,position)
-			flg=false
+					body.damage(-1)
+					flg=false
+					Server.MapManager._call_replace(body.name, 0, "")
+					Server.MapManager._reliable_spawn(name,26,position)
+					Server.MapManager._call_replace(self.name, 0, self.name)
+			else:
+				if(body.is_blocking_projectile):
+						flg=false
+						Server.MapManager(body.name, 0, "")
+						Server.MapManager._reliable_spawn(name,26,position)
+						Server.MapManager._call_replace(self.name, 0, self.name)
 	pass # Replace with function body.
 

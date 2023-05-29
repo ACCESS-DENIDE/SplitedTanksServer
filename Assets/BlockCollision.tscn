@@ -11,3 +11,5 @@ script = ExtResource("1_mv7xj")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_k1ixn")
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="."]

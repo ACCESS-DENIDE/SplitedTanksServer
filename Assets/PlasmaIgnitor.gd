@@ -44,7 +44,7 @@ func _blast():
 			Server.PlayerManager.players_links[parent]["Inst"].SPEED=Server.Constants.tank_speed
 		for i in range (0, len):
 			if(i>0):
-				Server.MapManager._hit_cords(shift_x, shift_y)
+				Server.MapManager._hit_cords(shift_x, shift_y, parent)
 				Server.MapManager._reliable_spawn(name, 15,Vector2(shift_x*16*5-800, shift_y*16*5-800), rotator)
 			match dir:
 				0:
@@ -64,7 +64,7 @@ func _blast():
 					shift_x+=1
 					pass
 		if(Server.PlayerManager.players_links.has(parent)):
-					Server.PlayerManager.players_links[parent]["Phase"]=0
+					Server.PlayerManager.players_links[parent]["Inst"]._reload_based_gun()
 					Server.PlayerManager.players_links[parent]["Inst"].remove_child(anker)
 					anker.queue_free()
 		Server.MapManager._call_replace(self.name, 0, self.name)
@@ -77,7 +77,8 @@ func _blast():
 	pass
 
 func _process(delta):
-	Server._call_sync((anker.name), anker.global_position, Server.PlayerManager.players_links[parent]["Inst"].rotation)
+	if(Server.PlayerManager.players_links.has(parent)):
+		Server._call_sync((anker.name), anker.global_position, Server.PlayerManager.players_links[parent]["Inst"].rotation)
 
 func _on_ignition_timer_timeout():
 	Ignited=true
