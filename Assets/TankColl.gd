@@ -12,6 +12,11 @@ var base:Node
 var noU:bool=false
 var JewMode:bool=false
 
+func _process(delta):
+	var tar_x=floor((position.x-40)/80.0)+11
+	var tar_y=floor((position.y-40)/80.0)+11
+	print (Vector2(tar_x, tar_y))
+
 @onready var ReviveTimer=$Revive
 # Called when the node enters the scene tree for the first time.
 func _ready():

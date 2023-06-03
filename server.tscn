@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cnwy84chc1ifc"]
+[gd_scene load_steps=8 format=3 uid="uid://cnwy84chc1ifc"]
 
 [ext_resource type="Script" path="res://Scripts/Server.gd" id="1_x42tc"]
 [ext_resource type="Script" path="res://Scripts/InputManager.gd" id="2_jk2gt"]
@@ -7,11 +7,6 @@
 [ext_resource type="Script" path="res://Scripts/PlayerManager.gd" id="5_bs4at"]
 [ext_resource type="Script" path="res://Scripts/Constants.gd" id="6_oim2x"]
 [ext_resource type="Script" path="res://Scripts/CrateManager.gd" id="7_j0m5u"]
-
-[sub_resource type="NavigationPolygon" id="NavigationPolygon_m18nb"]
-vertices = PackedVector2Array(-1166, 998, -1374, -1071, 1846, -1063, 1525, 979)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(1525, 979, 1846, -1063, -1374, -1071, -1166, 998)])
 
 [node name="Server" type="Node"]
 script = ExtResource("1_x42tc")
@@ -43,9 +38,6 @@ one_shot = true
 autostart = true
 
 [node name="ScoreManager" type="Node" parent="."]
-
-[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
-navigation_polygon = SubResource("NavigationPolygon_m18nb")
 
 [connection signal="timeout" from="CrateManager/Min" to="CrateManager" method="_on_min_timeout"]
 [connection signal="timeout" from="CrateManager/Max" to="CrateManager" method="_on_max_timeout"]
