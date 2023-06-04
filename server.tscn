@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cnwy84chc1ifc"]
+[gd_scene load_steps=9 format=3 uid="uid://cnwy84chc1ifc"]
 
 [ext_resource type="Script" path="res://Scripts/Server.gd" id="1_x42tc"]
 [ext_resource type="Script" path="res://Scripts/InputManager.gd" id="2_jk2gt"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://Scripts/PlayerManager.gd" id="5_bs4at"]
 [ext_resource type="Script" path="res://Scripts/Constants.gd" id="6_oim2x"]
 [ext_resource type="Script" path="res://Scripts/CrateManager.gd" id="7_j0m5u"]
+[ext_resource type="Script" path="res://Scripts/GameModeManager.gd" id="8_m0vfh"]
 
 [node name="Server" type="Node"]
 script = ExtResource("1_x42tc")
@@ -37,7 +38,22 @@ autostart = true
 one_shot = true
 autostart = true
 
-[node name="ScoreManager" type="Node" parent="."]
+[node name="GameModeManager" type="Node" parent="."]
+script = ExtResource("8_m0vfh")
+
+[node name="GameModeEnd" type="Timer" parent="GameModeManager"]
+one_shot = true
+
+[node name="BetwenGameMode" type="Timer" parent="GameModeManager"]
+one_shot = true
+
+[node name="Min" type="Timer" parent="GameModeManager"]
+one_shot = true
+autostart = true
+
+[node name="Max" type="Timer" parent="GameModeManager"]
+one_shot = true
+autostart = true
 
 [connection signal="timeout" from="CrateManager/Min" to="CrateManager" method="_on_min_timeout"]
 [connection signal="timeout" from="CrateManager/Max" to="CrateManager" method="_on_max_timeout"]

@@ -314,7 +314,35 @@ func _reliable_spawn(static_name:String,id:int, pos:Vector2, rot:float=0)->Node:
 			pass
 		45:
 			new_spawn=preload("res://Assets/Fazbear.tscn").instantiate()
-			name="Item!"+static_name+"!"+str(salt)
+			name="Fazber!"+static_name+"!"+str(salt)
+			pass
+		46:
+			new_spawn=preload("res://Assets/point.tscn").instantiate()
+			name="Poin!"+static_name+"!"+str(salt)
+			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			new_spawn.team=0
+			pass
+		47:
+			new_spawn=preload("res://Assets/point.tscn").instantiate()
+			name="Poin!"+static_name+"!"+str(salt)
+			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			new_spawn.team=1
+			pass
+		48:
+			new_spawn=preload("res://Assets/point.tscn").instantiate()
+			name="Poin!"+static_name+"!"+str(salt)
+			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			new_spawn.team=2
+			pass
+		49:
+			new_spawn=preload("res://Assets/point.tscn").instantiate()
+			name="Poin!"+static_name+"!"+str(salt)
+			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			pass
+		50:
+			new_spawn=preload("res://Assets/point.tscn").instantiate()
+			name="Poin!"+static_name+"!"+str(salt)
+			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
 			pass
 	if(new_spawn!=null):
 		new_spawn.Server=Server

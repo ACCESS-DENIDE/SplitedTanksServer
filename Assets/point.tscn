@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://bx44c5v2npcb7"]
+
+[ext_resource type="Script" path="res://Assets/point.gd" id="1_a7asu"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_cecgr"]
+radius = 8.0
+
+[node name="Point" type="Area2D"]
+scale = Vector2(5, 5)
+script = ExtResource("1_a7asu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_cecgr")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

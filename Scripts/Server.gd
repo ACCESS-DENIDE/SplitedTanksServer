@@ -7,11 +7,12 @@ extends Node
 @onready var Constants=$Constants
 
 
+
 var target_wait={}
 
 func _ready():
 	var peer = ENetMultiplayerPeer.new()
-	peer.create_server(25565)
+	peer.create_server(Constants.server_port)
 	print("creating server")
 	if peer.get_connection_status() == MultiplayerPeer.CONNECTION_DISCONNECTED:
 		OS.alert("Failed to start multiplayer server.")

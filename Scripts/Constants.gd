@@ -1,5 +1,24 @@
 extends Node
 
+const server_port=25565
+const max_players=4
+#Only four player models, so it will reuse them
+
+const round_time_sec=120
+const betwen_round_sec=30
+
+const flagDepositScore=500
+const StarPickupScore=200
+const HohlyonokKillScore=1000
+const FlagPerSecScore=100
+const BossDamageScore=100
+
+const BossSpeed=100
+
+const MinStarSpawn=5
+const MaxStarSpawn=10
+const StarSpawnChance=100
+
 const tank_speed=200
 
 const bulet_speed=300

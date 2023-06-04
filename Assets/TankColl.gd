@@ -8,10 +8,12 @@ var respPos:Vector2=Vector2(0,0)
 var dir=0
 var is_invincible:bool=false
 var supercharge:bool=false
-var base:Node
+var base:Node=null
 var noU:bool=false
 var JewMode:bool=false
 var x4Mode:bool=false
+var hasFlag=false
+var flag_inst=null
 
 @onready var ReviveTimer=$Revive
 # Called when the node enters the scene tree for the first time.
@@ -131,6 +133,13 @@ func _use_item():
 func damage(killer:int):
 	if(!is_invincible):
 		if(!noU):
+			if (flag_inst!=null):
+				hasFlag=false
+				remove_child(flag_inst)
+				Server._call_sync(flag_inst.name, flag_inst.global_position, flag_inst.rotation)
+				get_parent().add_child(flag_inst)
+				flag_inst.is_picked=false
+			flag_inst=null
 			dead=true
 			ReviveTimer.start()
 			Server.MapManager._reliable_spawn(name ,17, position)
@@ -228,3 +237,24 @@ func _on_invicible_timeout():
 
 func _on_x_4_mode_time_timeout():
 	x4Mode=false
+
+func _pick_flag(ptr:Node)->bool:
+	if(hasFlag):
+		return false
+	else:
+		hasFlag=true
+		flag_inst=ptr
+		return true
+
+func _verify_flag_depos():
+	
+	if((respPos-position).length()<10):
+		flag_inst._return()
+		hasFlag=false
+		remove_child(flag_inst)
+		get_parent().add_child(flag_inst)
+		flag_inst.is_picked=false
+		flag_inst=null
+		Server.PlayerManager.players_links[my_master]["Score"]+=Server.Constants.flagDepositScore
+	else:
+		Server._call_sync(flag_inst.name, flag_inst.global_position, flag_inst.rotation)
