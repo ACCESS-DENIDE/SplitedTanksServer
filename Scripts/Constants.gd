@@ -4,10 +4,11 @@ const server_port=25565
 const max_players=4
 #Only four player models, so it will reuse them
 
-const round_time_sec=120
+const round_time_sec=30
 const betwen_round_sec=30
 
 const flagDepositScore=500
+const NeutralflagDepositScore=250
 const StarPickupScore=200
 const HohlyonokKillScore=1000
 const FlagPerSecScore=100

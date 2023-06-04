@@ -46,7 +46,7 @@ func _move_player(peer_id:int,direct:int):
 			Server._set_states(PlayerManager.players_links[peer_id]["Inst"].name, 1)
 		PlayerManager.players_links[peer_id]["Inst"].move_and_slide()
 		Server._call_sync(PlayerManager.players_links[peer_id]["Inst"].name, PlayerManager.players_links[peer_id]["Inst"].position, PlayerManager.players_links[peer_id]["Inst"].rotation)
-		if(PlayerManager.players_links[peer_id]["Inst"].hasFlag):
+		if(PlayerManager.players_links[peer_id]["Inst"].hasFlag==true):
 			PlayerManager.players_links[peer_id]["Inst"]._verify_flag_depos()
 			
 

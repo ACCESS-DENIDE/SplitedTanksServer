@@ -13,7 +13,7 @@ var players_links={}
 
 func _remoe_player(peer_id:int):
 	if( players_links.keys().has(peer_id)):
-			GMmanager._removePoint(peer_id)
+			GMmanager._remove_player(peer_id)
 			_free_team(players_links[peer_id]["Team"])
 			active_players-=1
 			MapManager.bases.push_back(players_links[peer_id]["Inst"].base)
@@ -21,7 +21,7 @@ func _remoe_player(peer_id:int):
 			MapManager._call_replace(players_links[peer_id]["Inst"].name, 0, "")
 			players_links.erase(peer_id)
 			_update_scores()
-			$"../GameModeManager"._point_snitcher()
+			$"../GameModeManager"._one_point()
 			#MapManager._asign_base()
 
 var teams=[false, false, false,false]

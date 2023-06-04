@@ -118,3 +118,4 @@ func _get_state(peer_name:String, state:int):
 @rpc("any_peer")
 func _set_player_visib(name:String, switch:bool):
 	pass
+
