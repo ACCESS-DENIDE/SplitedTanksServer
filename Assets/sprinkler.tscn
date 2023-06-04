@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://c7l118rjt1avc"]
+
+[ext_resource type="Script" path="res://Assets/Sprinkler.gd" id="1_nl3xa"]
+
+[node name="Sprinkler" type="Node2D"]
+script = ExtResource("1_nl3xa")
+
+[node name="between" type="Timer" parent="."]
+autostart = true
+
+[connection signal="timeout" from="between" to="." method="_on_between_timeout"]

@@ -5,7 +5,6 @@ extends Node
 @onready var MapManager=$MapManager
 @onready var PlayerManager=$PlayerManager
 @onready var Constants=$Constants
-@onready var NavMap=$NavigationRegion2D
 
 
 var target_wait={}
@@ -24,6 +23,15 @@ func _ready():
 	print("server created")
 	MapManager._loadMap("Cock")
 
+func _invicibilate_player(player_id:int):
+	for i in PlayerManager.players_links.keys():
+		if(i!=player_id):
+			rpc_id(i, "_set_player_visib", PlayerManager.players_links[player_id]["Inst"].name, false)
+
+func _visibilate_player(player_id:int):
+	for i in PlayerManager.players_links.keys():
+		if(i!=player_id):
+			rpc_id(i, "_set_player_visib", PlayerManager.players_links[player_id]["Inst"].name, true)
 
 func _set_states(peer_name:String, state:int):
 	rpc("_get_state", peer_name, state)
@@ -105,4 +113,7 @@ func _update_locals(data={}):
 
 @rpc("any_peer")
 func _get_state(peer_name:String, state:int):
+	pass
+@rpc("any_peer")
+func _set_player_visib(name:String, switch:bool):
 	pass

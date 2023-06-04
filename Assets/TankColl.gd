@@ -11,11 +11,7 @@ var supercharge:bool=false
 var base:Node
 var noU:bool=false
 var JewMode:bool=false
-
-func _process(delta):
-	var tar_x=floor((position.x-40)/80.0)+11
-	var tar_y=floor((position.y-40)/80.0)+11
-	print (Vector2(tar_x, tar_y))
+var x4Mode:bool=false
 
 @onready var ReviveTimer=$Revive
 # Called when the node enters the scene tree for the first time.
@@ -23,15 +19,15 @@ func _ready():
 	SPEED=Server.Constants.tank_speed
 	$Revive.wait_time=Server.Constants.respawn_time
 	$BaseReload.wait_time=Server.Constants.bulet_reload
-	pass # Replace with function body.
 
 func _add_item(id:int):
 	Server.PlayerManager.players_links[my_master]["PU"]=id
 	Server._update_locals_of_peer(my_master, {"Powerup":id, "Blocks":Server.PlayerManager.players_links[my_master]["Blocks"]})
 
 func _asign_base(base_in:Node):
-	base=base_in
-	respPos=base.position
+	if(base_in!=null):
+		base=base_in
+		respPos=base.position
 
 func _use_item():
 	match Server.PlayerManager.players_links[my_master]["PU"]:
@@ -39,7 +35,7 @@ func _use_item():
 			_invincibilate(Server.Constants.invincible_time)
 			pass
 		19:
-			_boost(Server.Constants.speedboost_time)
+			_boost(Server.Constants.speedboost_time, Server.Constants.boost_power)
 			pass
 		20:
 			var new_mine=preload("res://Assets/Mine.tscn").instantiate()
@@ -69,7 +65,11 @@ func _use_item():
 			Server.PlayerManager.players_links[my_master]["Blocks"][Server.PlayerManager.players_links[my_master]["Blocks"].keys()[rng.randi_range(0, 4)]]+=1
 			pass
 		32:
-			
+			var new_spr=preload("res://Assets/sprinkler.tscn").instantiate()
+			new_spr.Server=Server
+			new_spr.master=my_master
+			new_spr.position=Vector2((((position.x-40)/80.0)+11)*80-840,(((position.y-40)/80.0)+11)*80-840 )
+			get_parent().add_child(new_spr)
 			pass
 		33:
 			var new_trap=preload("res://Assets/Trap.tscn").instantiate()
@@ -83,32 +83,46 @@ func _use_item():
 			Server.PlayerManager.players_links[my_master]["Phase"]=10
 			pass
 		35:
-			
+			_camuflage(Server.Constants.camuflage_time)
 			pass
 		36:
 			noU=true
 			pass
 		37:
-			
+			_enable_jet(Server.Constants.Jet_time)
 			pass
 		38:
 			JewMode=true
 			pass
 		39:
-			
+			for i in Server.PlayerManager.players_links.keys():
+				if(my_master!=i):
+					Server.PlayerManager.players_links[i]["Inst"]._boost(Server.Constants.slower_time, Server.Constants.slower_power)
 			pass
 		40:
-			
+			_x4Mode_ini(Server.Constants.x4ModeTime)
 			pass
 		41:
-			
+			var new_rbg=preload("res://Assets/rbg.tscn").instantiate()
+			new_rbg.Server=Server
+			new_rbg.master=my_master
+			get_parent().add_child(new_rbg)
 			pass
 		42:
 			var FF=Server.MapManager._reliable_spawn( str(position.x/80)+":"+str(position.y/80), 45, Vector2(0,0))
-			FF.target=my_master
+			FF._asign_target()
+			FF.initiator=my_master
 			pass
 		43:
-			
+			for i in range( -1, 2):
+				for g in range( -1, 2):
+					if(i==0 and g==0):
+						pass
+					else:
+						var tmp_x=((floor((position.x-40)/80.0)+11)+i)
+						var tmp_y=((floor((position.y-40)/80.0)+11)+g)
+						if(!Server.MapManager.map.has(str(tmp_x)+":"+str(tmp_y))):
+							Server.MapManager._reliable_spawn("Fortnite", 8, Vector2(tmp_x*80-800 , tmp_y*80-800))
 			pass
 			
 	Server.PlayerManager.players_links[my_master]["PU"]=-1
@@ -138,14 +152,30 @@ func damage(killer:int):
 			noU=false
 	
 
+func _x4Mode_ini(time:float):
+	x4Mode=true
+	$x4ModeTime.wait_time=time
+	$x4ModeTime.start()
+
+func _camuflage(time:float):
+	Server._invicibilate_player(my_master)
+	$Invicible.wait_time=time
+	$Invicible.start()
+
 func _invincibilate(time:float):
 	Server._set_states(name, 2)
 	is_invincible=true
 	$Invincible.wait_time=time
 	$Invincible.start()
 
-func _boost(time:float):
-	SPEED=SPEED*(Server.Constants.boost_power)
+func _enable_jet(time:float):
+	collision_mask=0
+	$Jet.wait_time=time
+	$Jet.start()
+	Server._set_states(name, 4)
+
+func _boost(time:float, power:float):
+	SPEED=SPEED*(power)
 	$Boost.wait_time=time
 	$Boost.start()
 
@@ -165,7 +195,7 @@ func _on_invincible_timeout():
 
 
 func _on_boost_timeout():
-	SPEED=SPEED/(Server.Constants.boost_power)
+	SPEED=(Server.Constants.tank_speed)
 	pass # Replace with function body.
 
 func _reload_based_gun():
@@ -184,3 +214,17 @@ func _teleport(x, y, sender_id):
 		position.x=(root_cord+(x*16*5))
 		position.y=(root_cord+(y*16*5))
 		Server._call_sync(name, position, rotation)
+
+
+func _on_jet_timeout():
+	collision_mask=1
+	Server._set_states(name, 5)
+	pass # Replace with function body.
+
+
+func _on_invicible_timeout():
+	Server._visibilate_player(my_master)
+
+
+func _on_x_4_mode_time_timeout():
+	x4Mode=false

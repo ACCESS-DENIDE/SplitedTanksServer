@@ -4,7 +4,8 @@ var parent:int
 var Ignited:bool=false
 var Launched:bool=false
 var anker
-
+var override_dir:bool=false
+var overrided
 func _ready():
 	$IgnitionTimer.wait_time=Server.Constants.plasma_ignition_time
 
@@ -21,7 +22,8 @@ func _blast():
 				if (Server.MapManager.map[str(shift_x)+":"+str(shift_y)].is_blocking_projectile && !Server.MapManager.map[str(shift_x)+":"+str(shift_y)].is_damageble):
 					fl=false
 			len+=1
-			
+			if(override_dir):
+				dir=overrided
 			match dir:
 				0:
 					rotator=1.5708

@@ -26,7 +26,17 @@ one_shot = true
 [node name="BaseReload" type="Timer" parent="."]
 one_shot = true
 
+[node name="Jet" type="Timer" parent="."]
+
+[node name="Invicible" type="Timer" parent="."]
+wait_time = 7.0
+
+[node name="x4ModeTime" type="Timer" parent="."]
+
 [connection signal="timeout" from="Revive" to="." method="_on_revive_timeout"]
 [connection signal="timeout" from="Invincible" to="." method="_on_invincible_timeout"]
 [connection signal="timeout" from="Boost" to="." method="_on_boost_timeout"]
 [connection signal="timeout" from="BaseReload" to="." method="_on_base_reload_timeout"]
+[connection signal="timeout" from="Jet" to="." method="_on_jet_timeout"]
+[connection signal="timeout" from="Invicible" to="." method="_on_invicible_timeout"]
+[connection signal="timeout" from="x4ModeTime" to="." method="_on_x_4_mode_time_timeout"]

@@ -48,10 +48,16 @@ func _on_body_entered(body):
 			if(!(body==Server.PlayerManager.players_links[parent]["Inst"])):
 				if(body.is_damageble):
 					body.damage(parent)
-			
-				Server.PlayerManager.players_links[parent]["Inst"].SPEED=Server.Constants.tank_speed
+				
 				Server.MapManager._reliable_spawn(name,26,position)
-				Server.PlayerManager.players_links[parent]["Phase"]=0
+				var flug=true
+				for i in Server.CollisionContainer.get_children():
+					if(i.name.contains("Rocket!"+str(parent)) and i!=self):
+						flug=false
+				if(flug):
+					Server.PlayerManager.players_links[parent]["Inst"].SPEED=Server.Constants.tank_speed
+					Server.PlayerManager.players_links[parent]["Phase"]=0
+				
 				flg=false
 				Server.MapManager._call_replace(self.name, 0, self.name)
 		else:

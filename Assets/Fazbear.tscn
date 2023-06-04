@@ -12,5 +12,17 @@ script = ExtResource("1_5vk46")
 scale = Vector2(5, 5)
 shape = SubResource("RectangleShape2D_rqjs2")
 
-[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
-debug_enabled = true
+[node name="AgressiveMode" type="Timer" parent="."]
+wait_time = 10.0
+
+[node name="Unreach" type="Timer" parent="."]
+wait_time = 3.0
+
+[node name="Lifetime" type="Timer" parent="."]
+wait_time = 20.0
+autostart = true
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="AgressiveMode" to="." method="_on_agressive_mode_timeout"]
+[connection signal="timeout" from="Unreach" to="." method="_on_unreach_timeout"]
+[connection signal="timeout" from="Lifetime" to="." method="_on_lifetime_timeout"]

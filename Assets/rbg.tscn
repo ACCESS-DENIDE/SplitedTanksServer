@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://crqd1uy7jtngf"]
+
+[ext_resource type="Script" path="res://Assets/RBG.gd" id="1_kfglm"]
+
+[node name="RBG" type="Node"]
+script = ExtResource("1_kfglm")
+
+[node name="between" type="Timer" parent="."]
+autostart = true
+
+[connection signal="timeout" from="between" to="." method="_on_between_timeout"]

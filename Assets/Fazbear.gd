@@ -1,6 +1,9 @@
 extends Area2D
 
-@onready var agent=$NavigationAgent2D
+
+@onready var agressive_mode = $AgressiveMode
+@onready var unreach = $Unreach
+
 
 var initiator:int
 var target:int
@@ -10,18 +13,44 @@ var y:int
 var tar_x:int
 var tar_y:int
 var proc:bool=false
-var SPEED=10
-func _ready():
-	
-	pass # Replace with function body.
+var SPEED=100
+
 
 var WP:Vector2
 var path=[]
 
+func _ready():
+	agressive_mode.wait_time=Server.Constants.FazAgrTime
+	unreach.wait_time=Server.Constants.FazInstaKillTime
+	SPEED=Server.Constants.FzSpeed
+	$Lifetime.wait_time=Server.Constants.FazLifeTime
+
+
+func _asign_target():
+	target=-1
+	var rng=RandomNumberGenerator.new()
+	randomize()
+	if(Server.PlayerManager.active_players>0):
+		var alive=[]
+		for i in Server.PlayerManager.players_links.values():
+			if (i["Inst"].dead!=true):
+				alive.push_back(i["Inst"])
+		if(alive.size()>0):
+			target=alive[rng.randi_range(1, alive.size())-1].my_master
+		agressive_mode.start()
+	else:
+		get_parent().remove_child(self)
+		queue_free()
+
 
 func _process(delta):
-	if(fmod(position.x, 80)==0 and fmod(position.y, 80)==0 and(!proc)):
-		if (!proc):
+	if (target==-1):
+		_asign_target()
+		return
+	if (Server.PlayerManager.players_links[target]["Inst"].dead==true):
+		_asign_target()
+		return
+	if((fmod(position.x, 80)==0 and fmod(position.y, 80)==0 and(!proc))):
 				x=position.x/(16*5)+10
 				y=position.y/(16*5)+10
 				
@@ -30,6 +59,7 @@ func _process(delta):
 				
 				var PF:Thread=Thread.new()
 				proc=true
+				print ("startCalc")
 				_calculate_path()
 	else:
 		if(position.x==WP.x and position.y==WP.y):
@@ -42,16 +72,28 @@ func _process(delta):
 		else:
 			match (_get_dir(position, WP)):
 				0:
-					position.x+=SPEED
+					if(WP.x-position.x>SPEED*delta):
+						position.x+=SPEED*delta
+					else:
+						position.x=WP.x
 					pass
 				1:
-					position.x-=SPEED
+					if(WP.x-position.x<SPEED*delta):
+						position.x-=SPEED*delta
+					else:
+						position.x=WP.x
 					pass
 				2:
-					position.y+=SPEED
+					if(WP.y-position.y>SPEED*delta):
+						position.y+=SPEED*delta
+					else:
+						position.y=WP.y
 					pass
 				3:
-					position.y-=SPEED
+					if(WP.y-position.y<SPEED*delta):
+						position.y-=SPEED*delta
+					else:
+						position.y=WP.y
 					pass
 			Server._call_sync(name, position, rotation)
 	pass
@@ -87,9 +129,6 @@ class PP:
 			path_len=new_par.path_len+(abs(tar_pos.x-pos.x)+abs(tar_pos.y-pos.y))
 			parent=new_par
 
-func _ini_path():
-	
-	pass
 
 
 func _calculate_path():
@@ -125,6 +164,7 @@ func _calculate_path():
 	if(cur_node.pos!=Vector2(tar_x, tar_y)):
 		print("Unreachable")
 	else:
+		unreach.start()
 		var storing_node:PP=cur_node
 		while(storing_node.parent!=null):
 			path.clear()
@@ -165,3 +205,26 @@ func _get_posib(point_map,pos_x:int, pos_y:int):
 				else:
 					availib_nodes.push_back(PP.new(new_x, new_y, Vector2(tar_x, tar_y), point_map[pos_x][pos_y]))
 	pass
+
+
+func _on_agressive_mode_timeout():
+	_asign_target()
+
+
+func _on_unreach_timeout():
+	if(Server.PlayerManager.players_links.has(target)):
+		Server.PlayerManager.players_links[target]["Inst"].damage(initiator)
+
+
+func _on_lifetime_timeout():
+	Server.MapManager._call_replace(name, 0,"")
+
+
+func _on_body_entered(body):
+		if(Server.PlayerManager.players_links.keys().has(initiator)):
+				if(body.is_damageble):
+					body.damage(initiator)
+		else:
+			if(body.is_damageble):
+				body.damage(-1)
+			

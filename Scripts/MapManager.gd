@@ -345,8 +345,10 @@ func _call_replace(name:String, type:int, new_name:String):
 			if(type!=0):
 				i._change_type(type)
 			else:
-				print(str(i.position.x/(16*5)+10)+":"+str(i.position.y/(16*5)+10))
-				map.erase(str(i.position.x/(16*5)+10)+":"+str(i.position.y/(16*5)+10))
+				print(str(floor((i.position.x-40)/(80))+11)+":"+str(floor((i.position.y-40)/(80))+11))
+				print(map.size())
+				map.erase(str(floor((i.position.x-40)/(80))+11)+":"+str(floor((i.position.y-40)/(80))+11))
+				print(map.size())
 				CollisionContainer.remove_child(i)
 				i.queue_free()
 	Server._ini_block_change(name, type, new_name)

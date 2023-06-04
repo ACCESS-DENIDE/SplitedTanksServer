@@ -60,11 +60,19 @@ func _shoot(id:int):
 						PlayerManager.players_links[id]["Phase"]=1
 						PlayerManager.players_links[id]["Inst"]._reload_based_gun()
 					else:
-						var bul=Server.MapManager._reliable_spawn(str(id), 13,PlayerManager.players_links[id]["Inst"].position)
-						bul.dir=PlayerManager.players_links[id]["Inst"].rotation_degrees
-						bul.parent=id
-						PlayerManager.players_links[id]["Phase"]=1
-						PlayerManager.players_links[id]["Inst"]._reload_based_gun()
+						if(PlayerManager.players_links[id]["Inst"].x4Mode):
+							for i in range (0, 4):
+								var bul=Server.MapManager._reliable_spawn(str(id)+str(i), 13,PlayerManager.players_links[id]["Inst"].position)
+								bul.dir=-90+90*i
+								bul.parent=id
+							PlayerManager.players_links[id]["Phase"]=1
+							PlayerManager.players_links[id]["Inst"]._reload_based_gun()
+						else:
+							var bul=Server.MapManager._reliable_spawn(str(id), 13,PlayerManager.players_links[id]["Inst"].position)
+							bul.dir=PlayerManager.players_links[id]["Inst"].rotation_degrees
+							bul.parent=id
+							PlayerManager.players_links[id]["Phase"]=1
+							PlayerManager.players_links[id]["Inst"]._reload_based_gun()
 				1:
 					if(PlayerManager.players_links[id]["Inst"].supercharge):
 						Server._rquest_target(id, _airStrike)
@@ -72,11 +80,19 @@ func _shoot(id:int):
 						PlayerManager.players_links[id]["Inst"].supercharge=false
 						PlayerManager.players_links[id]["Phase"]=99
 					else:
-						var roc=Server.MapManager._reliable_spawn(str(id), 14,PlayerManager.players_links[id]["Inst"].position)
-						roc.parent=id
-						roc.my_dir=PlayerManager.players_links[id]["Inst"].dir
-						PlayerManager.players_links[id]["Inst"].SPEED=0
-						PlayerManager.players_links[id]["Phase"]=1
+						if(PlayerManager.players_links[id]["Inst"].x4Mode):
+							for i in range (0, 4):
+								var roc=Server.MapManager._reliable_spawn(str(id)+"!"+str(i), 14,PlayerManager.players_links[id]["Inst"].position)
+								roc.parent=id
+								roc.my_dir=-90+90*i
+							PlayerManager.players_links[id]["Inst"].SPEED=0
+							PlayerManager.players_links[id]["Phase"]=1
+						else:
+							var roc=Server.MapManager._reliable_spawn(str(id), 14,PlayerManager.players_links[id]["Inst"].position)
+							roc.parent=id
+							roc.my_dir=PlayerManager.players_links[id]["Inst"].dir
+							PlayerManager.players_links[id]["Inst"].SPEED=0
+							PlayerManager.players_links[id]["Phase"]=1
 					pass
 				2:
 					if(PlayerManager.players_links[id]["Inst"].supercharge):
@@ -86,18 +102,36 @@ func _shoot(id:int):
 						PlayerManager.players_links[id]["Phase"]=99
 						pass
 					else:
-						var lb=preload("res://Assets/PlasmaIgnitor.tscn").instantiate()
-						lb.Server=Server
-						lb.name="Ignitor!"+str(id)
-						Server.CollisionContainer.add_child(lb)
-						var ank=Server.MapManager._reliable_spawn(str(id), 27,Vector2(0,0))
-						CollisionContainer.remove_child(ank)
-						PlayerManager.players_links[id]["Inst"].add_child(ank)
-						ank.position.y-=10
-						lb.anker=ank
-						lb.parent=id
-						PlayerManager.players_links[id]["Inst"].SPEED=Server.Constants.tank_speed/2
-						PlayerManager.players_links[id]["Phase"]=2
+						if(PlayerManager.players_links[id]["Inst"].x4Mode):
+							var ank=Server.MapManager._reliable_spawn(str(id), 27,Vector2(0,0))
+							CollisionContainer.remove_child(ank)
+							PlayerManager.players_links[id]["Inst"].add_child(ank)
+							ank.position.y-=10
+							
+							for i in range (0, 4):
+								var lb=preload("res://Assets/PlasmaIgnitor.tscn").instantiate()
+								lb.override_dir=true
+								lb.overrided=i
+								lb.Server=Server
+								lb.name="Ignitor!"+str(id)
+								Server.CollisionContainer.add_child(lb)
+								lb.anker=ank
+								lb.parent=id
+							PlayerManager.players_links[id]["Inst"].SPEED=Server.Constants.tank_speed/2
+							PlayerManager.players_links[id]["Phase"]=2
+						else:
+							var lb=preload("res://Assets/PlasmaIgnitor.tscn").instantiate()
+							lb.Server=Server
+							lb.name="Ignitor!"+str(id)
+							Server.CollisionContainer.add_child(lb)
+							var ank=Server.MapManager._reliable_spawn(str(id), 27,Vector2(0,0))
+							CollisionContainer.remove_child(ank)
+							PlayerManager.players_links[id]["Inst"].add_child(ank)
+							ank.position.y-=10
+							lb.anker=ank
+							lb.parent=id
+							PlayerManager.players_links[id]["Inst"].SPEED=Server.Constants.tank_speed/2
+							PlayerManager.players_links[id]["Phase"]=2
 					pass
 				3:
 					if(PlayerManager.players_links[id]["Inst"].supercharge):
@@ -109,9 +143,14 @@ func _shoot(id:int):
 						victum["Inst"].damage(id)
 						Server.MapManager._reliable_spawn("Mafia"+str(id) ,30,Vector2(0,0))
 					else:
-						Server._rquest_target(id, _artillary_strike)
-						PlayerManager.players_links[id]["Inst"].SPEED=0
-						PlayerManager.players_links[id]["Phase"]=1
+						if(PlayerManager.players_links[id]["Inst"].x4Mode):
+							Server._rquest_target(id, _artillary_strike)
+							PlayerManager.players_links[id]["Inst"].SPEED=0
+							PlayerManager.players_links[id]["Phase"]=1
+						else:
+							Server._rquest_target(id, _artillary_strike)
+							PlayerManager.players_links[id]["Inst"].SPEED=0
+							PlayerManager.players_links[id]["Phase"]=1
 					pass
 		else:
 			for i in Server.CollisionContainer.get_children():
@@ -177,6 +216,11 @@ func _artillary_strike(x:int, y:int, striker_id:int):
 	new_strike.striker_id=striker_id
 	new_strike._calculate_strike()
 	add_child(new_strike)
+	Server.PlayerManager.players_links[striker_id]["Inst"].SPEED=Server.Constants.tank_speed
+	if(PlayerManager.players_links[striker_id]["Inst"].x4Mode):
+		PlayerManager.players_links[striker_id]["Inst"].SPEED=0
+		PlayerManager.players_links[striker_id]["Phase"]=0
+		
 
 
 func _OmenStrike(x:int, y:int, striker_id:int):

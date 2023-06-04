@@ -11,6 +11,7 @@ var players_links={}
 
 func _remoe_player(peer_id:int):
 	if( players_links.keys().has(peer_id)):
+			_free_team(players_links[peer_id]["Team"])
 			active_players-=1
 			MapManager.bases.push_back(players_links[peer_id]["Inst"].base)
 			MapManager._call_replace(players_links[peer_id]["Inst"].name, 0, "")
@@ -18,16 +19,26 @@ func _remoe_player(peer_id:int):
 			_update_scores()
 			#MapManager._asign_base()
 
+var teams=[false, false, false,false]
+
+func _get_free_team()->int:
+	for i in range(0, 4):
+		if(teams[i]==false):
+			teams[i]=true
+			return i
+	return -1
+
+func _free_team(team:int):
+	teams[team]=false
 
 func _add_player(peer_id:int):
 	if(active_players<4):
-		var new_tank=Server.MapManager._reliable_spawn( str(peer_id),active_players, Vector2(0,0))
+		var pl_team=_get_free_team()
+		var new_tank=Server.MapManager._reliable_spawn( str(peer_id),pl_team, Vector2(0,0))
 		new_tank.my_master=peer_id
-		new_tank.supercharge=true
-		active_players=0
+		#new_tank.supercharge=true
 		for i in players_links.keys():
-			Server._id_ini_spawn(peer_id,active_players, players_links[i]["Inst"].name, players_links[i]["Inst"].position)
-			active_players+=1
+			Server._id_ini_spawn(peer_id,players_links[i]["Team"], players_links[i]["Inst"].name, players_links[i]["Inst"].position)
 		for i in CollisionContainer.get_children():
 			if(i.name.contains("Crate")):
 				Server._id_ini_spawn(peer_id, i.type, i.name, i.position)
@@ -36,10 +47,10 @@ func _add_player(peer_id:int):
 			if(i.name.contains("Item")):
 				Server._id_ini_spawn(peer_id, i.id, i.name, i.position)
 		players_links[peer_id]={}
-		players_links[peer_id]["Team"]=active_players
+		players_links[peer_id]["Team"]=pl_team
 		players_links[peer_id]["Inst"]=new_tank
-		players_links[peer_id]["GT"]=2
-		players_links[peer_id]["PU"]=42
+		players_links[peer_id]["GT"]=3
+		players_links[peer_id]["PU"]=41
 		players_links[peer_id]["Name"]=""
 		players_links[peer_id]["Phase"]=0
 		players_links[peer_id]["Score"]=0
