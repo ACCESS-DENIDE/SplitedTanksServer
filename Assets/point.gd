@@ -22,7 +22,7 @@ func _return():
 		Server._call_sync(name, position, rotation)
 	else:
 		if(master!=-1):
-			Server.MapManager._call_replace(name, 0, "")
+			Server.MapManager._call_replace(name, -1, "")
 		else:
 			position=origin
 			Server._call_sync(name, position, rotation)

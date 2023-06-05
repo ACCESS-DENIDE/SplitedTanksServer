@@ -69,11 +69,11 @@ func _blast():
 					Server.PlayerManager.players_links[parent]["Inst"]._reload_based_gun()
 					Server.PlayerManager.players_links[parent]["Inst"].remove_child(anker)
 					anker.queue_free()
-		Server.MapManager._call_replace(self.name, 0, self.name)
-		Server.MapManager._call_replace(anker.name, 0, self.name)
+		Server.MapManager._call_replace(self.name, -1, self.name)
+		Server.MapManager._call_replace(anker.name, -1, self.name)
 	else:
-		Server.MapManager._call_replace(self.name, 0, self.name)
-		Server.MapManager._call_replace(anker.name, 0, self.name)
+		Server.MapManager._call_replace(self.name, -1, self.name)
+		Server.MapManager._call_replace(anker.name, -1, self.name)
 	
 	
 	pass

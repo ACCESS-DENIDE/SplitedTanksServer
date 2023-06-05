@@ -35,7 +35,7 @@ func _process(delta):
 	if(position.length()>kill_dist):
 		
 		flg=false
-		Server.MapManager._call_replace(self.name, 0, self.name)
+		Server.MapManager._call_replace(self.name, -1, self.name)
 	Server._call_sync(name, position, rotation)
 	pass
 
@@ -47,27 +47,27 @@ func _on_body_entered(body):
 				if(body.is_damageble):
 					body.damage(parent)
 					flg=false
-					Server.MapManager._call_replace(body.name, 0, "")
+					Server.MapManager._call_replace(body.name, -1, "")
 					Server.MapManager._reliable_spawn(name,26,position)
-					Server.MapManager._call_replace(self.name, 0, self.name)
+					Server.MapManager._call_replace(self.name, -1, self.name)
 				else:
 					if(body.is_blocking_projectile):
 						flg=false
-						Server.MapManager._call_replace(body.name, 0, "")
+						Server.MapManager._call_replace(body.name, -1, "")
 						Server.MapManager._reliable_spawn(name,26,position)
-						Server.MapManager._call_replace(self.name, 0, self.name)
+						Server.MapManager._call_replace(self.name, -1, self.name)
 		else:
 			if(body.is_damageble):
 					body.damage(-1)
 					flg=false
-					Server.MapManager._call_replace(body.name, 0, "")
+					Server.MapManager._call_replace(body.name, -1, "")
 					Server.MapManager._reliable_spawn(name,26,position)
-					Server.MapManager._call_replace(self.name, 0, self.name)
+					Server.MapManager._call_replace(self.name, -1, self.name)
 			else:
 				if(body.is_blocking_projectile):
 						flg=false
 						Server.MapManager(body.name, 0, "")
 						Server.MapManager._reliable_spawn(name,26,position)
-						Server.MapManager._call_replace(self.name, 0, self.name)
+						Server.MapManager._call_replace(self.name, -1, self.name)
 	pass # Replace with function body.
 

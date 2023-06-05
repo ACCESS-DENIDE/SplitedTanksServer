@@ -217,7 +217,7 @@ func _on_unreach_timeout():
 
 
 func _on_lifetime_timeout():
-	Server.MapManager._call_replace(name, 0,"")
+	Server.MapManager._call_replace(name, -1,"")
 
 
 func _on_body_entered(body):

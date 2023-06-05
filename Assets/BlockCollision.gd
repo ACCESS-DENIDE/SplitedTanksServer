@@ -60,10 +60,10 @@ func damage(killer:int):
 			Server.MapManager._call_replace(name, 10,name)
 			pass
 		10:
-			Server.MapManager._call_replace(name, 0,"")
+			Server.MapManager._call_replace(name, -1,"")
 			pass
 		12:
-			Server.MapManager._call_replace(name, 0,"")
+			Server.MapManager._call_replace(name, -1,"")
 			var rng = RandomNumberGenerator.new()
 			randomize()
 			match rng.randi_range(0,2):

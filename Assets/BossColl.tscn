@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://djwdude4eqvp5"]
+
+[ext_resource type="Script" path="res://Assets/BossColl.gd" id="1_bxnys"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0rgft"]
+size = Vector2(30, 32)
+
+[node name="TankColl" type="CharacterBody2D"]
+scale = Vector2(5, 5)
+collision_layer = 3
+script = ExtResource("1_bxnys")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_0rgft")
+
+[node name="BaseReload" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="BaseReload" to="." method="_on_base_reload_timeout"]

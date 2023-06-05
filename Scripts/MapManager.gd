@@ -99,55 +99,55 @@ func _reliable_spawn(static_name:String,id:int, pos:Vector2, rot:float=0)->Node:
 			new_spawn=preload("res://Assets/BlockCollision.tscn").instantiate()
 			name="Block!"+static_name+"!"+str(salt)
 			new_spawn._change_type(id)
-			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
 			pass
 		5:
 			new_spawn=preload("res://Assets/BlockCollision.tscn").instantiate()
 			name="Block!"+static_name+"!"+str(salt)
 			new_spawn._change_type(id)
-			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
 			pass
 		6:
 			new_spawn=preload("res://Assets/BlockCollision.tscn").instantiate()
 			name="Block!"+static_name+"!"+str(salt)
 			new_spawn._change_type(id)
-			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
 			pass
 		7:
 			new_spawn=preload("res://Assets/BlockCollision.tscn").instantiate()
 			name="Block!"+static_name+"!"+str(salt)
 			new_spawn._change_type(id)
-			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
 			pass
 		8:
 			new_spawn=preload("res://Assets/BlockCollision.tscn").instantiate()
 			name="Block!"+static_name+"!"+str(salt)
 			new_spawn._change_type(id)
-			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
 			pass
 		9:
 			new_spawn=preload("res://Assets/BlockCollision.tscn").instantiate()
 			name="Block!"+static_name+"!"+str(salt)
 			new_spawn._change_type(id)
-			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
 			pass
 		10:
 			new_spawn=preload("res://Assets/BlockCollision.tscn").instantiate()
 			name="Block!"+static_name+"!"+str(salt)
 			new_spawn._change_type(id)
-			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
 			pass
 		11:
 			new_spawn=preload("res://Assets/BlockCollision.tscn").instantiate()
 			name="Block!"+static_name+"!"+str(salt)
 			new_spawn._change_type(id)
-			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
 			pass
 		12:
 			new_spawn=preload("res://Assets/BlockCollision.tscn").instantiate()
 			name="Block!"+static_name+"!"+str(salt)
 			new_spawn._change_type(id)
-			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
 			pass
 		13:
 			new_spawn=preload("res://Assets/Bulet.tscn").instantiate()
@@ -171,49 +171,49 @@ func _reliable_spawn(static_name:String,id:int, pos:Vector2, rot:float=0)->Node:
 			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
 			name="Item!"+static_name+"!"+str(salt)
 			new_spawn.id=id
-			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
 			pass
 		19:
 			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
 			name="Item!"+static_name+"!"+str(salt)
 			new_spawn.id=id
-			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
 			pass
 		20:
 			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
 			name="Item!"+static_name+"!"+str(salt)
 			new_spawn.id=id
-			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
 			pass
 		21:
 			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
 			name="Item!"+static_name+"!"+str(salt)
 			new_spawn.id=id
-			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
 			pass
 		22:
 			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
 			name="Item!"+static_name+"!"+str(salt)
 			new_spawn.id=id
-			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
 			pass
 		23:
 			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
 			name="Item!"+static_name+"!"+str(salt)
 			new_spawn.id=id
-			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
 			pass
 		24:
 			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
 			name="Item!"+static_name+"!"+str(salt)
 			new_spawn.id=id
-			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
 			pass
 		25:
 			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
 			name="Item!"+static_name+"!"+str(salt)
 			new_spawn.id=id
-			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
 			pass
 		26:
 			name="MiniBoom!"+static_name+"!"+str(salt)
@@ -238,79 +238,79 @@ func _reliable_spawn(static_name:String,id:int, pos:Vector2, rot:float=0)->Node:
 			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
 			name="Item!"+static_name+"!"+str(salt)
 			new_spawn.id=id
-			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
 			pass
 		32:
 			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
 			name="Item!"+static_name+"!"+str(salt)
 			new_spawn.id=id
-			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
 			pass
 		33:
 			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
 			name="Item!"+static_name+"!"+str(salt)
 			new_spawn.id=id
-			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
 			pass
 		34:
 			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
 			name="Item!"+static_name+"!"+str(salt)
 			new_spawn.id=id
-			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
 			pass
 		35:
 			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
 			name="Item!"+static_name+"!"+str(salt)
 			new_spawn.id=id
-			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
 			pass
 		36:
 			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
 			name="Item!"+static_name+"!"+str(salt)
 			new_spawn.id=id
-			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
 			pass
 		37:
 			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
 			name="Item!"+static_name+"!"+str(salt)
 			new_spawn.id=id
-			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
 			pass
 		38:
 			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
 			name="Item!"+static_name+"!"+str(salt)
 			new_spawn.id=id
-			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
 			pass
 		39:
 			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
 			name="Item!"+static_name+"!"+str(salt)
 			new_spawn.id=id
-			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
 			pass
 		40:
 			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
 			name="Item!"+static_name+"!"+str(salt)
 			new_spawn.id=id
-			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
 			pass
 		41:
 			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
 			name="Item!"+static_name+"!"+str(salt)
 			new_spawn.id=id
-			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
 			pass
 		42:
 			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
 			name="Item!"+static_name+"!"+str(salt)
 			new_spawn.id=id
-			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
 			pass
 		43:
 			new_spawn=preload("res://Assets/ItemCol.tscn").instantiate()
 			name="Item!"+static_name+"!"+str(salt)
 			new_spawn.id=id
-			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
 			pass
 		45:
 			new_spawn=preload("res://Assets/Fazbear.tscn").instantiate()
@@ -319,30 +319,60 @@ func _reliable_spawn(static_name:String,id:int, pos:Vector2, rot:float=0)->Node:
 		46:
 			new_spawn=preload("res://Assets/point.tscn").instantiate()
 			name="Poin!"+static_name+"!"+str(salt)
-			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
 			new_spawn.team=0
 			pass
 		47:
 			new_spawn=preload("res://Assets/point.tscn").instantiate()
 			name="Poin!"+static_name+"!"+str(salt)
-			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
 			new_spawn.team=1
 			pass
 		48:
 			new_spawn=preload("res://Assets/point.tscn").instantiate()
 			name="Poin!"+static_name+"!"+str(salt)
-			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
 			new_spawn.team=2
 			pass
 		49:
 			new_spawn=preload("res://Assets/point.tscn").instantiate()
 			name="Poin!"+static_name+"!"+str(salt)
-			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
 			pass
 		50:
 			new_spawn=preload("res://Assets/point.tscn").instantiate()
 			name="Poin!"+static_name+"!"+str(salt)
-			map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_spawn
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
+			pass
+		51:
+			new_spawn=preload("res://Assets/point.tscn").instantiate()
+			name="Poin!"+static_name+"!"+str(salt)
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
+			pass
+		52:
+			new_spawn=preload("res://Assets/point.tscn").instantiate()
+			name="Poin!"+static_name+"!"+str(salt)
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
+			pass
+		53:
+			new_spawn=preload("res://Assets/point.tscn").instantiate()
+			name="Poin!"+static_name+"!"+str(salt)
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
+			pass
+		54:
+			new_spawn=preload("res://Assets/point.tscn").instantiate()
+			name="Poin!"+static_name+"!"+str(salt)
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
+			pass
+		55:
+			new_spawn=preload("res://Assets/point.tscn").instantiate()
+			name="Poin!"+static_name+"!"+str(salt)
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
+			pass
+		56:
+			new_spawn=preload("res://Assets/BossColl.tscn").instantiate()
+			name="Boss!"+static_name+"!"+str(salt)
+			
 			pass
 	if(new_spawn!=null):
 		new_spawn.Server=Server
@@ -370,13 +400,10 @@ func _spawn_Block(name:String, type:int, x:int, y:int):
 func _call_replace(name:String, type:int, new_name:String):
 	for i in CollisionContainer.get_children():
 		if(i.name==name):
-			if(type!=0):
+			if(type!=-1):
 				i._change_type(type)
 			else:
-				print(str(floor((i.position.x-40)/(80))+11)+":"+str(floor((i.position.y-40)/(80))+11))
-				print(map.size())
 				map.erase(str(floor((i.position.x-40)/(80))+11)+":"+str(floor((i.position.y-40)/(80))+11))
-				print(map.size())
 				CollisionContainer.remove_child(i)
 				i.queue_free()
 	Server._ini_block_change(name, type, new_name)
