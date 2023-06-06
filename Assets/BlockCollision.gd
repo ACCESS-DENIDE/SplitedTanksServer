@@ -52,6 +52,8 @@ func _change_type(type_inp:int):
 			pass
 
 func damage(killer:int):
+	if (killer==-2):
+		return
 	match  type:
 		8:
 			Server.MapManager._call_replace(name, 9,name)

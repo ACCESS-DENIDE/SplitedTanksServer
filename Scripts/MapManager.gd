@@ -49,26 +49,10 @@ func _unload_map():
 	pass
 
 func _hit_cords(x:int, y:int, striker_id:int):
-	var root_cord=-(10*16*5)
-	if(map.keys().has(str(x)+":"+str(y))):
-		if(map[str(x)+":"+str(y)].is_damageble):
-			map[str(x)+":"+str(y)].damage(striker_id)
-		elif (!(map[str(x)+":"+str(y)].is_blocking_projectile)):
-			for i in PlayerManager.players_links.values():
-				if(i["Inst"]!=null):
-					var size=8*5
-					if (i["Inst"].name.contains("Boss")):
-						size=size*2
-					if((abs((i["Inst"].position.x)-((root_cord+(x*16*5))))<size)&&(abs((i["Inst"].position.y)-((root_cord+(y*16*5))))<size)):
-						i["Inst"].damage(striker_id)
-	else:
-			for i in PlayerManager.players_links.values():
-				if(i["Inst"]!=null):
-					var size=8*5
-					if (i["Inst"].name.contains("Boss")):
-						size=size*2
-					if((abs((i["Inst"].position.x)-((root_cord+(x*16*5))))<size)&&(abs((i["Inst"].position.y)-((root_cord+(y*16*5))))<size)):
-						i["Inst"].damage(striker_id)
+	var h_m=preload("res://Assets/_hit_marker.tscn").instantiate()
+	h_m.hiter=striker_id
+	h_m.position=Vector2(x*80-800, y*80-800)
+	add_child(h_m)
 
 func _reliable_spawn(static_name:String,id:int, pos:Vector2, rot:float=0)->Node:
 	var new_spawn=null

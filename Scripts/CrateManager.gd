@@ -37,6 +37,6 @@ func _spawn():
 	if(spawns.size()>0):
 		randomize()
 		var cord=spawns[rng.randi_range(0, spawns.size()-1)]
-		MapManager._hit_cords(cord.x, cord.y, -1)
+		MapManager._hit_cords(cord.x, cord.y, -2)
 		MapManager._reliable_spawn((str(cord.x)+":"+str(cord.y)), 12, Vector2((cord.x*16*5)+root_cord, (cord.y*16*5)+root_cord))
 

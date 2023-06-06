@@ -40,8 +40,8 @@ const spawn_invincible=3
 const respawn_time=3
 
 
-const MinCrateSpawn=1
-const MaxCrateSpawn=2
+const MinCrateSpawn=3600
+const MaxCrateSpawn=3600
 const CrateSpawnChance=100
 
 const kill_score=100
