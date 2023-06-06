@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://5bvu50hujbf0"]
+
+[ext_resource type="Script" path="res://Assets/Flag.gd" id="1_fn8ta"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7ry7v"]
+radius = 8.0
+
+[node name="ItemCol" type="Area2D"]
+scale = Vector2(5, 5)
+script = ExtResource("1_fn8ta")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_7ry7v")
+
+[node name="CaptureTime" type="Timer" parent="."]
+one_shot = true
+
+[node name="AddScoreTimer" type="Timer" parent="."]
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]
+[connection signal="timeout" from="CaptureTime" to="." method="_on_capture_time_timeout"]
+[connection signal="timeout" from="AddScoreTimer" to="." method="_on_add_score_timer_timeout"]

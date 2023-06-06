@@ -22,7 +22,7 @@ func _remoe_player(peer_id:int):
 			MapManager._call_replace(players_links[peer_id]["Inst"].name, -1, "")
 			players_links.erase(peer_id)
 			_update_scores()
-			$"../GameModeManager"._boss_fight()
+			$"../GameModeManager"._flag_defence()
 			#MapManager._asign_base()
 
 var teams=[false, false, false,false]
@@ -56,6 +56,11 @@ func _add_player(peer_id:int):
 				Server._id_ini_spawn(peer_id, i.id, i.name, i.position)
 			if(i.name.contains("Poin")):
 				Server._id_ini_spawn(peer_id, i.team+46, i.name, i.position)
+			if(i.name.contains("Flag")):
+				if(i.capturer!=null):
+					Server._id_ini_spawn(peer_id, players_links[i.capturer]["Team"]+51, i.name, i.position)
+				else:
+					Server._id_ini_spawn(peer_id,55, i.name, i.position)
 		players_links[peer_id]={}
 		players_links[peer_id]["Team"]=pl_team
 		players_links[peer_id]["Inst"]=new_tank

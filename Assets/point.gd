@@ -56,7 +56,7 @@ func _on_body_entered(body):
 		if (body.name.contains("Tank")):
 			if(fl):
 				if(body.my_master!=master):
-					if(body._pick_flag(self)):
+					if(body._pick_Point(self)):
 						position=Vector2(0,0)
 						holder=body
 						is_picked=true

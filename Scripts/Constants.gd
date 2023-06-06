@@ -7,8 +7,8 @@ const max_players=4
 const round_time_sec=30
 const betwen_round_sec=30
 
-const flagDepositScore=500
-const NeutralflagDepositScore=250
+const PointDepositScore=500
+const NeutralPointDepositScore=250
 const StarPickupScore=200
 const HohlyonokKillScore=1000
 const FlagPerSecScore=100
@@ -40,8 +40,8 @@ const spawn_invincible=3
 const respawn_time=3
 
 
-const MinCrateSpawn=5
-const MaxCrateSpawn=10
+const MinCrateSpawn=1
+const MaxCrateSpawn=2
 const CrateSpawnChance=100
 
 const kill_score=100

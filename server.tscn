@@ -48,14 +48,6 @@ one_shot = true
 [node name="BetwenGameMode" type="Timer" parent="GameModeManager"]
 one_shot = true
 
-[node name="Min" type="Timer" parent="GameModeManager"]
-one_shot = true
-autostart = true
-
-[node name="Max" type="Timer" parent="GameModeManager"]
-one_shot = true
-autostart = true
-
 [connection signal="timeout" from="CrateManager/Min" to="CrateManager" method="_on_min_timeout"]
 [connection signal="timeout" from="CrateManager/Max" to="CrateManager" method="_on_max_timeout"]
 [connection signal="timeout" from="GameModeManager/GameModeEnd" to="GameModeManager" method="_on_game_mode_end_timeout"]

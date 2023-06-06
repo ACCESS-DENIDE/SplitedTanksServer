@@ -10,6 +10,8 @@ var on_end:Callable=_passer
 var on_new_Pl:Callable=_passer
 var on_pl_remove:Callable=_passer
 
+var rng=RandomNumberGenerator.new()
+
 var round_process=false
 
 var Gamemode_objs=[]
@@ -49,7 +51,7 @@ func _boss_fight():
 	on_new_Pl=_passer
 	on_pl_remove=_passer
 	on_end=_removeBoss
-	var rng=RandomNumberGenerator.new()
+	
 	randomize()
 	var ran=rng.randi_range(0, player_manager.active_players-1)
 	var key=player_manager.players_links.keys()[ran]
@@ -66,9 +68,31 @@ func _boss_fight():
 	pass
 
 func _star_collector():
+	var st_man=preload("res://Assets/StarManager.tscn").instantiate()
+	st_man.Server=$".."
+	add_child(st_man)
+	Gamemode_objs.push_back(st_man)
+	on_new_Pl=_passer
+	on_pl_remove=_passer
+	on_end=_StarCollectorEnd
+	$GameModeEnd.start()
 	pass
 
 func _flag_defence():
+	on_new_Pl=_passer
+	on_pl_remove=_passer
+	on_end=_FlagsEnd
+	for i in range(0, player_manager.active_players+2):
+		var spawns=map_manager._get_availib_spawns()
+		if(spawns.size()>0):
+			randomize()
+			var cord=spawns[rng.randi_range(0, spawns.size()-1)]
+			map_manager._hit_cords(cord.x, cord.y, -1)
+			var p=map_manager._reliable_spawn((str(cord.x)+":"+str(cord.y)), 12, Vector2((cord.x*16*5)-800, (cord.y*16*5)-800))
+			p.Server=$".."
+			Gamemode_objs.push_back(p)
+			
+	$GameModeEnd.start()
 	pass
 
 func _hohlyonok():
@@ -99,8 +123,8 @@ func _removePoint(peer_id:int):
 func _PointsEnd():
 	for i in Gamemode_objs:
 		if(i.holder!=null):
-			i.holder.flag_inst=null
-			i.holder.hasFlag=false
+			i.holder.Point_inst=null
+			i.holder.hasPoint=false
 			i.get_parent().remove_child(i)
 			$"../CollisionContainer".add_child(i)
 		Gamemode_objs.erase(i)
@@ -115,6 +139,14 @@ func _removeBoss():
 	player_manager.players_links[Gamemode_objs[0].my_master]["Inst"].position=sp_pos
 	Server._call_sync(player_manager.players_links[Gamemode_objs[0].my_master]["Inst"].name,player_manager.players_links[Gamemode_objs[0].my_master]["Inst"].position, player_manager.players_links[Gamemode_objs[0].my_master]["Inst"].rotation)
 	pass
+
+func _StarCollectorEnd():
+	remove_child(Gamemode_objs[0])
+	Gamemode_objs[0].queue_free()
+
+func _FlagsEnd():
+	for i in Gamemode_objs:
+		map_manager._call_replace(i.name, -1, "")
 
 func _on_game_mode_end_timeout():
 	on_end.call()

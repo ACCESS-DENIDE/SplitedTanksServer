@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://c03oy1hh7puqk"]
+
+[ext_resource type="Script" path="res://Assets/StarManager.gd" id="1_amm70"]
+
+[node name="StarManager" type="Node"]
+script = ExtResource("1_amm70")
+
+[node name="Min" type="Timer" parent="."]
+one_shot = true
+autostart = true
+
+[node name="Max" type="Timer" parent="."]
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="Min" to="." method="_on_min_timeout"]
+[connection signal="timeout" from="Max" to="." method="_on_max_timeout"]

@@ -12,8 +12,8 @@ var base:Node=null
 var noU:bool=false
 var JewMode:bool=false
 var x4Mode:bool=false
-var hasFlag=false
-var flag_inst=null
+var hasPoint=false
+var Point_inst=null
 
 @onready var ReviveTimer=$Revive
 # Called when the node enters the scene tree for the first time.
@@ -133,15 +133,15 @@ func _use_item():
 func damage(killer:int):
 	if(!is_invincible):
 		if(!noU):
-			if (flag_inst!=null):
-				remove_child(flag_inst)
-				get_parent().add_child(flag_inst)
-				flag_inst.global_position=global_position
-				Server._call_sync(flag_inst.name, flag_inst.global_position, flag_inst.rotation)
-				flag_inst.is_picked=false
-				flag_inst.fl=true
-				flag_inst.holder=null
-			flag_inst=null
+			if (Point_inst!=null):
+				remove_child(Point_inst)
+				get_parent().add_child(Point_inst)
+				Point_inst.global_position=global_position
+				Server._call_sync(Point_inst.name, Point_inst.global_position, Point_inst.rotation)
+				Point_inst.is_picked=false
+				Point_inst.fl=true
+				Point_inst.holder=null
+			Point_inst=null
 			dead=true
 			ReviveTimer.start()
 			Server.MapManager._reliable_spawn(name ,17, position)
@@ -196,7 +196,7 @@ func _on_revive_timeout():
 	dead=false
 	Server._call_sync(name, position, rotation)
 	Server.PlayerManager.players_links[my_master]["Inst"].SPEED=Server.Constants.tank_speed
-	hasFlag=false
+	hasPoint=false
 	pass # Replace with function body.
 
 
@@ -241,35 +241,34 @@ func _on_invicible_timeout():
 func _on_x_4_mode_time_timeout():
 	x4Mode=false
 
-func _pick_flag(ptr:Node)->bool:
-	if(hasFlag):
+func _pick_Point(ptr:Node)->bool:
+	if(hasPoint):
 		return false
 	else:
 		print("Picked")
-		hasFlag=true
-		flag_inst=ptr
+		hasPoint=true
+		Point_inst=ptr
 		return true
 
-func _verify_flag_depos():
+func _verify_Point_depos():
 	
 	if((respPos-position).length()<10):
 		
-		hasFlag=false
-		remove_child(flag_inst)
-		get_parent().add_child(flag_inst)
-		flag_inst._return()
-		if(Server.PlayerManager.players_links.has(flag_inst.master)):
-			Server.PlayerManager.players_links[flag_inst.master]["Score"]-=Server.Constants.flagDepositScore
-		flag_inst.is_picked=false
-		if(flag_inst.master!=-1):
-			Server.PlayerManager.players_links[my_master]["Score"]+=Server.Constants.flagDepositScore
+		hasPoint=false
+		remove_child(Point_inst)
+		get_parent().add_child(Point_inst)
+		Point_inst._return()
+		if(Server.PlayerManager.players_links.has(Point_inst.master)):
+			Server.PlayerManager.players_links[Point_inst.master]["Score"]-=Server.Constants.PointDepositScore
+		Point_inst.is_picked=false
+		if(Point_inst.master!=-1):
+			Server.PlayerManager.players_links[my_master]["Score"]+=Server.Constants.PointDepositScore
 		else:
-			Server.PlayerManager.players_links[my_master]["Score"]+=Server.Constants.NeutralflagDepositScore
+			Server.PlayerManager.players_links[my_master]["Score"]+=Server.Constants.NeutralPointDepositScore
 		Server.PlayerManager._update_scores()
-		flag_inst=null
+		Point_inst=null
 	else:
-		print(flag_inst.position)
-		Server._call_sync(flag_inst.name, flag_inst.global_position, flag_inst.rotation)
+		Server._call_sync(Point_inst.name, Point_inst.global_position, Point_inst.rotation)
 
 func _move(direct:int):
 	var vec:Vector2
@@ -305,9 +304,11 @@ func _move(direct:int):
 			Server._set_states(name, 1)
 		move_and_slide()
 		Server._call_sync(name,position, rotation)
-		if(hasFlag==true):
-			_verify_flag_depos()
+		if(hasPoint==true):
+			_verify_Point_depos()
 			
+	else:
+		Server._set_states(name, 1)
 
 func _shoot():
 	if(!(dead)):

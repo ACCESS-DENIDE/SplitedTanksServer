@@ -1,15 +1,13 @@
 extends Node
 
+var Server
 var can_spawn=false
-@onready var MapManager=$"../MapManager"
-@onready var Server=$".."
-@onready var Constants=$"../Constants"
 var chance:int
 var rng = RandomNumberGenerator.new()
 func _ready():
-	chance=Constants.CrateSpawnChance
-	$Min.wait_time=Constants.MinCrateSpawn
-	$Max.wait_time=Constants.MaxCrateSpawn
+	chance=Server.Constants.StarSpawnChance
+	$Min.wait_time=Server.Constants.MinStarSpawn
+	$Max.wait_time=Server.Constants.MaxStarSpawn
 	pass
 
 func _process(delta):
@@ -33,10 +31,9 @@ func _spawn():
 	can_spawn=false
 	$Min.start()
 	$Max.start()
-	var spawns=MapManager._get_availib_spawns()
+	var spawns=Server.MapManager._get_availib_spawns()
 	if(spawns.size()>0):
 		randomize()
 		var cord=spawns[rng.randi_range(0, spawns.size()-1)]
-		MapManager._hit_cords(cord.x, cord.y, -1)
-		MapManager._reliable_spawn((str(cord.x)+":"+str(cord.y)), 12, Vector2((cord.x*16*5)+root_cord, (cord.y*16*5)+root_cord))
-
+		Server.MapManager._hit_cords(cord.x, cord.y, -1)
+		Server.MapManager._reliable_spawn((str(cord.x)+":"+str(cord.y)), 58, Vector2((cord.x*16*5)+root_cord, (cord.y*16*5)+root_cord))

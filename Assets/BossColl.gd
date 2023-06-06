@@ -19,8 +19,8 @@ var is_invincible:bool=false
 var noU:bool=false
 var JewMode:bool=false
 var x4Mode:bool=false
-var hasFlag=false
-var flag_inst=null
+var hasPoint=false
+var Point_inst=null
 
 func _ready():
 	SPEED=Server.Constants.BossSpeed
@@ -59,6 +59,8 @@ func _move(direct:int):
 			Server._set_states(name, 1)
 		move_and_slide()
 		Server._call_sync(name,position, rotation)
+	else:
+		Server._set_states(name, 1)
 
 
 func _shoot():
@@ -153,7 +155,7 @@ func damage(killer:int):
 	Server.PlayerManager.players_links[my_master]["Score"]-=Server.Constants.BossDamageScore
 	Server.PlayerManager._update_scores()
 
-func _pick_flag(ptr:Node)->bool:
+func _pick_Point(ptr:Node)->bool:
 	return false
 
 func _OmenStrike(x:int, y:int, striker_id:int):

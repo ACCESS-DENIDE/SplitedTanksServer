@@ -24,17 +24,6 @@ func _loadMap(path:String):
 			Server.MapManager._reliable_spawn(str(x)+"!"+str(y) ,int(blocks[i]),Vector2(x, y))
 
 
-func _spawn_item(id:int,pos:Vector2):
-	#var new_item=preload("res://Assets/ItemCol.tscn").instantiate()
-	#new_item.name="Item"+str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)
-	#new_item.position=pos
-	#new_item.Server=Server
-	#map[str(pos.x/(16*5)+10)+":"+str(pos.y/(16*5)+10)]=new_item
-	#CollisionContainer.add_child(new_item)
-	#new_item.id=id
-	#Server._ini_spawn(id,new_item.name, pos)
-	pass
-
 
 func _asign_base(player:Node):
 	if(bases.size()!=0):
@@ -67,12 +56,18 @@ func _hit_cords(x:int, y:int, striker_id:int):
 		elif (!(map[str(x)+":"+str(y)].is_blocking_projectile)):
 			for i in PlayerManager.players_links.values():
 				if(i["Inst"]!=null):
-					if((abs((i["Inst"].position.x)-((root_cord+(x*16*5))))<8*5)&&(abs((i["Inst"].position.y)-((root_cord+(y*16*5))))<8*5)):
+					var size=8*5
+					if (i["Inst"].name.contains("Boss")):
+						size=size*2
+					if((abs((i["Inst"].position.x)-((root_cord+(x*16*5))))<size)&&(abs((i["Inst"].position.y)-((root_cord+(y*16*5))))<size)):
 						i["Inst"].damage(striker_id)
 	else:
 			for i in PlayerManager.players_links.values():
 				if(i["Inst"]!=null):
-					if((abs((i["Inst"].position.x)-((root_cord+(x*16*5))))<8*5)&&(abs((i["Inst"].position.y)-((root_cord+(y*16*5))))<8*5)):
+					var size=8*5
+					if (i["Inst"].name.contains("Boss")):
+						size=size*2
+					if((abs((i["Inst"].position.x)-((root_cord+(x*16*5))))<size)&&(abs((i["Inst"].position.y)-((root_cord+(y*16*5))))<size)):
 						i["Inst"].damage(striker_id)
 
 func _reliable_spawn(static_name:String,id:int, pos:Vector2, rot:float=0)->Node:
@@ -344,34 +339,25 @@ func _reliable_spawn(static_name:String,id:int, pos:Vector2, rot:float=0)->Node:
 			name="Poin!"+static_name+"!"+str(salt)
 			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
 			pass
-		51:
-			new_spawn=preload("res://Assets/point.tscn").instantiate()
-			name="Poin!"+static_name+"!"+str(salt)
-			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
-			pass
-		52:
-			new_spawn=preload("res://Assets/point.tscn").instantiate()
-			name="Poin!"+static_name+"!"+str(salt)
-			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
-			pass
-		53:
-			new_spawn=preload("res://Assets/point.tscn").instantiate()
-			name="Poin!"+static_name+"!"+str(salt)
-			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
-			pass
-		54:
-			new_spawn=preload("res://Assets/point.tscn").instantiate()
-			name="Poin!"+static_name+"!"+str(salt)
-			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
-			pass
 		55:
-			new_spawn=preload("res://Assets/point.tscn").instantiate()
-			name="Poin!"+static_name+"!"+str(salt)
+			new_spawn=preload("res://Assets/Flag.tscn").instantiate()
+			name="Flag!"+static_name+"!"+str(salt)
 			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
 			pass
 		56:
 			new_spawn=preload("res://Assets/BossColl.tscn").instantiate()
 			name="Boss!"+static_name+"!"+str(salt)
+			
+			pass
+		57:
+			new_spawn=preload("res://Assets/BossColl.tscn").instantiate()
+			name="Boss!"+static_name+"!"+str(salt)
+			
+			pass
+		58:
+			new_spawn=preload("res://Assets/StarCol.tscn").instantiate()
+			name="Star!"+static_name+"!"+str(salt)
+			map[str(floor((pos.x-40)/80.0)+11)+":"+str(floor((pos.y-40)/80.0)+11)]=new_spawn
 			
 			pass
 	if(new_spawn!=null):
@@ -385,18 +371,6 @@ func _reliable_spawn(static_name:String,id:int, pos:Vector2, rot:float=0)->Node:
 	return new_spawn
 
 
-func _spawn_Block(name:String, type:int, x:int, y:int):
-	#var root_cord=-(10*16*5)
-	#var newb=preload("res://Assets/BlockCollision.tscn").instantiate()
-	#newb.name=name
-	#newb.Server=Server
-	#newb._change_type(type)
-	#newb.position=Vector2((x*16*5)+root_cord,(y*16*5)+root_cord )
-	#map[str(x)+":"+str(y)]=newb
-	#CollisionContainer.add_child(newb)
-	#Server._ini_spawn(type, name, newb.position)
-	pass
-
 func _call_replace(name:String, type:int, new_name:String):
 	for i in CollisionContainer.get_children():
 		if(i.name==name):
@@ -407,3 +381,13 @@ func _call_replace(name:String, type:int, new_name:String):
 				CollisionContainer.remove_child(i)
 				i.queue_free()
 	Server._ini_block_change(name, type, new_name)
+
+func _get_availib_spawns()->Array:
+	var arr=[]
+	for i in range(0, 22):
+		for g in range(0, 22):
+			if(map.keys().has(str(i)+":"+str(g))):
+				pass
+			else:
+				arr.push_back(Vector2(i, g))
+	return arr
