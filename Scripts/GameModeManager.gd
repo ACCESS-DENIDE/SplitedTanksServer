@@ -5,6 +5,7 @@ extends Node
 @onready var constants = $"../Constants"
 @onready var Server = $".."
 
+var started=false
 
 var on_end:Callable=_passer
 var on_new_Pl:Callable=_passer
@@ -16,7 +17,40 @@ var round_process=false
 
 var Gamemode_objs=[]
 
+func _start_gameplay():
+	if(!started):
+		started=true
+		$BetwenGameMode.start()
+
 func _selectGM():
+	
+	if(player_manager.active_players==0):
+		started=false
+		return
+	
+	randomize()
+	match rng.randi_range(0, 5):
+		0:
+			_point_snitcher()
+			pass
+		1:
+			_one_point()
+			pass
+		2:
+			_boss_fight()
+			pass
+		3:
+			_star_collector()
+			pass
+		4:
+			_flag_defence()
+			pass
+		5:
+			_hohlyonok()
+			pass
+	
+	
+	
 	pass
 
 func _ready():
@@ -32,7 +66,8 @@ func _point_snitcher():
 		Gamemode_objs.push_back(new_p)
 	on_new_Pl=_addpoint
 	on_pl_remove=_removePoint
-	on_end=on_pl_remove
+	on_end=_PointsEnd
+	print("PointsStart")
 	$GameModeEnd.start()
 
 func _one_point():
@@ -44,6 +79,7 @@ func _one_point():
 	on_new_Pl=_passer
 	on_pl_remove=_passer
 	on_end=_PointsEnd
+	print("OnePointStart")
 	$GameModeEnd.start()
 	pass
 
@@ -62,7 +98,7 @@ func _boss_fight():
 	player_manager.players_links[key]["Inst"]=map_manager._reliable_spawn(str(key),56, sp_pos)
 	player_manager.players_links[key]["Inst"].my_master=key
 	player_manager.players_links[key]["Inst"].Server=$".."
-	
+	print("BossStart")
 	$GameModeEnd.start()
 	
 	pass
@@ -75,6 +111,7 @@ func _star_collector():
 	on_new_Pl=_passer
 	on_pl_remove=_passer
 	on_end=_StarCollectorEnd
+	print("StarCollectorStart")
 	$GameModeEnd.start()
 	pass
 
@@ -91,11 +128,20 @@ func _flag_defence():
 			var p=map_manager._reliable_spawn((str(cord.x)+":"+str(cord.y)), 12, Vector2((cord.x*16*5)-800, (cord.y*16*5)-800))
 			p.Server=$".."
 			Gamemode_objs.push_back(p)
-			
+	print("FlagStart")
 	$GameModeEnd.start()
 	pass
 
 func _hohlyonok():
+	on_new_Pl=_passer
+	on_pl_remove=_passer
+	on_end=_endHohlyonok
+	var HH=map_manager._reliable_spawn("Gameplay", 57, Vector2(0,0))
+	HH.Server=$".."
+	HH.damage(-1)
+	Gamemode_objs.push_back(HH)
+	print("HohlyonokStart")
+	$GameModeEnd.start()
 	pass
 
 func _add_player(peer_id:int):
@@ -127,7 +173,6 @@ func _PointsEnd():
 			i.holder.hasPoint=false
 			i.get_parent().remove_child(i)
 			$"../CollisionContainer".add_child(i)
-		Gamemode_objs.erase(i)
 		map_manager._call_replace(i.name, -1, "")
 
 func _removeBoss():
@@ -148,8 +193,13 @@ func _FlagsEnd():
 	for i in Gamemode_objs:
 		map_manager._call_replace(i.name, -1, "")
 
+func _endHohlyonok():
+	map_manager._call_replace(Gamemode_objs[0].name, -1, "")
+	pass
+
 func _on_game_mode_end_timeout():
 	on_end.call()
+	print("GM End")
 	$BetwenGameMode.start()
 	Gamemode_objs.clear()
 

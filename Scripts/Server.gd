@@ -24,6 +24,11 @@ func _ready():
 	print("server created")
 	MapManager._loadMap("Cock")
 
+
+@rpc("any_peer")
+func _shopOrder(id:int):
+	$ShopManager._buy(multiplayer.get_remote_sender_id(), id)
+
 func _invicibilate_player(player_id:int):
 	for i in PlayerManager.players_links.keys():
 		if(i!=player_id):

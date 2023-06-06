@@ -16,6 +16,8 @@ const BossDamageScore=100
 
 const BossSpeed=100
 
+const PigSpeed=300
+
 const MinStarSpawn=5
 const MaxStarSpawn=10
 const StarSpawnChance=100

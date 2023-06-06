@@ -219,7 +219,7 @@ func _on_base_reload_timeout():
 
 
 @warning_ignore("unused_parameter")
-func _teleport(x, y, sender_id):
+func _teleport(x, y, sender_id, meta=-1):
 	var root_cord=-(10*16*5)
 	_reload_based_gun()
 	if(!Server.MapManager.map.has(str(x)+":"+str(y))):
@@ -427,7 +427,7 @@ func _shoot():
 var root_cord=-(10*16*5)
 var x_cont:int
 var y_cont:int
-func _artillary_strike(x:int, y:int, striker_id:int):
+func _artillary_strike(x:int, y:int, striker_id:int, meta=-1):
 	var new_strike=preload("res://Assets/ArtillaryShot.tscn").instantiate()
 	new_strike.x=x
 	new_strike.y=y
@@ -442,7 +442,7 @@ func _artillary_strike(x:int, y:int, striker_id:int):
 		
 
 
-func _OmenStrike(x:int, y:int, striker_id:int):
+func _OmenStrike(x:int, y:int, striker_id:int, meta=-1):
 	SPEED=Server.Constants.tank_speed
 	var OmenRef=preload("res://Assets/OmenStrike.tscn").instantiate()
 	OmenRef.Server=Server
@@ -450,7 +450,7 @@ func _OmenStrike(x:int, y:int, striker_id:int):
 	add_child(OmenRef)
 	Server.PlayerManager.players_links[striker_id]["Phase"]=0
 	
-func _airStrike(x:int, y:int, striker_id:int):
+func _airStrike(x:int, y:int, striker_id:int, meta=-1):
 	Server.PlayerManager.players_links[striker_id]["Phase"]=0
 	Server.PlayerManager.players_links[striker_id]["Inst"].SPEED=Server.Constants.tank_speed
 	for i in range(0, 22):

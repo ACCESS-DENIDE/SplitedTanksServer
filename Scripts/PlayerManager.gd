@@ -7,6 +7,7 @@ extends Node
 @onready var PlayerManager=$"."
 @onready var Constants = $"../Constants"
 @onready var GMmanager = $"../GameModeManager"
+@onready var shop_manager = $"../ShopManager"
 
 var active_players=0
 var players_links={}
@@ -22,7 +23,6 @@ func _remoe_player(peer_id:int):
 			MapManager._call_replace(players_links[peer_id]["Inst"].name, -1, "")
 			players_links.erase(peer_id)
 			_update_scores()
-			$"../GameModeManager"._flag_defence()
 			#MapManager._asign_base()
 
 var teams=[false, false, false,false]
@@ -39,6 +39,7 @@ func _free_team(team:int):
 
 func _add_player(peer_id:int):
 	if(active_players<Constants.max_players):
+		$"../GameModeManager"._start_gameplay()
 		var pl_team=_get_free_team()
 		if (pl_team==-1):
 			pl_team=((active_players+1) % 4)
@@ -56,6 +57,8 @@ func _add_player(peer_id:int):
 				Server._id_ini_spawn(peer_id, i.id, i.name, i.position)
 			if(i.name.contains("Poin")):
 				Server._id_ini_spawn(peer_id, i.team+46, i.name, i.position)
+			if(i.name.contains("Hohlyonok")):
+				Server._id_ini_spawn(peer_id, 57, i.name, i.position)
 			if(i.name.contains("Flag")):
 				if(i.capturer!=null):
 					Server._id_ini_spawn(peer_id, players_links[i.capturer]["Team"]+51, i.name, i.position)
@@ -76,6 +79,7 @@ func _add_player(peer_id:int):
 		active_players+=1
 		Server._update_locals_of_peer(peer_id, {"Powerup":players_links[peer_id]["PU"], "Blocks":players_links[peer_id]["Blocks"], "Scores":_calc_scores()})
 		GMmanager._add_player(peer_id)
+		$"../ShopManager"._updateDeals()
 
 func _update_scores():
 	for i in players_links.keys():

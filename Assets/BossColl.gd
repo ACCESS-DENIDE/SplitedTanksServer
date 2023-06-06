@@ -128,7 +128,7 @@ func _shoot():
 var root_cord=-(10*16*5)
 var x_cont:int
 var y_cont:int
-func _artillary_strike(x:int, y:int, striker_id:int):
+func _artillary_strike(x:int, y:int, striker_id:int,meta=-1):
 	var new_strike=preload("res://Assets/ArtillaryShot.tscn").instantiate()
 	new_strike.x=x
 	new_strike.y=y
@@ -158,7 +158,7 @@ func damage(killer:int):
 func _pick_Point(ptr:Node)->bool:
 	return false
 
-func _OmenStrike(x:int, y:int, striker_id:int):
+func _OmenStrike(x:int, y:int, striker_id:int, meta=-1):
 	SPEED=Server.Constants.tank_speed
 	var OmenRef=preload("res://Assets/OmenStrike.tscn").instantiate()
 	OmenRef.Server=Server
@@ -166,7 +166,7 @@ func _OmenStrike(x:int, y:int, striker_id:int):
 	add_child(OmenRef)
 	Server.PlayerManager.players_links[striker_id]["Phase"]=0
 	
-func _airStrike(x:int, y:int, striker_id:int):
+func _airStrike(x:int, y:int, striker_id:int, meta =-1):
 	Server.PlayerManager.players_links[striker_id]["Phase"]=0
 	Server.PlayerManager.players_links[striker_id]["Inst"].SPEED=Server.Constants.tank_speed
 	for i in range(0, 22):

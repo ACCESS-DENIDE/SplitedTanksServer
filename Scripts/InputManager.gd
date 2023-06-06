@@ -34,30 +34,55 @@ func _set_block(x, y, peer_id, meta):
 				if(!MapManager.map.keys().has(str(x)+":"+str(y))):
 					PlayerManager.players_links[peer_id]["Blocks"]["Brick"]-=1
 					MapManager._reliable_spawn(str(x)+"!"+str(y), 8, Vector2(((x*80)+root_cord),(y*80)+root_cord))
+				else:
+					if(MapManager.map[str(x)+":"+str(y)].is_blocking_projectile==false):
+							if(MapManager.map[str(x)+":"+str(y)].is_blocking_tank==true):
+								MapManager._call_replace(MapManager.map[str(x)+":"+str(y)].name, -1,"")
+								PlayerManager.players_links[peer_id]["Blocks"]["Brick"]-=1
 			pass
 		1:
 			if (PlayerManager.players_links[peer_id]["Blocks"]["Concreete"]>0):
 				if(!MapManager.map.keys().has(str(x)+":"+str(y))):
 					PlayerManager.players_links[peer_id]["Blocks"]["Concreete"]-=1
 					MapManager._reliable_spawn(str(x)+"!"+str(y), 4, Vector2(((x*80)+root_cord),(y*80)+root_cord))
+				else:
+					if(MapManager.map[str(x)+":"+str(y)].is_blocking_projectile==false):
+							if(MapManager.map[str(x)+":"+str(y)].is_blocking_tank==true):
+								MapManager._call_replace(MapManager.map[str(x)+":"+str(y)].name, -1,"")
+								PlayerManager.players_links[peer_id]["Blocks"]["Concreete"]-=1
 			pass
 		2:
 			if (PlayerManager.players_links[peer_id]["Blocks"]["Bush"]>0):
 				if(!MapManager.map.keys().has(str(x)+":"+str(y))):
 					PlayerManager.players_links[peer_id]["Blocks"]["Bush"]-=1
 					MapManager._reliable_spawn(str(x)+"!"+str(y), 7, Vector2(((x*80)+root_cord),(y*80)+root_cord))
+				else:
+					if(MapManager.map[str(x)+":"+str(y)].is_blocking_projectile==false):
+							if(MapManager.map[str(x)+":"+str(y)].is_blocking_tank==true):
+								MapManager._call_replace(MapManager.map[str(x)+":"+str(y)].name, -1,"")
+								PlayerManager.players_links[peer_id]["Blocks"]["Bush"]-=1
 			pass
 		3:
 			if (PlayerManager.players_links[peer_id]["Blocks"]["Water"]>0):
 				if(!MapManager.map.keys().has(str(x)+":"+str(y))):
 					PlayerManager.players_links[peer_id]["Blocks"]["Water"]-=1
 					MapManager._reliable_spawn(str(x)+"!"+str(y), 5, Vector2(((x*80)+root_cord),(y*80)+root_cord))
+				else:
+					if(MapManager.map[str(x)+":"+str(y)].is_blocking_projectile==false):
+							if(MapManager.map[str(x)+":"+str(y)].is_blocking_tank==true):
+								MapManager._call_replace(MapManager.map[str(x)+":"+str(y)].name, -1,"")
+								PlayerManager.players_links[peer_id]["Blocks"]["Water"]-=1
 			pass
 		4:
 			if (PlayerManager.players_links[peer_id]["Blocks"]["Field"]>0):
 				if(!MapManager.map.keys().has(str(x)+":"+str(y))):
 					PlayerManager.players_links[peer_id]["Blocks"]["Field"]-=1
 					MapManager._reliable_spawn(str(x)+"!"+str(y), 6, Vector2(((x*80)+root_cord),(y*80)+root_cord))
+				else:
+					if(MapManager.map[str(x)+":"+str(y)].is_blocking_projectile==false):
+							if(MapManager.map[str(x)+":"+str(y)].is_blocking_tank==true):
+								MapManager._call_replace(MapManager.map[str(x)+":"+str(y)].name, -1,"")
+								PlayerManager.players_links[peer_id]["Blocks"]["Field"]-=1
 			pass
 	PlayerManager.players_links[peer_id]["Inst"].SPEED=Server.Constants.tank_speed
 	PlayerManager.players_links[peer_id]["Phase"]=0

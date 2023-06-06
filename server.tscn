@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cnwy84chc1ifc"]
+[gd_scene load_steps=10 format=3 uid="uid://cnwy84chc1ifc"]
 
 [ext_resource type="Script" path="res://Scripts/Server.gd" id="1_x42tc"]
 [ext_resource type="Script" path="res://Scripts/InputManager.gd" id="2_jk2gt"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://Scripts/Constants.gd" id="6_oim2x"]
 [ext_resource type="Script" path="res://Scripts/CrateManager.gd" id="7_j0m5u"]
 [ext_resource type="Script" path="res://Scripts/GameModeManager.gd" id="8_m0vfh"]
+[ext_resource type="Script" path="res://Scripts/ShopManager.gd" id="9_ptcbt"]
 
 [node name="Server" type="Node"]
 script = ExtResource("1_x42tc")
@@ -47,6 +48,9 @@ one_shot = true
 
 [node name="BetwenGameMode" type="Timer" parent="GameModeManager"]
 one_shot = true
+
+[node name="ShopManager" type="Node" parent="."]
+script = ExtResource("9_ptcbt")
 
 [connection signal="timeout" from="CrateManager/Min" to="CrateManager" method="_on_min_timeout"]
 [connection signal="timeout" from="CrateManager/Max" to="CrateManager" method="_on_max_timeout"]

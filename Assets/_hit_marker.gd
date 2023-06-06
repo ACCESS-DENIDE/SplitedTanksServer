@@ -12,3 +12,5 @@ func _on_deliter_timeout():
 func _on_body_entered(body):
 	if(body.is_damageble):
 		body.damage(hiter)
+
+

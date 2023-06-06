@@ -334,8 +334,8 @@ func _reliable_spawn(static_name:String,id:int, pos:Vector2, rot:float=0)->Node:
 			
 			pass
 		57:
-			new_spawn=preload("res://Assets/BossColl.tscn").instantiate()
-			name="Boss!"+static_name+"!"+str(salt)
+			new_spawn=preload("res://Assets/Hohlyonok.tscn").instantiate()
+			name="Hohlyonok!"+static_name+"!"+str(salt)
 			
 			pass
 		58:
