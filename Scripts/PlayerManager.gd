@@ -67,8 +67,8 @@ func _add_player(peer_id:int):
 		players_links[peer_id]={}
 		players_links[peer_id]["Team"]=pl_team
 		players_links[peer_id]["Inst"]=new_tank
-		players_links[peer_id]["GT"]=3
-		players_links[peer_id]["PU"]=41
+		players_links[peer_id]["GT"]=0
+		players_links[peer_id]["PU"]=-1
 		players_links[peer_id]["Name"]=""
 		players_links[peer_id]["Phase"]=0
 		players_links[peer_id]["Score"]=0

@@ -186,8 +186,9 @@ func _get_posib(point_map,pos_x:int, pos_y:int):
 		else:
 			if(point_map[new_x][new_y]==null):
 				if(Server.MapManager.map.has(str(new_x)+":"+str(new_y))):
-					if(Server.MapManager.map[str(new_x)+":"+str(new_y)].is_blocking_tank!=true):
-						availib_nodes.push_back(PP.new(new_x, new_y, Vector2(tar_x, tar_y), point_map[pos_x][pos_y]))
+					if(Server.MapManager.map[str(new_x)+":"+str(new_y)]!=null):
+						if(Server.MapManager.map[str(new_x)+":"+str(new_y)].is_blocking_tank!=true):
+							availib_nodes.push_back(PP.new(new_x, new_y, Vector2(tar_x, tar_y), point_map[pos_x][pos_y]))
 				else:
 					availib_nodes.push_back(PP.new(new_x, new_y, Vector2(tar_x, tar_y), point_map[pos_x][pos_y]))
 	pass

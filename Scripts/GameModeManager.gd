@@ -119,13 +119,13 @@ func _flag_defence():
 	on_new_Pl=_passer
 	on_pl_remove=_passer
 	on_end=_FlagsEnd
-	for i in range(0, player_manager.active_players+2):
+	for i in range(0, player_manager.active_players+1):
 		var spawns=map_manager._get_availib_spawns()
 		if(spawns.size()>0):
 			randomize()
 			var cord=spawns[rng.randi_range(0, spawns.size()-1)]
 			map_manager._hit_cords(cord.x, cord.y, -1)
-			var p=map_manager._reliable_spawn((str(cord.x)+":"+str(cord.y)), 12, Vector2((cord.x*16*5)-800, (cord.y*16*5)-800))
+			var p=map_manager._reliable_spawn((str(cord.x)+":"+str(cord.y)), 55, Vector2((cord.x*16*5)-800, (cord.y*16*5)-800))
 			p.Server=$".."
 			Gamemode_objs.push_back(p)
 	print("FlagStart")
@@ -159,7 +159,6 @@ func _addpoint(peer_id:int):
 	Gamemode_objs.push_back(new_p)
 
 func _removePoint(peer_id:int):
-	print("DebugPoin!"+str(peer_id))
 	for i in CollisionContainer.get_children():
 		if(i.name.contains("Poin!"+str(peer_id))):
 			map_manager._call_replace(i.name, -1, "")
@@ -168,6 +167,8 @@ func _removePoint(peer_id:int):
 
 func _PointsEnd():
 	for i in Gamemode_objs:
+		if (i==null):
+			continue
 		if(i.holder!=null):
 			i.holder.Point_inst=null
 			i.holder.hasPoint=false
@@ -177,13 +178,14 @@ func _PointsEnd():
 
 func _removeBoss():
 	print("Ended")
-	var sp_pos=player_manager.players_links[Gamemode_objs[0].my_master]["Inst"].position
-	
-	map_manager._call_replace(player_manager.players_links[Gamemode_objs[0].my_master]["Inst"].name, -1, "")
-	player_manager.players_links[Gamemode_objs[0].my_master]["Inst"]=Gamemode_objs[0]
-	player_manager.players_links[Gamemode_objs[0].my_master]["Inst"].position=sp_pos
-	Server._call_sync(player_manager.players_links[Gamemode_objs[0].my_master]["Inst"].name,player_manager.players_links[Gamemode_objs[0].my_master]["Inst"].position, player_manager.players_links[Gamemode_objs[0].my_master]["Inst"].rotation)
-	pass
+	if(player_manager.players_links.has(Gamemode_objs[0].my_master)):
+		var sp_pos=player_manager.players_links[Gamemode_objs[0].my_master]["Inst"].position
+		
+		map_manager._call_replace(player_manager.players_links[Gamemode_objs[0].my_master]["Inst"].name, -1, "")
+		player_manager.players_links[Gamemode_objs[0].my_master]["Inst"]=Gamemode_objs[0]
+		player_manager.players_links[Gamemode_objs[0].my_master]["Inst"].position=sp_pos
+		Server._call_sync(player_manager.players_links[Gamemode_objs[0].my_master]["Inst"].name,player_manager.players_links[Gamemode_objs[0].my_master]["Inst"].position, player_manager.players_links[Gamemode_objs[0].my_master]["Inst"].rotation)
+		pass
 
 func _StarCollectorEnd():
 	remove_child(Gamemode_objs[0])
@@ -191,6 +193,8 @@ func _StarCollectorEnd():
 
 func _FlagsEnd():
 	for i in Gamemode_objs:
+		if (i==null):
+			continue
 		map_manager._call_replace(i.name, -1, "")
 
 func _endHohlyonok():

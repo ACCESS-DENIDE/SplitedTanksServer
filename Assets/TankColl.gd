@@ -24,7 +24,7 @@ func _ready():
 
 func _add_item(id:int):
 	Server.PlayerManager.players_links[my_master]["PU"]=id
-	Server._update_locals_of_peer(my_master, {"Powerup":id, "Blocks":Server.PlayerManager.players_links[my_master]["Blocks"]})
+	Server._update_locals_of_peer(my_master, {"Powerup":id})
 
 func _asign_base(base_in:Node):
 	if(base_in!=null):

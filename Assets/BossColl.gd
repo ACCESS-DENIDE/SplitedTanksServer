@@ -142,6 +142,9 @@ func _artillary_strike(x:int, y:int, striker_id:int,meta=-1):
 		Server.PlayerManager.players_links[striker_id]["Phase"]=0
 		
 
+func _invincibilate(i:int):
+	pass
+
 func _add_item(id:int):
 	pass
 

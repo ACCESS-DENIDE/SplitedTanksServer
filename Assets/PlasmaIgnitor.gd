@@ -19,8 +19,9 @@ func _blast():
 		var rotator=0
 		while (fl && (len<21)):
 			if(Server.MapManager.map.keys().has(str(shift_x)+":"+str(shift_y))):
-				if (Server.MapManager.map[str(shift_x)+":"+str(shift_y)].is_blocking_projectile && !Server.MapManager.map[str(shift_x)+":"+str(shift_y)].is_damageble):
-					fl=false
+				if (Server.MapManager.map[str(shift_x)+":"+str(shift_y)]!=null):
+					if (Server.MapManager.map[str(shift_x)+":"+str(shift_y)].is_blocking_projectile && !Server.MapManager.map[str(shift_x)+":"+str(shift_y)].is_damageble):
+						fl=false
 			len+=1
 			if(override_dir):
 				dir=overrided

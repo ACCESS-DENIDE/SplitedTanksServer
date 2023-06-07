@@ -91,11 +91,14 @@ func _call_sync(name:String, pos:Vector2, rot:float):
 	rpc("_sync", name, pos, rot)
 @rpc("any_peer")
 func _target_send(x:int, y:int, meta:int=-1):
-	if(target_wait[multiplayer.get_remote_sender_id()]!=null):
-		if (meta==-1):
-			target_wait[multiplayer.get_remote_sender_id()].call(x, y, multiplayer.get_remote_sender_id())
-		else:
-			target_wait[multiplayer.get_remote_sender_id()].call(x, y, multiplayer.get_remote_sender_id(), meta)
+	if(target_wait.has(multiplayer.get_remote_sender_id())):
+		if(target_wait[multiplayer.get_remote_sender_id()]!=null):
+			if (meta==-1):
+				target_wait[multiplayer.get_remote_sender_id()].call(x, y, multiplayer.get_remote_sender_id())
+				target_wait.erase(multiplayer.get_remote_sender_id())
+			else:
+				target_wait[multiplayer.get_remote_sender_id()].call(x, y, multiplayer.get_remote_sender_id(), meta)
+				target_wait.erase(multiplayer.get_remote_sender_id())
 @rpc("any_peer","unreliable")
 func _sync(name:String, pos:Vector2, rot:float):
 	pass
