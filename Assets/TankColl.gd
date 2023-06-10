@@ -14,6 +14,8 @@ var JewMode:bool=false
 var x4Mode:bool=false
 var hasPoint=false
 var Point_inst=null
+var last_response
+
 
 @onready var ReviveTimer=$Revive
 # Called when the node enters the scene tree for the first time.
@@ -91,7 +93,7 @@ func _use_item():
 			noU=true
 			pass
 		37:
-			_enable_jet(Server.Constants.Jet_time)
+			_enable_jet(Server.Constants.jet_time)
 			pass
 		38:
 			JewMode=true
@@ -159,7 +161,8 @@ func damage(killer:int):
 					Server.PlayerManager._update_scores()
 		else:
 			if(killer!=-1):
-				Server.PlayerManager.players_links[killer]["Inst"].damage(my_master)
+				if(killer!=my_master):
+					Server.PlayerManager.players_links[killer]["Inst"].damage(my_master)
 			noU=false
 	
 
@@ -259,12 +262,12 @@ func _verify_Point_depos():
 		get_parent().add_child(Point_inst)
 		Point_inst._return()
 		if(Server.PlayerManager.players_links.has(Point_inst.master)):
-			Server.PlayerManager.players_links[Point_inst.master]["Score"]-=Server.Constants.PointDepositScore
+			Server.PlayerManager.players_links[Point_inst.master]["Score"]-=Server.Constants.point_deposit_score
 		Point_inst.is_picked=false
 		if(Point_inst.master!=-1):
-			Server.PlayerManager.players_links[my_master]["Score"]+=Server.Constants.PointDepositScore
+			Server.PlayerManager.players_links[my_master]["Score"]+=Server.Constants.point_deposit_score
 		else:
-			Server.PlayerManager.players_links[my_master]["Score"]+=Server.Constants.NeutralPointDepositScore
+			Server.PlayerManager.players_links[my_master]["Score"]+=Server.Constants.neutral_point_deposit_score
 		Server.PlayerManager._update_scores()
 		Point_inst=null
 	else:
@@ -274,6 +277,12 @@ func _move(direct:int):
 	var vec:Vector2
 	vec.x=0
 	vec.y=0
+	var delta
+	if(last_response!=-1):
+		delta=float(Time.get_ticks_msec()-last_response)
+		delta=delta/13.3
+	else:
+		delta=0
 	if(direct!=-1):
 		dir=direct
 	if(!(SPEED==0)):
@@ -295,13 +304,15 @@ func _move(direct:int):
 				rotation_degrees=-90
 				pass
 		if (vec.length()!=0):
-			velocity.x=vec.x*SPEED
-			velocity.y=vec.y*SPEED
+			velocity.x=vec.x*SPEED*delta
+			velocity.y=vec.y*SPEED*delta
 			Server._set_states(name, 0)
+			last_response=Time.get_ticks_msec()
 		else:
-			velocity.x=move_toward(velocity.x, 0, SPEED)
-			velocity.y=move_toward(velocity.y, 0, SPEED)
+			velocity.x=0
+			velocity.y=0
 			Server._set_states(name, 1)
+			last_response=-1
 		move_and_slide()
 		Server._call_sync(name,position, rotation)
 		if(hasPoint==true):
@@ -309,6 +320,8 @@ func _move(direct:int):
 			
 	else:
 		Server._set_states(name, 1)
+		last_response=-1
+	
 
 func _shoot():
 	if(!(dead)):

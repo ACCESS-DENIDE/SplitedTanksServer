@@ -11,6 +11,7 @@ extends Node
 var target_wait={}
 
 func _ready():
+	Constants._load_config()
 	var peer = ENetMultiplayerPeer.new()
 	peer.create_server(Constants.server_port)
 	print("creating server")
@@ -22,7 +23,7 @@ func _ready():
 	multiplayer.peer_connected.connect(_on_network_connected)
 	multiplayer.peer_disconnected.connect(_on_network_disconnected)
 	print("server created")
-	MapManager._loadMap("Cock")
+	MapManager._loadMap(Constants.map_path)
 
 
 @rpc("any_peer")
@@ -92,7 +93,7 @@ func _call_sync(name:String, pos:Vector2, rot:float):
 @rpc("any_peer")
 func _target_send(x:int, y:int, meta:int=-1):
 	if(target_wait.has(multiplayer.get_remote_sender_id())):
-		if(target_wait[multiplayer.get_remote_sender_id()]!=null):
+		if(target_wait[multiplayer.get_remote_sender_id()].is_valid()):
 			if (meta==-1):
 				target_wait[multiplayer.get_remote_sender_id()].call(x, y, multiplayer.get_remote_sender_id())
 				target_wait.erase(multiplayer.get_remote_sender_id())

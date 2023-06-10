@@ -44,12 +44,9 @@ func _on_body_entered(body):
 	if (flg):
 		if(Server.PlayerManager.players_links.keys().has(parent)):
 			if(!(body==Server.PlayerManager.players_links[parent]["Inst"])):
-				if(body.is_damageble):
+				if(body.is_damageble and !body.name.contains("Block")):
 					body.damage(parent)
-					flg=false
-					Server.MapManager._call_replace(body.name, -1, "")
 					Server.MapManager._reliable_spawn(name,26,position)
-					Server.MapManager._call_replace(self.name, -1, self.name)
 				else:
 					if(body.is_blocking_projectile):
 						flg=false
@@ -57,12 +54,9 @@ func _on_body_entered(body):
 						Server.MapManager._reliable_spawn(name,26,position)
 						Server.MapManager._call_replace(self.name, -1, self.name)
 		else:
-			if(body.is_damageble):
+			if(body.is_damageble and !body.name.contains("Block")):
 					body.damage(-1)
-					flg=false
-					Server.MapManager._call_replace(body.name, -1, "")
 					Server.MapManager._reliable_spawn(name,26,position)
-					Server.MapManager._call_replace(self.name, -1, self.name)
 			else:
 				if(body.is_blocking_projectile):
 						flg=false

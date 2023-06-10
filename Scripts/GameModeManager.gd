@@ -29,7 +29,7 @@ func _selectGM():
 		return
 	
 	randomize()
-	match rng.randi_range(0, 5):
+	match rng.randi_range(6, 6):
 		0:
 			_point_snitcher()
 			pass
@@ -98,6 +98,8 @@ func _boss_fight():
 	player_manager.players_links[key]["Inst"]=map_manager._reliable_spawn(str(key),56, sp_pos)
 	player_manager.players_links[key]["Inst"].my_master=key
 	player_manager.players_links[key]["Inst"].Server=$".."
+	player_manager.players_links[key]["Inst"].last_response=Gamemode_objs[0].last_response
+	player_manager.players_links[key]["Phase"]=0
 	print("BossStart")
 	$GameModeEnd.start()
 	
@@ -180,11 +182,12 @@ func _removeBoss():
 	print("Ended")
 	if(player_manager.players_links.has(Gamemode_objs[0].my_master)):
 		var sp_pos=player_manager.players_links[Gamemode_objs[0].my_master]["Inst"].position
-		
+		Gamemode_objs[0].last_response=player_manager.players_links[Gamemode_objs[0].my_master]["Inst"].last_response
 		map_manager._call_replace(player_manager.players_links[Gamemode_objs[0].my_master]["Inst"].name, -1, "")
 		player_manager.players_links[Gamemode_objs[0].my_master]["Inst"]=Gamemode_objs[0]
 		player_manager.players_links[Gamemode_objs[0].my_master]["Inst"].position=sp_pos
 		Server._call_sync(player_manager.players_links[Gamemode_objs[0].my_master]["Inst"].name,player_manager.players_links[Gamemode_objs[0].my_master]["Inst"].position, player_manager.players_links[Gamemode_objs[0].my_master]["Inst"].rotation)
+		player_manager.players_links[Gamemode_objs[0].my_master]["Phase"]=0
 		pass
 
 func _StarCollectorEnd():

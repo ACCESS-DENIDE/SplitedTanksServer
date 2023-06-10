@@ -7,8 +7,8 @@ var SPEED
 var dir=0
 var supercharge:bool=false
 var base:Node=null
-
-
+var reloaded=true
+var last_response
 
 var dead:bool=false
 
@@ -23,12 +23,20 @@ var hasPoint=false
 var Point_inst=null
 
 func _ready():
-	SPEED=Server.Constants.BossSpeed
+	SPEED=Server.Constants.boss_speed
+	$AbilityReload.wait_time=Server.Constants.boss_ab_reload
+	$BaseReload.wait_time=Server.Constants.bulet_reload
 
 func _move(direct:int):
 	var vec:Vector2
 	vec.x=0
 	vec.y=0
+	var delta
+	if(last_response!=-1):
+		delta=float(Time.get_ticks_msec()-last_response)
+		delta=delta/13.3
+	else:
+		delta=0
 	if(direct!=-1):
 		dir=direct
 	if(!(SPEED==0)):
@@ -53,14 +61,17 @@ func _move(direct:int):
 			velocity.x=vec.x*SPEED
 			velocity.y=vec.y*SPEED
 			Server._set_states(name, 0)
+			last_response=Time.get_ticks_msec()
 		else:
 			velocity.x=move_toward(velocity.x, 0, SPEED)
 			velocity.y=move_toward(velocity.y, 0, SPEED)
 			Server._set_states(name, 1)
+			last_response=-1
 		move_and_slide()
 		Server._call_sync(name,position, rotation)
 	else:
 		Server._set_states(name, 1)
+		last_response=-1
 
 
 func _shoot():
@@ -81,6 +92,9 @@ func _shoot():
 							_reload_based_gun()
 				1:
 					if(supercharge):
+						supercharge=false
+						reloaded=false
+						$AbilityReload.start()
 						Server._rquest_target(my_master, _airStrike)
 						SPEED=0
 						Server.PlayerManager.players_links[my_master]["Phase"]=99
@@ -93,6 +107,9 @@ func _shoot():
 					pass
 				2:
 					if(supercharge):
+						supercharge=false
+						reloaded=false
+						$AbilityReload.start()
 						Server._rquest_target(my_master, _OmenStrike)
 						SPEED=0
 						Server.PlayerManager.players_links[my_master]["Phase"]=99
@@ -149,13 +166,13 @@ func _add_item(id:int):
 	pass
 
 func _use_item():
-	print("click")
-	supercharge=!supercharge
+	if(reloaded):
+		supercharge=!supercharge
 
 func damage(killer:int):
 	if(Server.PlayerManager.players_links.has(killer)):
-		Server.PlayerManager.players_links[killer]["Score"]+=Server.Constants.BossDamageScore
-	Server.PlayerManager.players_links[my_master]["Score"]-=Server.Constants.BossDamageScore
+		Server.PlayerManager.players_links[killer]["Score"]+=Server.Constants.boos_damage_score
+	Server.PlayerManager.players_links[my_master]["Score"]-=Server.Constants.boos_damage_score
 	Server.PlayerManager._update_scores()
 
 func _pick_Point(ptr:Node)->bool:
@@ -184,3 +201,8 @@ func _reload_based_gun():
 
 func _on_base_reload_timeout():
 	Server.PlayerManager.players_links[my_master]["Phase"]=0
+
+
+func _on_ability_reload_timeout():
+	reloaded=true
+	pass # Replace with function body.

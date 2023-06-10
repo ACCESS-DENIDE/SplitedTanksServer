@@ -16,4 +16,8 @@ shape = SubResource("RectangleShape2D_0rgft")
 [node name="BaseReload" type="Timer" parent="."]
 one_shot = true
 
+[node name="AbilityReload" type="Timer" parent="."]
+one_shot = true
+
 [connection signal="timeout" from="BaseReload" to="." method="_on_base_reload_timeout"]
+[connection signal="timeout" from="AbilityReload" to="." method="_on_ability_reload_timeout"]

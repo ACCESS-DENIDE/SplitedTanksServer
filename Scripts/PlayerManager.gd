@@ -67,14 +67,15 @@ func _add_player(peer_id:int):
 		players_links[peer_id]={}
 		players_links[peer_id]["Team"]=pl_team
 		players_links[peer_id]["Inst"]=new_tank
-		players_links[peer_id]["GT"]=0
-		players_links[peer_id]["PU"]=-1
+		players_links[peer_id]["GT"]=Constants.spawn_weapon
+		players_links[peer_id]["PU"]=Constants.spawn_powerUp
 		players_links[peer_id]["Name"]=""
 		players_links[peer_id]["Phase"]=0
 		players_links[peer_id]["Score"]=0
 		players_links[peer_id]["Blocks"]={"Brick"=1, "Concreete"=1, "Bush"=1, "Water"=1, "Field"=1}
 		MapManager._asign_base(new_tank)
 		new_tank.position=new_tank.respPos
+		new_tank.last_response=-1
 		Server._call_sync(players_links[peer_id]["Inst"].name, players_links[peer_id]["Inst"].position, players_links[peer_id]["Inst"].rotation)
 		active_players+=1
 		Server._update_locals_of_peer(peer_id, {"Powerup":players_links[peer_id]["PU"], "Blocks":players_links[peer_id]["Blocks"], "Scores":_calc_scores()})

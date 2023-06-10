@@ -20,10 +20,10 @@ var WP:Vector2
 var path=[]
 
 func _ready():
-	agressive_mode.wait_time=Server.Constants.FazAgrTime
-	unreach.wait_time=Server.Constants.FazInstaKillTime
-	SPEED=Server.Constants.FzSpeed
-	$Lifetime.wait_time=Server.Constants.FazLifeTime
+	agressive_mode.wait_time=Server.Constants.faz_agr_time
+	unreach.wait_time=Server.Constants.faz_instakill_time
+	SPEED=Server.Constants.faz_speed
+	$Lifetime.wait_time=Server.Constants.faz_lifetime
 
 
 func _asign_target():

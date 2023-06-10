@@ -45,6 +45,6 @@ func _on_capture_time_timeout():
 
 func _on_add_score_timer_timeout():
 	if(Server.PlayerManager.players_links.has(capturer)):
-		Server.PlayerManager.players_links[capturer]["Score"]+=Server.Constants.FlagPerSecScore
+		Server.PlayerManager.players_links[capturer]["Score"]+=Server.Constants.flag_per_sec_score
 		Server.PlayerManager._update_scores()
 	pass # Replace with function body.

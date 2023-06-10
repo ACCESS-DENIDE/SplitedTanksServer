@@ -94,7 +94,7 @@ func _get_dir(vect1, vect2)->int:
 	return -1
 
 func _ready():
-	SPEED=Server.Constants.PigSpeed
+	SPEED=Server.Constants.pig_speed
 
 class PP:
 	var pos:Vector2
@@ -197,7 +197,7 @@ func _get_posib(point_map,pos_x:int, pos_y:int):
 func damage(killer:int):
 	var target_list=Server.MapManager._get_availib_spawns()
 	if(Server.PlayerManager.players_links.has(killer)):
-		Server.PlayerManager.players_links[killer]["Score"]+=Server.Constants.HohlyonokKillScore
+		Server.PlayerManager.players_links[killer]["Score"]+=Server.Constants.hohlyonok_kill_score
 	Server.PlayerManager._update_scores()
 	if(target_list.size()>0):
 		_change_tar()

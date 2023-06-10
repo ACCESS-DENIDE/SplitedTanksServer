@@ -6,6 +6,7 @@
 radius = 9.11
 
 [node name="Hohlyonok" type="StaticBody2D"]
+scale = Vector2(5, 5)
 collision_layer = 3
 script = ExtResource("1_uc1j3")
 

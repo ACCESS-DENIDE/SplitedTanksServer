@@ -7,9 +7,9 @@ var can_spawn=false
 var chance:int
 var rng = RandomNumberGenerator.new()
 func _ready():
-	chance=Constants.CrateSpawnChance
-	$Min.wait_time=Constants.MinCrateSpawn
-	$Max.wait_time=Constants.MaxCrateSpawn
+	chance=Constants.crate_spawn_chance
+	$Min.wait_time=Constants.min_crate_spawn
+	$Max.wait_time=Constants.max_crate_spawn
 	pass
 
 func _process(delta):

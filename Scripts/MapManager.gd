@@ -11,7 +11,6 @@ var bases=[]
 var map={}
 
 func _loadMap(path:String):
-	path="res://Maps/CumCramer.json"
 	var program=FileAccess.open(path, FileAccess.READ)
 	var blocks=JSON.parse_string(program.get_as_text())
 	var root_cord=-(10*16*5)
@@ -19,9 +18,9 @@ func _loadMap(path:String):
 		var x=root_cord+(int(i.split(":")[0])*16*5)
 		var y=root_cord+(int(i.split(":")[1])*16*5)
 		if(blocks[i]==11):
-			bases.push_back(Server.MapManager._reliable_spawn(str(x)+"!"+str(y) ,int(blocks[i]),Vector2(x, y)))
+			bases.push_back(_reliable_spawn(str(x)+"!"+str(y) ,int(blocks[i]),Vector2(x, y)))
 		else:
-			Server.MapManager._reliable_spawn(str(x)+"!"+str(y) ,int(blocks[i]),Vector2(x, y))
+			_reliable_spawn(str(x)+"!"+str(y) ,int(blocks[i]),Vector2(x, y))
 
 
 

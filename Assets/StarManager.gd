@@ -5,15 +5,15 @@ var can_spawn=false
 var chance:int
 var rng = RandomNumberGenerator.new()
 func _ready():
-	chance=Server.Constants.StarSpawnChance
-	$Min.wait_time=Server.Constants.MinStarSpawn
-	$Max.wait_time=Server.Constants.MaxStarSpawn
+	chance=Server.Constants.star_spawn_chance
+	$Min.wait_time=Server.Constants.min_spawn_star
+	$Max.wait_time=Server.Constants.max_star_spawn
 	pass
 
 func _process(delta):
 	if(can_spawn):
 		randomize()
-		if (rng.randi_range(0, 100)<=chance):
+		if (rng.randi_range(0, 100)<=chance*delta):
 			_spawn()
 	pass
 

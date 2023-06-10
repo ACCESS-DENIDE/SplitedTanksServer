@@ -84,7 +84,7 @@ func _buy(peer_id, num):
 
 func _updateDeals():
 	var outp={}
-	for i in range(0, 3-deals.size()):
+	while(deals.size()<3):
 		match randi_range(0, 20):
 			0:
 				randomize()
@@ -191,9 +191,10 @@ func _updateDeals():
 				var price=rng.randi_range(200,400)
 				outp[price]="Fortnite"
 				pass
-	deals.merge(outp)
+		deals.merge(outp)
 	if(deals.size()>3):
 		for i in range(3, deals.size()-1):
 			deals.erase(deals.keys()[3])
+			
 	for i in player_manager.players_links.keys():
 		Server._update_locals_of_peer(i, {"ShopDeals":deals})
