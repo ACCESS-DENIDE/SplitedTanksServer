@@ -29,7 +29,7 @@ func _selectGM():
 		return
 	
 	randomize()
-	match rng.randi_range(6, 6):
+	match rng.randi_range(0, 5):
 		0:
 			_point_snitcher()
 			pass

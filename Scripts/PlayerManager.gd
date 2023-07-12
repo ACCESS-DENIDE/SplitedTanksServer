@@ -78,6 +78,7 @@ func _add_player(peer_id:int):
 		new_tank.last_response=-1
 		Server._call_sync(players_links[peer_id]["Inst"].name, players_links[peer_id]["Inst"].position, players_links[peer_id]["Inst"].rotation)
 		active_players+=1
+		Server._plasma_setter(peer_id)
 		Server._update_locals_of_peer(peer_id, {"Powerup":players_links[peer_id]["PU"], "Blocks":players_links[peer_id]["Blocks"], "Scores":_calc_scores()})
 		GMmanager._add_player(peer_id)
 		$"../ShopManager"._updateDeals()

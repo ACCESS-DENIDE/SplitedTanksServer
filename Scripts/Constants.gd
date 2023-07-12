@@ -2,14 +2,14 @@ extends Node
 
 var server_port=25565
 var max_players=4
-var map_path
+var map_path="Maps/CumCramer.json"
 #Only four player models, so it will reuse them
 
 var spawn_weapon=0
-var spawn_powerUp=21
+var spawn_powerUp=-1
 
 var round_time_sec=30
-var betwen_round_sec=30
+var betwen_round_sec=60
 
 var point_deposit_score=500
 var neutral_point_deposit_score=250
@@ -21,7 +21,7 @@ var boos_damage_score=100
 var boss_speed=100
 var boss_ab_reload=5
 
-var pig_speed=0
+var pig_speed=300
 
 var min_spawn_star=5
 var max_star_spawn=10
@@ -29,7 +29,7 @@ var star_spawn_chance=100
 
 var tank_speed=200
 
-var bulet_speed=200
+var bulet_speed=400
 var bulet_reload=0.5
 
 var rocket_speed=150
@@ -47,9 +47,9 @@ var spawn_invincible=3
 var respawn_time=3
 
 
-var min_crate_spawn=3600
-var max_crate_spawn=3600
-var crate_spawn_chance=100
+var min_crate_spawn=15
+var max_crate_spawn=30
+var crate_spawn_chance=70
 
 var kill_score=100
 
@@ -57,8 +57,8 @@ var trap_time=5
 
 var faz_agr_time=20
 var faz_instakill_time=3
-var faz_speed=100
-var faz_lifetime=15
+var faz_speed=250
+var faz_lifetime=60
 
 var x4ModeTime=10
 
@@ -228,10 +228,10 @@ func _load_config():
 					map_path=conf[i]
 					pass
 				"spawn_weapon":
-					spawn_weapon=conf[i]
+					spawn_weapon=int(conf[i])
 					pass
 				"spawn_powerUp":
-					spawn_powerUp=conf[i]
+					spawn_powerUp=int(conf[i])
 					pass
 				"boss_ab_reload":
 					boss_ab_reload=conf[i]

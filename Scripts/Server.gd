@@ -100,6 +100,10 @@ func _target_send(x:int, y:int, meta:int=-1):
 			else:
 				target_wait[multiplayer.get_remote_sender_id()].call(x, y, multiplayer.get_remote_sender_id(), meta)
 				target_wait.erase(multiplayer.get_remote_sender_id())
+
+func _plasma_setter(peer_id:int):
+	rpc_id(peer_id,"_set_plasma_time", Constants.plasma_ignition_time)
+
 @rpc("any_peer","unreliable")
 func _sync(name:String, pos:Vector2, rot:float):
 	pass
@@ -129,3 +133,6 @@ func _get_state(peer_name:String, state:int):
 func _set_player_visib(name:String, switch:bool):
 	pass
 
+@rpc("any_peer")
+func _set_plasma_time(time:float):
+	pass

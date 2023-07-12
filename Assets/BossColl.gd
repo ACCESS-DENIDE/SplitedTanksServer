@@ -108,8 +108,6 @@ func _shoot():
 				2:
 					if(supercharge):
 						supercharge=false
-						reloaded=false
-						$AbilityReload.start()
 						Server._rquest_target(my_master, _OmenStrike)
 						SPEED=0
 						Server.PlayerManager.players_links[my_master]["Phase"]=99

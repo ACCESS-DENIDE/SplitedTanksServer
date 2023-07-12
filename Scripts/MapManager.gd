@@ -48,6 +48,11 @@ func _unload_map():
 	pass
 
 func _hit_cords(x:int, y:int, striker_id:int):
+	if(map.keys().has(str(x)+":"+str(y))):
+		if(map[str(x)+":"+str(y)].name.contains("Block")):
+			if(map[str(x)+":"+str(y)].type==6):
+				return
+			
 	var h_m=preload("res://Assets/_hit_marker.tscn").instantiate()
 	h_m.hiter=striker_id
 	h_m.position=Vector2(x*80-800, y*80-800)

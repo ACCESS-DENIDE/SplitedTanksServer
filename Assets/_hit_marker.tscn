@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Assets/_hit_marker.gd" id="1_5oeks"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kuwys"]
-size = Vector2(78, 78)
+size = Vector2(52, 52)
 
 [node name="_hitMarker" type="Area2D"]
 script = ExtResource("1_5oeks")

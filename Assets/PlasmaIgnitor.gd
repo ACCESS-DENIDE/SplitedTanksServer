@@ -7,7 +7,7 @@ var anker
 var override_dir:bool=false
 var overrided
 func _ready():
-	$IgnitionTimer.wait_time=Server.Constants.plasma_ignition_time
+	$IgnitionTimer.start(Server.Constants.plasma_ignition_time)
 
 func _blast():
 	if(Server.PlayerManager.players_links.keys().has(parent)):

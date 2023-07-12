@@ -113,9 +113,15 @@ func _use_item():
 			get_parent().add_child(new_rbg)
 			pass
 		42:
-			var FF=Server.MapManager._reliable_spawn( str(position.x/80)+":"+str(position.y/80), 45, Vector2(0,0))
-			FF._asign_target()
-			FF.initiator=my_master
+			var spawns=Server.MapManager._get_availib_spawns()
+			if(spawns.size()>0):
+				var rng=RandomNumberGenerator.new()
+				randomize()
+				var cord=spawns[rng.randi_range(0, spawns.size()-1)]
+				Server.MapManager._hit_cords(cord.x, cord.y, -1)
+				var FF=Server.MapManager._reliable_spawn( str(position.x/80)+":"+str(position.y/80), 45, cord)
+				FF._asign_target()
+				FF.initiator=my_master
 			pass
 		43:
 			for i in range( -1, 2):
@@ -154,11 +160,16 @@ func damage(killer:int):
 				if(killer!=my_master):
 					Server.PlayerManager.players_links[killer]["Score"]+=Server.Constants.kill_score
 					
-					if (Server.PlayerManager.players_links[killer]["Inst"].JewMode):
+					if(JewMode):
 						Server.PlayerManager.players_links[killer]["Score"]+=int(Server.PlayerManager.players_links[my_master]["Score"]/2)
 						Server.PlayerManager.players_links[my_master]["Score"]-=int(Server.PlayerManager.players_links[my_master]["Score"]/2)
-						Server.PlayerManager.players_links[killer]["Inst"].JewMode=false
-					Server.PlayerManager._update_scores()
+						JewMode=false
+					else:
+						if (Server.PlayerManager.players_links[killer]["Inst"].JewMode):
+							Server.PlayerManager.players_links[killer]["Score"]+=int(Server.PlayerManager.players_links[my_master]["Score"]/2)
+							Server.PlayerManager.players_links[my_master]["Score"]-=int(Server.PlayerManager.players_links[my_master]["Score"]/2)
+							Server.PlayerManager.players_links[killer]["Inst"].JewMode=false
+						Server.PlayerManager._update_scores()
 		else:
 			if(killer!=-1):
 				if(killer!=my_master):
@@ -424,6 +435,13 @@ func _shoot():
 							SPEED=0
 							Server.PlayerManager.players_links[my_master]["Phase"]=1
 						else:
+							var root_cord=-(10*16*5)
+							var x_cont:int=((position.x-40)/80.0)+11
+							var y_cont:int=((position.y-40)/80.0)+11
+							if(Server.MapManager.map.keys().has(str(x_cont)+":"+str(y_cont))):
+								if(Server.MapManager.map[str(x_cont)+":"+str(y_cont)].name.contains("Block")):
+									if(Server.MapManager.map[str(x_cont)+":"+str(y_cont)].type==6):
+										return
 							Server._rquest_target(my_master, _artillary_strike)
 							SPEED=0
 							Server.PlayerManager.players_links[my_master]["Phase"]=1
@@ -437,9 +455,7 @@ func _shoot():
 
 
 
-var root_cord=-(10*16*5)
-var x_cont:int
-var y_cont:int
+
 func _artillary_strike(x:int, y:int, striker_id:int, meta=-1):
 	var new_strike=preload("res://Assets/ArtillaryShot.tscn").instantiate()
 	new_strike.x=x
@@ -462,8 +478,10 @@ func _OmenStrike(x:int, y:int, striker_id:int, meta=-1):
 	OmenRef._strike(x, y,striker_id)
 	add_child(OmenRef)
 	Server.PlayerManager.players_links[striker_id]["Phase"]=0
-	
+
+
 func _airStrike(x:int, y:int, striker_id:int, meta=-1):
+	var root_cord=-(10*16*5)
 	Server.PlayerManager.players_links[striker_id]["Phase"]=0
 	Server.PlayerManager.players_links[striker_id]["Inst"].SPEED=Server.Constants.tank_speed
 	for i in range(0, 22):
