@@ -34,11 +34,15 @@ func _invicibilate_player(player_id:int):
 	for i in PlayerManager.players_links.keys():
 		if(i!=player_id):
 			rpc_id(i, "_set_player_visib", PlayerManager.players_links[player_id]["Inst"].name, false)
+		else:
+			rpc_id(i, "switch_fade", PlayerManager.players_links[player_id]["Inst"].name, true)
 
 func _visibilate_player(player_id:int):
 	for i in PlayerManager.players_links.keys():
 		if(i!=player_id):
 			rpc_id(i, "_set_player_visib", PlayerManager.players_links[player_id]["Inst"].name, true)
+		else:
+			rpc_id(i, "switch_fade", PlayerManager.players_links[player_id]["Inst"].name, false)
 
 func _set_states(peer_name:String, state:int):
 	rpc("_get_state", peer_name, state)
@@ -135,4 +139,8 @@ func _set_player_visib(name:String, switch:bool):
 
 @rpc("any_peer")
 func _set_plasma_time(time:float):
+	pass
+
+@rpc("any_peer")
+func switch_fade(name:String, flag:bool):
 	pass

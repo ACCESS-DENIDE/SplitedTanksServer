@@ -206,6 +206,7 @@ func _boost(time:float, power:float):
 
 func _on_revive_timeout():
 	_invincibilate(Server.Constants.spawn_invincible)
+	_enable_jet(Server.Constants.spawn_invincible)
 	position=respPos
 	dead=false
 	Server._call_sync(name, position, rotation)

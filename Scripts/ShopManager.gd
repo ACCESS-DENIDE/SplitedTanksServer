@@ -50,7 +50,7 @@ func _buy(peer_id, num):
 			"Portal":
 				player_manager.players_links[peer_id]["Inst"]._add_item(34)
 				pass
-			"Invicible":
+			"Invisible":
 				player_manager.players_links[peer_id]["Inst"]._add_item(35)
 				pass
 			"Nou":
@@ -71,7 +71,7 @@ func _buy(peer_id, num):
 			"RandomBullShit":
 				player_manager.players_links[peer_id]["Inst"]._add_item(41)
 				pass
-			"DEPLOY FREDDY FAZBEAR":
+			"Angry Beers":
 				player_manager.players_links[peer_id]["Inst"]._add_item(42)
 				pass
 			"Fortnite":
@@ -149,7 +149,7 @@ func _updateDeals():
 			12:
 				randomize()
 				var price=rng.randi_range(200,400)
-				outp[price]="Invicible"
+				outp[price]="Invisible"
 				pass
 			13:
 				randomize()
@@ -184,7 +184,7 @@ func _updateDeals():
 			19:
 				randomize()
 				var price=rng.randi_range(200,400)
-				outp[price]="DEPLOY FREDDY FAZBEAR"
+				outp[price]="Angry Beers"
 				pass
 			20:
 				randomize()
